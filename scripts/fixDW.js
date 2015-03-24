@@ -22,6 +22,7 @@ jQuery(function ($) {
     var $sidebar = $('<td class="x-sidebar"><div class="x-search"><input disabled type="text" class="x-search-input" placeholder="search"></div><h4>Site - <b class="x-site-name"></b></h4><div class="x-site"></div><h4>Administration</h4><div class="x-admin"></div></td>');
     var $input = $sidebar.find('.x-search-input');
 
+    // attach the site id to the sidebar
     $sidebar.find('.x-site-name').html(siteID);
 
     $main.prepend($sidebar);
@@ -64,6 +65,8 @@ jQuery(function ($) {
         groupBy: 'category'
     });
 
+
+    // grab the data from the ajax request and cache it
     function getData(url, key) {
         var d = new $.Deferred();
 
@@ -77,8 +80,6 @@ jQuery(function ($) {
         d.resolve(localStorage.getItem(key));
         return d.promise();
     }
-
-
 
 });
 

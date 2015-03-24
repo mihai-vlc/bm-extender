@@ -1,14 +1,13 @@
 {
-	"name": "dotjs universal",
+	"name": "Demandware sidebar",
 	"manifest_version": 2,
 	"minimum_chrome_version": "23",
 	"version": "1.6.1",
-	"description": "~/.js",
+	"description": "Adds a helper sidebar to the demandware BM",
 	"icons": {
 		"48": "images/icon48.png",
 		"128": "images/icon128.png"
 	},
-	"options_page": "options.html",
 	"content_scripts": [{
 		"run_at": "document_end",
 		"matches": ["http://*/*", "https://*/*"],
