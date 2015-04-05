@@ -21,7 +21,7 @@
 
     var url = location.protocol + '//' + location.host;
     var siteID = $('#SelectedSiteID option[selected]:last').html();
-    var key = location.host + siteID;
+    var key = 'dwre-sidebar-' + location.host + siteID;
     var searchData = [];
 
     var siteMenu = getData(url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-SiteMenuBM", key + 'site')

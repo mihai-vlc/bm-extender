@@ -4,8 +4,10 @@ A chrome extension that adds a helper sidebar for the new demandware BM.
 
 ## Caching
 In order for the sidebar to load faster we cache the menu received via ajax
-in LocalStorage. **If something changes in the menu and you want to update the sidebar
-you will need to delete the LocalStorage from your DevTools**
+in LocalStorage.  
+**If something changes in the menu and you want to update the sidebar
+you will need to delete the LocalStorage from your DevTools**  
+The LocalStorage keys start with `dwre-sidebar-`.
 
 ## Install
 **For usage**
