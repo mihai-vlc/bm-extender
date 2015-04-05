@@ -25,17 +25,28 @@
     // attach the site id to the sidebar
     $sidebar.find('.x-site-name').html(siteID);
 
+    // add the sidebar on the page
     $main.prepend($sidebar);
 
+    // attach the data grabed from the request to the sidebar
+    // and remove the title attribute from all the elements
     siteMenu.then(function (data) {
-        $sidebar.find('.x-site').append(data).find('[title]').removeAttr('title');
+        $sidebar.find('.x-site')
+            .append(data)
+            .find('[title]')
+            .removeAttr('title');
     });
 
     adminMenu.then(function (data) {
-        $sidebar.find('.x-admin').append(data).find('[title]').removeAttr('title');
+        $sidebar.find('.x-admin')
+            .append(data)
+            .find('[title]')
+            .removeAttr('title');
     });
 
-
+    // when both the siteMenu and the adminMenu are loaded
+    // enable the seach input and extract the search data for the
+    // autocomplete plugin
     $.when(siteMenu, adminMenu).done(function () {
         $sidebar.find('a').each(function(i) {
             var $t = $(this);
@@ -67,6 +78,7 @@
 
 
     // grab the data from the ajax request and cache it
+    // in the localstorage
     function getData(url, key) {
         var d = new $.Deferred();
 
