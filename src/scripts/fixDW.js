@@ -78,6 +78,7 @@
         $input.removeAttr('disabled');
     });
 
+    // load the autocomplete plugin
     $input.autocomplete({
         lookup: searchData,
         onSelect: function (suggestion) {
@@ -86,6 +87,9 @@
         groupBy: 'category'
     });
 
+
+    // attach the x-dw class
+    $('body').addClass('x-dw');
 
     // grab the data from the ajax request and cache it
     // in the localstorage

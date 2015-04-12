@@ -1,15 +1,15 @@
-.x-sidebar {
+.x-dw .x-sidebar {
     padding: 20px 0;
     vertical-align: top;
 }
 
-.x-sidebar h4 {
+.x-dw .x-sidebar h4 {
     padding: 10px;
     margin: 0;
     font-size: 14px;
 }
 
-.x-sidebar .bm-menu-head {
+.x-dw .x-sidebar .bm-menu-head {
     border: 0;
     padding: 0;
     margin: 0;
@@ -17,13 +17,13 @@
     line-height: 1;
 }
 
-.x-sidebar .bm-menu-head a {
+.x-dw .x-sidebar .bm-menu-head a {
     display: block;
     padding: 7px 10px;
     color: #000;
 }
 
-.x-sidebar .bm-menu-head a:before {
+.x-dw .x-sidebar .bm-menu-head a:before {
     content: "";
     position: absolute;
     top: 0;
@@ -33,16 +33,16 @@
     height: 100%;
 }
 
-.x-sidebar .bm-menu-head a:hover {
+.x-dw .x-sidebar .bm-menu-head a:hover {
     background: #eee;
     text-decoration: none;
 }
 
-.x-sidebar .bm-menu-section {
+.x-dw .x-sidebar .bm-menu-section {
     margin: 0;
 }
 
-.x-sidebar .menu_items_bm {
+.x-dw .x-sidebar .menu_items_bm {
     display: none;
     position: absolute;
     left: 60%;
@@ -54,26 +54,26 @@
     z-index: 10;
 }
 
-.x-sidebar .section-name:hover .menu_items_bm {
+.x-dw .x-sidebar .section-name:hover .menu_items_bm {
     display: block;
 }
 
-.x-sidebar .menu_items_bm a {
+.x-dw .x-sidebar .menu_items_bm a {
     display: block;
     padding: 5px 10px;
 }
 
-.x-search input {
+.x-dw .x-search input {
     padding: 5px;
 }
-.x-search {
+.x-dw .x-search {
     padding: 0 10px;
 }
 
-.autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
-.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-.autocomplete-no-suggestion { padding: 2px 5px;}
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: bold; color: #000; }
-.autocomplete-group { padding: 2px 5px; }
-.autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
+.x-dw .autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
+.x-dw .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.x-dw .autocomplete-no-suggestion { padding: 2px 5px;}
+.x-dw .autocomplete-selected { background: #F0F0F0; }
+.x-dw .autocomplete-suggestions strong { font-weight: bold; color: #000; }
+.x-dw .autocomplete-group { padding: 2px 5px; }
+.x-dw .autocomplete-group strong { font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }

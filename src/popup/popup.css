@@ -1,0 +1,11 @@
+body {
+    min-width: 350px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.enable-box {
+    line-height: 2em;
+    font-size: 15px;
+}
+

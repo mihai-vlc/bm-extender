@@ -18,6 +18,9 @@ var appendStyle = function (path) {
 if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     appendScript('scripts/fixDW.js');
     appendStyle('styles/fixDW.css');
+} else if (location.pathname.indexOf('on/demandware.store/Sites-') > -1) {
+    appendScript('scripts/requestLog.js');
+} else if (location.pathname.indexOf('on/demandware.servlet/webdav/Sites/Logs/') > -1) {
+    appendScript('scripts/formatLogs.js');
+    appendStyle('styles/highlighter.css');
 }
-
-
