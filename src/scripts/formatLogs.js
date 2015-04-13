@@ -5,32 +5,42 @@
     var d = new Date();
 
     var year = d.getFullYear();
-    var month = ('0' + (d.getMonth()+1)).slice(-2);
-    var day = ('0' + d.getDate()).slice(-2);
-    var hour = ('0' + (d.getHours() + d.getTimezoneOffset()/60)).slice(-2);
+    var month = pad(d.getMonth()+1);
+    var day = pad(d.getDate());
+    var hour = pad(d.getHours() + d.getTimezoneOffset()/60);
     var minute = d.getMinutes();
 
+    var minutesPattern = pad(minute) + '|' + pad(minute-1) + '|' + pad(minute-2) +
+                '|' + pad(minute-3) + '|' + pad(minute-4)  + '|' + pad(minute-5);
 
-    var pattern = new RegExp('(' + year + '-' + month + '-' +
-            day + ' ' + hour + ':(' +
-                minute + '|' + (minute-1) + '|' + (minute-2) +
-                '|' + (minute-3) + '|' + (minute-4)  + '|' + (minute-5) +
-            '):)', 'gm');
-
-    text = text.replace(pattern, '<b class="token number">$1</b>');
+    var pattern = new RegExp('(\\[' + year + '-' + month + '-' +
+            day + ' ' + hour + ':(' + minutesPattern + '):\\d+\.\\d+ GMT\\])', 'gm');
 
 
-    text = text.replace(/(^\[.+?\])/gm, '<b class="token selector block-separator italic">$1</b>');
+
+    text = text.replace(/(^\[.+?\])/gm, '</div><div class="section"><b class="token selector block-separator italic">$1</b>');
+    text = text.replace(pattern, '(NEW) <b class="token number">$1</b>');
     text = text.replace(/(WARN|warning)/gm, '<b class="token important italic">$1</b>');
     text = text.replace(/(ERROR)/gm, '<b class="token danger italic">$1</b>');
     text = text.replace(/(Sites\-(\w+-)?Site)/gm, '<b class="token keyword italic">$1</b>');
     text = text.replace(/(\/\w[^ ]+?\.[a-z]+)/gmi, '<b class="token url">$1</b>');
-    text = text.replace(/(\/\w+\.[a-z]+)/gmi, '<b class="token keyword">$1</b>');
+    text = text.replace(/(\/\w+\.[a-z]+)/gmi, '<b class="token string">$1</b>');
     text = text.replace(/(^\tat.+$)/gmi, '<small class="token small">$1</small>');
+    text = text.replace(/((\#|lineNumber: |line )\d+)/gmi, '<b class="token number">$1</b>');
+    text = text.replace(/(null|TypeError|ReferenceError)/gmi, '<b class="token keyword">$1</b>');
 
 
 
     $el.addClass('language-log')
-        .html('<code>' + text + '</code>');
+        .html('<code><div class="section"><h1>DW LOGS</h1>' + text + '</div></code>');
+
+    // scroll to the bottom of the document
+    $(window).on('load', function () {
+        $("html, body").animate({ scrollTop: $(document).height() }, 500);
+    });
+
+    function pad(number) {
+        return ('0' + number).slice(-2);
+    }
 
 })();
