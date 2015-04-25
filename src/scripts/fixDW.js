@@ -87,6 +87,9 @@
         groupBy: 'category'
     });
 
+    // auto complete the name field for export
+    var d = new Date();
+    $("input[name$=File][type=text]").val('exp_' + (d.getMonth()+1) + '_' + d.getDate());
 
     // attach the x-dw class
     $('body').addClass('x-dw');
