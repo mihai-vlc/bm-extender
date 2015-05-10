@@ -54,6 +54,16 @@
     z-index: 10;
 }
 
+.x-dw [section-name="site-prefs"] .menu_items_bm {
+    top: auto;
+    bottom: -100px;
+}
+
+.x-dw .x-sidebar .x-admin .menu_items_bm {
+    top: auto;
+    bottom: -100%;
+}
+
 .x-dw .x-sidebar .section-name:hover .menu_items_bm {
     display: block;
 }
