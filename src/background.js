@@ -8,7 +8,6 @@ var background = {
         chrome.runtime.onConnect.addListener(function(port) {
 
             background.initPage(port);
-            background.initPanel(port);
 
             port.onMessage.addListener(function(msg) {
                 if (typeof msg.fn == 'undefined') {
@@ -18,13 +17,8 @@ var background = {
                 background[msg.fn].apply(this, msg.data);
             });
 
-
-
         });
 
-    },
-    openTab: function (url) {
-        chrome.tabs.create({ url: url });
     },
     initPage: function (port) {
         if (port.name != 'page') {
@@ -44,44 +38,8 @@ var background = {
         }
 
     },
-    setLinks: function (links, update) {
+    setLinks: function (links) {
         background.links = links;
-        if (update) {
-            background.updateLinks(links);
-        }
-    },
-    updateLinks: function (links) {
-        if (background.panelPort) {
-            background.panelPort.postMessage({
-                fn: 'setLogs',
-                data: [links]
-            });
-        }
-    },
-    initPanel: function (port) {
-        if (port.name != 'panel') {
-            return;
-        }
-
-        if (background.panelPort) {
-            background.panelPort.disconnect();
-        }
-
-        background.panelPort = port;
-
-
-        background.panelPort.postMessage({
-            fn: 'setStatus',
-            data: [background.status]
-        });
-
-        if (background.links && background.status) {
-            background.updateLinks(background.links);
-        }
-
-    },
-    setStatus: function (status) {
-        background.status = status;
     }
 };
 

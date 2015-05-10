@@ -1,12 +1,8 @@
 {
-  "name": "DWRE Sidebar",
-  "description": "A chrome extension that adds a helper sidebar for the new demandware BM",
+  "name": "BM Extender",
+  "description": "A chrome extension that adds custom functionality to the DW BM.",
   "author": {
     "name": "Mihai Ionut Vilcu",
     "email": "ionutvmi@gmail.com"
-  },
-  "devDependencies": {
-    "grunt": "0.4.5",
-    "grunt-crx": "0.3.4"
   }
 }

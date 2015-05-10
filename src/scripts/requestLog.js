@@ -10,7 +10,7 @@
             getLinks(function (links) {
                 port.postMessage({
                     fn: 'setLinks',
-                    data: [links, true]
+                    data: [links]
                 });
             });
         }

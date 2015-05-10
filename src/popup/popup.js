@@ -3,6 +3,7 @@
     var $list = $('.js-loglist');
     var html = '';
 
+    // the enable checkbox in the popup
     $('.js-enable')
         .on('change', function () {
             win.background.status = this.checked;
