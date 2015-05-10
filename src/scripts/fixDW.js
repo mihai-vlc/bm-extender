@@ -106,6 +106,14 @@ var Storage = {
     // attach the x-dw class
     $('body').addClass('x-dw');
 
+
+    // keep the session active
+    setInterval(function () {
+        // dummy request
+        $.get(adminMenuURL);
+    }, 896407); // almost 15 min
+
+
     // grab the data from the ajax request and cache it
     // in the storage
     function getData(url, key) {
@@ -120,12 +128,6 @@ var Storage = {
         d.resolve(Storage.getItem(key));
         return d.promise();
     }
-
-    // keep the session active
-    setTimeout(function () {
-        // dummy request
-        $.get(adminMenuURL);
-    }, 896407); // almost 15 min
 
 })(jQuery);
 
