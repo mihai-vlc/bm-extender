@@ -111,7 +111,7 @@ var Storage = {
     setInterval(function () {
         // dummy request
         $.get(adminMenuURL);
-    }, 896407); // almost 15 min
+    }, 600000); // every 10 min
 
 
     // grab the data from the ajax request and cache it
