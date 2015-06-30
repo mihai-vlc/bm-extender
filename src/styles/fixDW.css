@@ -17,6 +17,10 @@
     line-height: 1;
 }
 
+.x-dw .x-sidebar .bm-menu-head:before {
+  display: none;
+}
+
 .x-dw .x-sidebar .bm-menu-head a {
     display: block;
     padding: 7px 10px;
