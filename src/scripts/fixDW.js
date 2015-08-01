@@ -38,10 +38,18 @@ var Storage = {
     var adminMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-AdminMenuBM";
     var siteMenu = getData(siteMenuURL, key + 'site')
     var adminMenu = getData(adminMenuURL, key + 'admin');
-
+    var sidebarTemplate = ['<td class="x-sidebar">',
+            '<div class="x-search">',
+                '<input disabled type="text" class="x-search-input perm_not_disabled" placeholder="search">',
+            '</div>',
+            '<h4>Site - <b class="x-site-name"></b></h4>',
+            '<div class="x-site"></div>',
+            '<h4>Administration</h4>',
+            '<div class="x-admin"></div>',
+        '</td>'].join('');
 
     var $main = $('#bm_content_column').parent();
-    var $sidebar = $('<td class="x-sidebar"><div class="x-search"><input disabled type="text" class="x-search-input" placeholder="search"></div><h4>Site - <b class="x-site-name"></b></h4><div class="x-site"></div><h4>Administration</h4><div class="x-admin"></div></td>');
+    var $sidebar = $(sidebarTemplate);
     var $input = $sidebar.find('.x-search-input');
 
     // attach the site id to the sidebar
@@ -87,7 +95,7 @@ var Storage = {
             });
         });
 
-        $input.removeAttr('disabled').focus();
+        $input.removeAttr('disabled');
     });
 
     // load the autocomplete plugin
