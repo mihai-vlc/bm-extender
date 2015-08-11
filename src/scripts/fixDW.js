@@ -111,9 +111,10 @@ var Storage = {
     var d = new Date();
     $("input[name$=File][type=text]").val('exp_' + (d.getMonth()+1) + '_' + d.getDate());
 
-    // attach the x-dw class
-    $('body').addClass('x-dw');
+    // attach the xbm-x-dw class
+    $('body').addClass('xbm-x-dw');
 
+    $('[name="update"], [name="apply"]').first().closest('table').addClass('buttons-table');
 
     // keep the session active
     setInterval(function () {
