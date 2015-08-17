@@ -115,8 +115,18 @@ var Storage = {
     $('body').addClass('xbm-x-dw');
 
     if ($('#bm_content_column > table').height() > $(window).height()) {
-        $('[name="update"], [name="apply"]').first().closest('table').addClass('buttons-table');
+        $('[name="update"], [name="apply"], [name="assign"]').first()
+            .closest('table').addClass('x-dw-buttons-table');
     }
+
+    $('.table_detail, .table_detail4').each(function () {
+        $(this).closest('table').addClass('x-dw-table-detail');
+    });
+
+    $('td input[type="checkbox"]').on('change', function () {
+        var method = this.checked ? 'addClass' : 'removeClass';
+        $(this).closest('tr')[method]('x-dw-active-row');
+    });
 
     // keep the session active
     setInterval(function () {
