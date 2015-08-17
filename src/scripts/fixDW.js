@@ -114,7 +114,9 @@ var Storage = {
     // attach the xbm-x-dw class
     $('body').addClass('xbm-x-dw');
 
-    $('[name="update"], [name="apply"]').first().closest('table').addClass('buttons-table');
+    if ($('#bm_content_column > table').height() > $(window).height()) {
+        $('[name="update"], [name="apply"]').first().closest('table').addClass('buttons-table');
+    }
 
     // keep the session active
     setInterval(function () {
