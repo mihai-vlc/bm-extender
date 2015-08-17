@@ -40,7 +40,7 @@ var Storage = {
     var adminMenu = getData(adminMenuURL, key + 'admin');
     var sidebarTemplate = ['<td class="x-sidebar">',
             '<div class="x-search">',
-                '<input disabled type="text" class="x-search-input perm_not_disabled" placeholder="search">',
+                '<input disabled type="text" class="x-search-input perm_not_disabled" ng-model="xIgnore" placeholder="search">',
             '</div>',
             '<h4>Site - <b class="x-site-name"></b></h4>',
             '<div class="x-site"></div>',
