@@ -109,18 +109,23 @@ var Storage = {
 
     // auto complete the name field for export
     var d = new Date();
-    $("input[name$=File][type=text]").val('exp_' + (d.getMonth()+1) + '_' + d.getDate());
+    $("input[name$=File][type=text]").val('export_' + (d.getMonth()+1) + '_' + d.getDate());
 
     // attach the xbm-x-dw class
     $('body').addClass('xbm-x-dw');
 
     if ($('#bm_content_column > table').height() > $(window).height()) {
-        $('[name="update"], [name="apply"], [name="assign"]').first()
+        $('[name="update"], [name="apply"], [name="assign"]').last()
             .closest('table').addClass('x-dw-buttons-table');
     }
 
     $('.table_detail, .table_detail4').each(function () {
-        $(this).closest('table').addClass('x-dw-table-detail');
+        var $t = $(this);
+        // avoid nested tables
+        if ( ! $t.find('.table_detail, .table_detail4').length) {
+            $t.closest('table').addClass('x-dw-table-detail');
+        }
+
     });
 
     $('td input[type="checkbox"]').on('change', function () {

@@ -111,10 +111,10 @@
 }
 
 
-.xbm-x-dw .x-dw-table-detail tr:hover {
-    background-color: rgba(0, 0, 0, .05);
+.xbm-x-dw .x-dw-table-detail > tbody > tr:hover {
+    background-color: rgba(0, 0, 0, .07);
 }
 
-.xbm-x-dw .x-dw-active-row td {
+.xbm-x-dw .x-dw-active-row > tbody > tr > td {
     background-color: #EBEBEB;
 }
