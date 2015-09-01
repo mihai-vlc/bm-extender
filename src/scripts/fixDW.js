@@ -29,6 +29,12 @@ var Storage = {
 
 (function ($) {
 
+    // perform the requests for the navigation only
+    // if the user is logged in
+    if ( ! $('.loggedin').length) {
+        return;
+    }
+
     var url = location.protocol + '//' + location.host;
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
@@ -36,6 +42,7 @@ var Storage = {
 
     var siteMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-SiteMenuBM";
     var adminMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-AdminMenuBM";
+
     var siteMenu = getData(siteMenuURL, key + 'site')
     var adminMenu = getData(adminMenuURL, key + 'admin');
     var sidebarTemplate = ['<td class="x-sidebar">',
