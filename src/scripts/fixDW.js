@@ -39,30 +39,7 @@ var Storage = {
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
 
-    var searchData = [
-        {
-            value: "Search product",
-            special: true,
-            onSelect: function () {
-                var val = $(this).val().trim();
-                searchProduct(val);
-            },
-            data: {
-                category: "Default"
-            }
-        },
-        {
-            value: "Search customer",
-            special: true,
-            onSelect: function () {
-                var val = $(this).val().trim();
-                searchCustomer(val);
-            },
-            data: {
-                category: "Default"
-            }
-        }
-    ];
+    var searchData = [];
 
     var siteMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-SiteMenuBM";
     var adminMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-AdminMenuBM";
@@ -128,6 +105,7 @@ var Storage = {
             });
         });
 
+        searchData = searchData.concat(getSpecialSearchData());
         $input.removeAttr('disabled');
     });
 
@@ -203,10 +181,10 @@ var Storage = {
     }
 
 
-    function searchProduct(val) {
+    function searchProducts(query) {
         var $hidden = $('<input type="hidden" />');
         $hidden.attr('name', 'WFSimpleSearch_NameOrID');
-        $hidden.val(val);
+        $hidden.val(query);
 
         // build and submit the form
         $form.empty();
@@ -214,13 +192,16 @@ var Storage = {
         $form.attr('method', 'post');
 
         $form.append($hidden);
+        $form.append('<input type="hidden" name="SearchType" value="simple" />');
+        $form.append('<input type="hidden" name="DefaultButton" value="simple" />');
+        $form.append('<input type="hidden" name="findSimple" value="" />');
         $form.submit();
     }
 
-    function searchCustomer(val) {
+    function searchCustomers(query) {
         var $hidden = $('<input type="hidden" />');
         $hidden.attr('name', 'WFCustomerSimpleSearch_SearchTerm');
-        $hidden.val(val);
+        $hidden.val(query);
 
         // build and submit the form
         $form.empty();
@@ -228,6 +209,36 @@ var Storage = {
         $form.attr('method', 'post');
 
         $form.append($hidden);
+        $form.submit();
+    }
+
+    function searchContent(query) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'SearchTerm');
+        $hidden.val(query);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewLibraryContentList_52-Dispatch');
+        $form.attr('method', 'post');
+
+        $form.append($hidden);
+        $form.submit();
+    }
+
+    function searchOrders(query) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'OrderSearchForm2_SimpleSearchTerm');
+        $hidden.val(query);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewOrderList_52-Dispatch');
+        $form.attr('method', 'get');
+
+        $form.append($hidden);
+        $form.append('<input type="hidden" name="simpleSearch" value="" />');
+
         $form.submit();
     }
 
@@ -244,6 +255,57 @@ var Storage = {
         $("input[name$=File][type=text]").val(exportName);
 
     }
+
+    function getSpecialSearchData() {
+        return [
+            {
+                value: "Search product",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchProducts(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            },
+            {
+                value: "Search customer",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchCustomers(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            },
+            {
+                value: "Search content",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchContent(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            },
+            {
+                value: "Search orders",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchOrders(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            }
+        ];
+
+    }
+
 
 })(jQuery);
 
