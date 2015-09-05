@@ -152,9 +152,8 @@ var Storage = {
         }
     });
 
-    // auto complete the name field for export
-    var d = new Date();
-    $("input[name$=File][type=text]").val('export_' + (d.getMonth()+1) + '_' + d.getDate());
+    fillExportField();
+
 
     // attach the xbm-x-dw class
     $('body').addClass('xbm-x-dw');
@@ -230,6 +229,20 @@ var Storage = {
 
         $form.append($hidden);
         $form.submit();
+    }
+
+
+    function fillExportField() {
+        // auto complete the name field for export
+        var d = new Date();
+        var exportName = 'export_' + (d.getMonth()+1) + '_' + d.getDate();
+        var pageName = $('a.breadcrumb').last().text().split(' ')[0];
+
+        if (pageName) {
+            exportName += '_' + pageName.toLowerCase();
+        }
+        $("input[name$=File][type=text]").val(exportName);
+
     }
 
 })(jQuery);
