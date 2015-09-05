@@ -147,6 +147,9 @@ var Storage = {
     }, 600000); // every 10 min
 
 
+    // fix the table layout
+    $('#bm_content_column').removeAttr('colspan').removeAttr('width');
+
     // grab the data from the ajax request and cache it
     // in the storage
     function getData(url, key) {
