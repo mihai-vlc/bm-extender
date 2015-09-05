@@ -38,7 +38,31 @@ var Storage = {
     var url = location.protocol + '//' + location.host;
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
-    var searchData = [];
+
+    var searchData = [
+        {
+            value: "Search product",
+            special: true,
+            onSelect: function () {
+                var val = $(this).val().trim();
+                searchProduct(val);
+            },
+            data: {
+                category: "Default"
+            }
+        },
+        {
+            value: "Search customer",
+            special: true,
+            onSelect: function () {
+                var val = $(this).val().trim();
+                searchCustomer(val);
+            },
+            data: {
+                category: "Default"
+            }
+        }
+    ];
 
     var siteMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-SiteMenuBM";
     var adminMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-AdminMenuBM";
@@ -58,6 +82,8 @@ var Storage = {
     var $main = $('#bm_content_column').parent();
     var $sidebar = $(sidebarTemplate);
     var $input = $sidebar.find('.x-search-input');
+    var $form = $('<form />');
+
 
     // attach the site id to the sidebar
     $sidebar.find('.x-site-name').html(siteID);
@@ -108,10 +134,22 @@ var Storage = {
     // load the autocomplete plugin
     $input.autocomplete({
         lookup: searchData,
+        preserveInput: true,
+        groupBy: 'category',
+        autoSelectFirst: true,
         onSelect: function (suggestion) {
+
+            if ($.isFunction(suggestion.onSelect)) {
+                suggestion.onSelect.call(this);
+                return;
+            }
+
             window.location.href = suggestion.url;
         },
-        groupBy: 'category'
+        lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
+            return suggestion.special ||
+                suggestion.value.toLowerCase().indexOf(queryLowerCase) !== -1;
+        }
     });
 
     // auto complete the name field for export
@@ -163,6 +201,35 @@ var Storage = {
 
         d.resolve(Storage.getItem(key));
         return d.promise();
+    }
+
+
+    function searchProduct(val) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'WFSimpleSearch_NameOrID');
+        $hidden.val(val);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewProductList_52-Dispatch');
+        $form.attr('method', 'post');
+
+        $form.append($hidden);
+        $form.submit();
+    }
+
+    function searchCustomer(val) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'WFCustomerSimpleSearch_SearchTerm');
+        $hidden.val(val);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewCustomers-Dispatch');
+        $form.attr('method', 'post');
+
+        $form.append($hidden);
+        $form.submit();
     }
 
 })(jQuery);
