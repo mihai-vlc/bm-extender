@@ -165,6 +165,14 @@ var Storage = {
     // fix the table layout
     $('#bm_content_column').removeAttr('colspan').removeAttr('width');
 
+    buildPreviewLink();
+
+
+    /**
+     * Helper functions
+     */
+
+
     // grab the data from the ajax request and cache it
     // in the storage
     function getData(url, key) {
@@ -303,6 +311,32 @@ var Storage = {
                 }
             }
         ];
+
+    }
+
+    function getCurrentCategory() {
+        var $el = $('.button.bm-category-gridview');
+
+        if ($el.length) {
+            return $el.attr('href').split('!').pop();
+        }
+
+        return null;
+    }
+
+    function buildPreviewLink() {
+        var catId = getCurrentCategory();
+
+        if (! catId) {
+            return;
+        }
+
+        var html =
+            '<a href="/on/demandware.store/Sites-Site/default/ViewStorefront-Catalog?cgid='+ catId +'" target="_blank">' +
+                '<img src="/on/demandware.static/Sites-Site/-/default/v1441242768498/images/preview_ico.gif" title="Preview category in the storefront." alt="Preview" border="0">' +
+            '</a>';
+
+        $('#bm-breadcrumb td').first().append(html);
 
     }
 
