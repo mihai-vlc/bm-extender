@@ -38,6 +38,7 @@ var Storage = {
     var url = location.protocol + '//' + location.host;
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
+
     var searchData = [];
 
     var siteMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-SiteMenuBM";
@@ -58,6 +59,8 @@ var Storage = {
     var $main = $('#bm_content_column').parent();
     var $sidebar = $(sidebarTemplate);
     var $input = $sidebar.find('.x-search-input');
+    var $form = $('<form />');
+
 
     // attach the site id to the sidebar
     $sidebar.find('.x-site-name').html(siteID);
@@ -102,21 +105,33 @@ var Storage = {
             });
         });
 
+        searchData = searchData.concat(getSpecialSearchData());
         $input.removeAttr('disabled');
     });
 
     // load the autocomplete plugin
     $input.autocomplete({
         lookup: searchData,
+        preserveInput: true,
+        groupBy: 'category',
+        autoSelectFirst: true,
         onSelect: function (suggestion) {
+
+            if ($.isFunction(suggestion.onSelect)) {
+                suggestion.onSelect.call(this);
+                return;
+            }
+
             window.location.href = suggestion.url;
         },
-        groupBy: 'category'
+        lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
+            return suggestion.special ||
+                suggestion.value.toLowerCase().indexOf(queryLowerCase) !== -1;
+        }
     });
 
-    // auto complete the name field for export
-    var d = new Date();
-    $("input[name$=File][type=text]").val('export_' + (d.getMonth()+1) + '_' + d.getDate());
+    fillExportField();
+
 
     // attach the xbm-x-dw class
     $('body').addClass('xbm-x-dw');
@@ -147,6 +162,17 @@ var Storage = {
     }, 600000); // every 10 min
 
 
+    // fix the table layout
+    $('#bm_content_column').removeAttr('colspan').removeAttr('width');
+
+    buildPreviewLink();
+
+
+    /**
+     * Helper functions
+     */
+
+
     // grab the data from the ajax request and cache it
     // in the storage
     function getData(url, key) {
@@ -161,6 +187,159 @@ var Storage = {
         d.resolve(Storage.getItem(key));
         return d.promise();
     }
+
+
+    function searchProducts(query) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'WFSimpleSearch_NameOrID');
+        $hidden.val(query);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewProductList_52-Dispatch');
+        $form.attr('method', 'post');
+
+        $form.append($hidden);
+        $form.append('<input type="hidden" name="SearchType" value="simple" />');
+        $form.append('<input type="hidden" name="DefaultButton" value="simple" />');
+        $form.append('<input type="hidden" name="findSimple" value="" />');
+        $form.submit();
+    }
+
+    function searchCustomers(query) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'WFCustomerSimpleSearch_SearchTerm');
+        $hidden.val(query);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewCustomers-Dispatch');
+        $form.attr('method', 'post');
+
+        $form.append($hidden);
+        $form.submit();
+    }
+
+    function searchContent(query) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'SearchTerm');
+        $hidden.val(query);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewLibraryContentList_52-Dispatch');
+        $form.attr('method', 'post');
+
+        $form.append($hidden);
+        $form.submit();
+    }
+
+    function searchOrders(query) {
+        var $hidden = $('<input type="hidden" />');
+        $hidden.attr('name', 'OrderSearchForm2_SimpleSearchTerm');
+        $hidden.val(query);
+
+        // build and submit the form
+        $form.empty();
+        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewOrderList_52-Dispatch');
+        $form.attr('method', 'get');
+
+        $form.append($hidden);
+        $form.append('<input type="hidden" name="simpleSearch" value="" />');
+
+        $form.submit();
+    }
+
+
+    function fillExportField() {
+        // auto complete the name field for export
+        var d = new Date();
+        var exportName = 'export_' + (d.getMonth()+1) + '_' + d.getDate();
+        var pageName = $('a.breadcrumb').last().text().split(' ')[0];
+
+        if (pageName) {
+            exportName += '_' + pageName.toLowerCase();
+        }
+        $("input[name$=File][type=text]").val(exportName);
+
+    }
+
+    function getSpecialSearchData() {
+        return [
+            {
+                value: "Search product",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchProducts(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            },
+            {
+                value: "Search customer",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchCustomers(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            },
+            {
+                value: "Search content",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchContent(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            },
+            {
+                value: "Search orders",
+                special: true,
+                onSelect: function () {
+                    var val = $(this).val().trim();
+                    searchOrders(val);
+                },
+                data: {
+                    category: "Default"
+                }
+            }
+        ];
+
+    }
+
+    function getCurrentCategory() {
+        var $el = $('.button.bm-category-gridview');
+
+        if ($el.length) {
+            return $el.attr('href').split('!').pop();
+        }
+
+        return null;
+    }
+
+    function buildPreviewLink() {
+        var catId = getCurrentCategory();
+
+        if (! catId) {
+            return;
+        }
+
+        var html =
+            '<a href="/on/demandware.store/Sites-Site/default/ViewStorefront-Catalog?cgid='+ catId +'" target="_blank">' +
+                '<img src="/on/demandware.static/Sites-Site/-/default/v1441242768498/images/preview_ico.gif" title="Preview category in the storefront." alt="Preview" border="0">' +
+            '</a>';
+
+        $('#bm-breadcrumb td').first().append(html);
+
+    }
+
 
 })(jQuery);
 

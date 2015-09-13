@@ -2,6 +2,7 @@
     padding: 20px 0;
     vertical-align: top;
     font-family: "Helvetica Neue",Helvetica,Arial,Verdana,sans-serif;
+    width: 205px;
 }
 
 .xbm-x-dw .x-sidebar h4 {
@@ -80,6 +81,7 @@
 
 .xbm-x-dw .x-search input {
     padding: 5px;
+    width: 100%;
 }
 .xbm-x-dw .x-search {
     padding: 0 10px;
