@@ -83,8 +83,15 @@
     padding: 5px;
     width: 100%;
 }
+
 .xbm-x-dw .x-search {
     padding: 0 10px;
+}
+
+.xbm-x-dw .bm-site-navigation-menus .x-search {
+    float: left;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .xbm-x-dw .autocomplete-suggestions { border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
@@ -122,7 +129,9 @@
 }
 
 
-.xbm-x-dw input[type="text"] {
+.xbm-x-dw .table_detail input[type="text"] {
     width: 100%;
 }
+
+
 

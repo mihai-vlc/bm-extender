@@ -46,10 +46,14 @@ var Storage = {
 
     var siteMenu = getData(siteMenuURL, key + 'site')
     var adminMenu = getData(adminMenuURL, key + 'admin');
-    var sidebarTemplate = ['<td class="x-sidebar">',
-            '<div class="x-search">',
-                '<input disabled type="text" class="x-search-input perm_not_disabled" ng-model="xIgnore" placeholder="search">',
-            '</div>',
+    var searchTemplate = [
+        '<div class="x-search">',
+            '<input disabled type="text" class="x-search-input perm_not_disabled" ng-model="xIgnore" placeholder=" Search">',
+        '</div>'].join('');
+
+    var sidebarTemplate = [
+        '<td class="x-sidebar">',
+            searchTemplate,
             '<h4>Site - <b class="x-site-name"></b></h4>',
             '<div class="x-site"></div>',
             '<h4>Administration</h4>',
@@ -58,8 +62,8 @@ var Storage = {
 
     var $main = $('#bm_content_column').parent();
     var $sidebar = $(sidebarTemplate);
-    var $input = $sidebar.find('.x-search-input');
     var $form = $('<form />');
+    var $searchInput;
 
 
     // attach the site id to the sidebar
@@ -67,6 +71,11 @@ var Storage = {
 
     // add the sidebar on the page
     $main.prepend($sidebar);
+
+    // add the search input in the header
+    $('.menu.storelink').after(searchTemplate);
+
+    $searchInput = $('.x-search-input');
 
     // attach the data grabed from the request to the sidebar
     // and remove the title attribute from all the elements
@@ -106,11 +115,11 @@ var Storage = {
         });
 
         searchData = searchData.concat(getSpecialSearchData());
-        $input.removeAttr('disabled');
+        $searchInput.removeAttr('disabled');
     });
 
     // load the autocomplete plugin
-    $input.autocomplete({
+    $searchInput.autocomplete({
         lookup: searchData,
         preserveInput: true,
         groupBy: 'category',
