@@ -35,6 +35,14 @@ var Storage = {
         return;
     }
 
+    // if we are updateing the BM modules clear the session in order to
+    // keep the navigation updated
+    var path = location.pathname;
+    if (path.indexOf("ViewACL-BM") > -1 || path.indexOf("ViewACL-Dispatch") > -1) {
+        sessionStorage.clear();
+    }
+
+
     var url = location.protocol + '//' + location.host;
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
