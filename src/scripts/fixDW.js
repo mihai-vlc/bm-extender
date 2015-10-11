@@ -179,15 +179,18 @@ var Storage = {
     // fix the table layout
     $('#bm_content_column').removeAttr('colspan').removeAttr('width');
 
+    // build the preview link for the current category
     buildPreviewLink();
 
+    // Update the page title with something more useful
+    $('title').html(getPageTitle());
 
     /**
      * Helper functions
      */
 
 
-     function makeStickyButtons() {
+    function makeStickyButtons() {
         if ($('#bm_content_column > table').height() < $(window).height()) {
             return;
         }
@@ -199,7 +202,7 @@ var Storage = {
         $('[name="update"], [name="apply"], [name="assign"]').last()
             .closest('table')
             .addClass('x-dw-buttons-table');
-     }
+    }
 
     // grab the data from the ajax request and cache it
     // in the storage
@@ -366,6 +369,20 @@ var Storage = {
 
         $('#bm-breadcrumb td').first().append(html);
 
+    }
+
+    function getPageTitle() {
+        var $title = $('.overview_title');
+
+        if ( ! $title.length) {
+            $title = $('#bm-breadcrumb')
+        }
+
+        if ( ! $title.length) {
+            $title = $('title')
+        }
+
+        return $title.text();
     }
 
 
