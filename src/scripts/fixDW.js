@@ -153,10 +153,7 @@ var Storage = {
     // attach the xbm-x-dw class
     $('body').addClass('xbm-x-dw');
 
-    if ($('#bm_content_column > table').height() > $(window).height()) {
-        $('[name="update"], [name="apply"], [name="assign"]').last()
-            .closest('table').addClass('x-dw-buttons-table');
-    }
+    makeStickyButtons();
 
     $('.table_detail, .table_detail4').each(function () {
         var $t = $(this);
@@ -189,6 +186,20 @@ var Storage = {
      * Helper functions
      */
 
+
+     function makeStickyButtons() {
+        if ($('#bm_content_column > table').height() < $(window).height()) {
+            return;
+        }
+
+        if ($('[name="SelectedSeriesID"]').length) {
+            return;
+        }
+
+        $('[name="update"], [name="apply"], [name="assign"]').last()
+            .closest('table')
+            .addClass('x-dw-buttons-table');
+     }
 
     // grab the data from the ajax request and cache it
     // in the storage
