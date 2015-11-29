@@ -379,6 +379,10 @@ var Storage = {
         }
 
         if ( ! $title.length) {
+            $title = $('.library-breadcrumb')
+        }
+
+        if ( ! $title.length) {
             $title = $('title')
         }
 

@@ -128,5 +128,7 @@
     background-color: #EBEBEB;
 }
 
-
+.xbm-x-dw [name="updateORG"] {
+    word-break: break-all;
+}
 
