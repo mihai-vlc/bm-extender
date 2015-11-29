@@ -132,3 +132,8 @@
     word-break: break-all;
 }
 
+#requestLogGrid div {
+    font-size: 15px;
+    line-height: 1.3;
+}
+
