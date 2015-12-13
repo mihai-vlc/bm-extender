@@ -6,12 +6,19 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <ol class="js-loglist"></ol>
+    <ul class="inline-list">
+        <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Logs">Logs</a></li>
+        <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Cartridges">Cartridges</a></li>
+        <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Impex">Impex</a></li>
+        <li><a class="js-base-link" href="/on/demandware.store/Sites-Site">BM</a></li>
+        <li><a class="js-base-link" href="/on/demandware.store/Sites-Site/-/ViewLogConsole-Start">RLogs</a></li>
+        <li><a class="js-base-link" href="/on/demandware.store/Sites-Site/default/PrefChecker-Show?SelectedMenuItem=site-prefs&CurrentMenuItemId=site-prefs">PChecker</a></li>
+    </ul>
 
-    <label class="enable-box" title="Reload the page when you enable the request log">
-        <input type="checkbox" class="js-enable">
-        <span>Enable DW request log (requires page refresh)</span>
-    </label>
+    <h5>Logs for <span class="js-base-url"></span></h5>
+    <ol class="js-loglist">
+        <li>Loading...</li>
+    </ol>
 
     <script src="../jquery.js"></script>
     <script src="popup.js"></script>

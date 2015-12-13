@@ -36,7 +36,9 @@
 
     // scroll to the bottom of the document
     $(window).on('load', function () {
-        $("html, body").animate({ scrollTop: $(document).height() }, 500);
+        setTimeout(function () {
+            $("html, body").animate({ scrollTop: $(document).height() }, 500);
+        }, 100);
     });
 
     function pad(number) {

@@ -9,3 +9,16 @@ body {
     font-size: 15px;
 }
 
+.inline-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.inline-list li {
+	display: inline-block;
+}
+
+.inline-list a {
+	padding-right: 10px;
+}

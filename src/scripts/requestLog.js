@@ -3,14 +3,14 @@
     var url = 'https://' + window.location.host + '/on/demandware.servlet/webdav/Sites/Logs';
 
 
-    var port = chrome.runtime.connect({name: "page"});
+    var port = chrome.runtime.connect({name: "reqLog"});
 
     port.onMessage.addListener(function(msg) {
         if (msg.fn == 'getLinks') {
             getLinks(function (links) {
                 port.postMessage({
                     fn: 'setLinks',
-                    data: [links]
+                    data: [links, window.location.host]
                 });
             });
         }
@@ -47,7 +47,4 @@
 
 
 })();
-
-
-
 
