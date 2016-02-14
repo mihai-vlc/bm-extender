@@ -122,7 +122,7 @@ var Storage = {
             });
         });
 
-        searchData = searchData.concat(getSpecialSearchData());
+        searchData.push.apply(searchData, getSpecialSearchData());
         $searchInput.removeAttr('disabled');
     });
 
