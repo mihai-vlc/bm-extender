@@ -22,9 +22,6 @@
     function getLinks(callback) {
         $.ajax({
             url: url,
-            beforeSend: function (xhr) {
-                // xhr.setRequestHeader ("Authorization", "Basic " + btoa('user:pass'));
-            },
             success: function (data) {
                 var d = new Date();
                 var year = d.getFullYear().toString();

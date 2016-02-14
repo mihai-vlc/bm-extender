@@ -19,6 +19,7 @@ if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     // on the BM site
     appendScript('scripts/fixDW.js');
     appendStyle('styles/fixDW.css');
+    appendScript('scripts/requestLog.js');
 
 } else if (location.pathname.indexOf('on/demandware.store/Sites-') > -1
     || location.href.indexOf('demandware.net/s/') > -1) {
