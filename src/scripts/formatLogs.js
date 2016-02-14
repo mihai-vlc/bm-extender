@@ -4,6 +4,8 @@
 
     var d = new Date();
 
+    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+
     var year = d.getFullYear();
     var month = pad(d.getMonth()+1);
     var day = pad(d.getDate());
