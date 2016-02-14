@@ -21,7 +21,7 @@ if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     appendStyle('styles/fixDW.css');
 
 } else if (location.pathname.indexOf('on/demandware.store/Sites-') > -1
-    || location.pathname.indexOf('demandware.net/s/') > -1) {
+    || location.href.indexOf('demandware.net/s/') > -1) {
     // on the storefront
     appendScript('scripts/requestLog.js');
 
