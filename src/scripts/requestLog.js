@@ -24,6 +24,8 @@
             url: url,
             success: function (data) {
                 var d = new Date();
+                d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+
                 var year = d.getFullYear().toString();
                 var month = ('0' + (d.getMonth()+1)).slice(-2);
                 var day = ('0' + d.getDate()).slice(-2);
