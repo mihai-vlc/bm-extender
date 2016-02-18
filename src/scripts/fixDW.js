@@ -170,10 +170,12 @@ var Storage = {
     });
 
     // keep the session active
-    setInterval(function () {
-        // dummy request
-        $.get(adminMenuURL);
-    }, 600000); // every 10 min
+    if ($('#bm_header_sbx').length) {
+        setInterval(function () {
+            // dummy request
+            $.get(adminMenuURL);
+        }, 600000); // every 10 min
+    }
 
 
     // fix the table layout
