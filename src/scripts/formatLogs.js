@@ -26,7 +26,7 @@
     text = text.replace(pattern, '(NEW) <b class="token number">$1</b>');
     text = text.replace(/(WARN|warning|DEBUG|INFO)/gm, '<b class="token important italic">$1</b>');
     text = text.replace(/(ERROR)/gm, '<b class="token danger italic">$1</b>');
-    text = text.replace(/(Sites\-(\w+-)?Site)/gm, '<b class="token keyword italic">$1</b>');
+    text = text.replace(/(Sites\-([\w-]+)?Site)/gm, '<b class="token keyword italic">$1</b>');
     text = text.replace(/\|(\w+-\w+)\|/gm, '|<b class="token function">$1</b>|');
     text = text.replace(/(^\tat.+$)/gmi, '<small class="token small">$1</small>');
     text = text.replace(/((\#|lineNumber: |line )\d+)/gmi, '<b class="token number">$1</b>');
