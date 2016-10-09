@@ -1,10 +1,17 @@
 var appendScript = function(path){
-	var xhr = new XMLHttpRequest();
-	xhr.onload = function(){
-		eval(this.responseText);
-	}
-	xhr.open('GET', chrome.extension.getURL(path));
-	xhr.send();
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(){
+        eval(this.responseText);
+    }
+    xhr.open('GET', chrome.extension.getURL(path));
+    xhr.send();
+}
+
+var appendScriptInDocument = function(path, cb){
+    var script = document.createElement('script');
+    script.src = chrome.extension.getURL(path);
+    script.onload = cb || $.noop;
+    document.body.appendChild(script);
 }
 
 var appendStyle = function (path) {
@@ -17,7 +24,9 @@ var appendStyle = function (path) {
 
 if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     // on the BM site
-    appendScript('scripts/fixDW.js');
+    appendScriptInDocument('scripts/fixDW-libs.js', function() {
+        appendScriptInDocument('scripts/fixDW.js');
+    });
     appendStyle('styles/fixDW.css');
     appendScript('scripts/requestLog.js');
 
