@@ -3,12 +3,17 @@
     vertical-align: top;
     font-family: "Helvetica Neue",Helvetica,Arial,Verdana,sans-serif;
     width: 205px;
+    max-width: 205px;
 }
 
 .xbm-x-dw .x-sidebar h4 {
     padding: 10px;
     margin: 0;
     font-size: 14px;
+}
+
+.xbm-x-dw .x-sidebar .content {
+    width: auto;
 }
 
 .xbm-x-dw .x-sidebar .bm-menu-head {
@@ -82,6 +87,7 @@
 .xbm-x-dw .x-search input {
     padding: 5px;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .xbm-x-dw .x-search {

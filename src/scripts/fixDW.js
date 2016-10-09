@@ -201,7 +201,12 @@ var Storage = {
             return;
         }
 
-        $('[name="update"], [name="apply"], [name="assign"]').last()
+        var $button = $('[name="update"], [name="apply"], [name="assign"]').last();
+        if ($button.hasClass('dw-nc-button')) {
+            return;
+        }
+
+        $button
             .closest('table')
             .addClass('x-dw-buttons-table');
     }
