@@ -59,7 +59,7 @@
 
     var $main = $('#bm_content_column').parent();
     var $sidebar = $(sidebarTemplate);
-    var $form = $('<form />');
+    var $form = $('<form />').appendTo('body');
     var $searchInput;
 
 
@@ -178,7 +178,7 @@
 
     fixCustomObjectSelect();
 
-    $('select:not(.dropdown)').select2();
+    $('select:not(.dropdown,[onfocus],[onchange])').select2();
 
     /**
      * Helper functions
