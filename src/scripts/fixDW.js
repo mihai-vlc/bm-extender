@@ -159,7 +159,7 @@
     });
 
     // keep the session active
-    if ($('#bm_header_sbx').length) {
+    if ($('.header--Sandbox').length) {
         setInterval(function () {
             // dummy request
             $.get(adminMenuURL);
