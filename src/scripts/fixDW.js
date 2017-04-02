@@ -454,7 +454,7 @@
 
             diff.forEach(function(part){
                 var action = part.added ? 'added' : (part.removed ? 'delete' : '');
-                var $part = $('<div />').addClass(action).text(part.value);
+                var $part = $('<span />').addClass(action).text(part.value);
                 $fragment.append($part);
             });
 
