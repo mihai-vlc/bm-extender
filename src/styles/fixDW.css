@@ -155,9 +155,14 @@
     font-size: 17px;
 }
 
+.bm-diff-window .bm-diff-bar {
+    border-bottom: 1px solid #bbb;
+    padding: 0 5px;
+}
+
 .bm-diff-window .bm-diff-body {
     display: flex;
-    height: calc(100% - 24px);
+    height: calc(100% - 25px);
 }
 
 .bm-diff-window .bm-diff-panel textarea {
@@ -178,7 +183,8 @@
 .bm-diff-window .bm-diff-close {
     position: absolute;
     right: 20px;
-    top: 10px;
+    top: 0;
+    width: 40px;
 }
 
 .bm-diff-window .delete {
