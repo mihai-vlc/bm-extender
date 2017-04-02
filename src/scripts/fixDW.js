@@ -180,6 +180,9 @@
 
     $('select:not(.dropdown,[onfocus],[onchange])').select2();
 
+    initializeTextAreaDiff();
+
+
     /**
      * Helper functions
      */
@@ -391,6 +394,72 @@
         }
 
         return $title.text();
+    }
+
+    function initializeTextAreaDiff() {
+        var $textareas = $('textarea');
+        var $body = $('body');
+
+        if (!$textareas.length) {
+            return;
+        }
+
+        $textareas.each(function() {
+            $(this).after('<a href="#" class="js-bm-diff-open">diff</a>');
+        });
+
+
+        var diffTemplate = `
+            <div class="bm-diff-window" hidden>
+                <button class="bm-diff-close js-bm-diff-close">x</button>
+                <div class="bm-diff-bar">BM Extender Diff</div>
+                <div class="bm-diff-body">
+                    <div class="bm-diff-panel">
+                        <textarea class="js-bm-diff-text1" placeholder="Insert text 1"></textarea>
+                    </div>
+                    <div class="bm-diff-panel">
+                        <textarea class="js-bm-diff-text2" placeholder="Insert text 2"></textarea>
+                    </div>
+                    <div class="bm-diff-panel">
+                        <pre class="js-bm-diff-result"></pre>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $body.append(diffTemplate);
+
+        $body.on('click', '.js-bm-diff-close', function(event) {
+            event.preventDefault();
+            $('.bm-diff-window').attr('hidden', true);
+        });
+
+        $body.on('click', '.js-bm-diff-open', function() {
+            event.preventDefault();
+            $('.bm-diff-window')
+                .removeAttr('hidden')
+                .find('textarea').removeAttr('disabled');
+
+            var inputText = $(this).prev('textarea').val();
+            $('.js-bm-diff-text1').val(inputText);
+        });
+
+        $('.bm-diff-window').on('input', 'textarea', processDiff);
+
+        function processDiff() {
+            var text1 = $('.js-bm-diff-text1').val();
+            var text2 = $('.js-bm-diff-text2').val();
+            var $fragment = $(document.createDocumentFragment());
+            var diff = JsDiff.diffLines(text1, text2);
+
+            diff.forEach(function(part){
+                var action = part.added ? 'added' : (part.removed ? 'delete' : '');
+                var $part = $('<div />').addClass(action).text(part.value);
+                $fragment.append($part);
+            });
+
+            $('.js-bm-diff-result').html($fragment);
+        }
     }
 
 
