@@ -179,11 +179,6 @@
     top: 10px;
 }
 
-.bm-diff-window .added,
-.bm-diff-window .delete {
-    display: inline-block;
-}
-
 .bm-diff-window .delete {
     background-color: #ffb6ba;
 }
