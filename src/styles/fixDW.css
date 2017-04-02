@@ -166,6 +166,7 @@
     resize: none;
     display: block;
     font-size: 17px;
+    white-space: nowrap;
 }
 
 .bm-diff-window pre {
