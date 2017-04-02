@@ -415,12 +415,12 @@
                 <div class="bm-diff-bar">BM Extender Diff</div>
                 <div class="bm-diff-body">
                     <div class="bm-diff-panel">
-                        <textarea class="js-bm-diff-text1" placeholder="Insert text 1"></textarea>
+                        <textarea class="js-bm-diff-text1 js-bm-synch-scroll" placeholder="Insert text 1"></textarea>
                     </div>
                     <div class="bm-diff-panel">
-                        <textarea class="js-bm-diff-text2" placeholder="Insert text 2"></textarea>
+                        <textarea class="js-bm-diff-text2 js-bm-synch-scroll" placeholder="Insert text 2"></textarea>
                     </div>
-                    <div class="bm-diff-panel">
+                    <div class="bm-diff-panel js-bm-synch-scroll">
                         <pre class="js-bm-diff-result"></pre>
                     </div>
                 </div>
@@ -442,6 +442,22 @@
 
             var inputText = $(this).prev('textarea').val();
             $('.js-bm-diff-text1').val(inputText);
+        });
+
+        var timeout;
+        $('.js-bm-synch-scroll').on('scroll', function() {
+            var scrollTop = $(this).scrollTop();
+            var scrollLeft = $(this).scrollLeft();
+
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+
+            timeout = setTimeout(function() {
+                $('.js-bm-synch-scroll').not(this)
+                    .scrollTop(scrollTop)
+                    .scrollLeft(scrollLeft);
+            }, 150);
         });
 
         $('.bm-diff-window').on('input', 'textarea', processDiff);

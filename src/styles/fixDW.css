@@ -171,6 +171,7 @@
 
 .bm-diff-window pre {
     margin: 0;
+    line-height: normal;
     height: 100%;
 }
 
