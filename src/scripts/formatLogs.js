@@ -34,6 +34,9 @@
     text = text.replace(/(\w+\.(isml|jpg|png|js|ds))/gmi, '<b class="token string">$1</b>');
     text = text.replace(/\[Template:([a-z0-9\/]+):/gmi, '[Template:<b class="token string">$1</b>:');
     text = text.replace(/\[Pipeline:([a-z]+):/gmi, '[Pipeline:<b class="token string">$1</b>:');
+    text = text.replace(/&amp;gt;/gmi, '&gt;');
+    text = text.replace(/&amp;lt;/gmi, '&lt;');
+    text = text.replace(/&amp;quot;/gmi, '&quot;');
 
 
 

@@ -450,12 +450,12 @@
             var text1 = $('.js-bm-diff-text1').val();
             var text2 = $('.js-bm-diff-text2').val();
             var $fragment = $(document.createDocumentFragment());
-            var diff = JsDiff.diffChars(text1, text2);
+            var diff = JsDiff.diffLines(text1, text2);
 
             diff.forEach(function(part){
                 var action = part.added ? 'added' : (part.removed ? 'delete' : '');
-                var $span = $('<span />').addClass(action).text(part.value);
-                $fragment.append($span);
+                var $part = $('<div />').addClass(action).text(part.value);
+                $fragment.append($part);
             });
 
             $('.js-bm-diff-result').html($fragment);
