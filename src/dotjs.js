@@ -21,6 +21,7 @@ var appendStyle = function (path) {
     document.head.appendChild(defaultStyle);
 }
 
+var includedDomains = localStorage.getItem('bm-extender-included-domains').split(',');
 
 if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     // on the BM site
@@ -31,7 +32,7 @@ if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     appendScript('scripts/requestLog.js');
 
 } else if (location.pathname.indexOf('on/demandware.store/Sites-') > -1
-    || location.href.indexOf('demandware.net/s/') > -1) {
+    || location.href.indexOf('demandware.net/s/') > -1 || includedDomains.indexOf(location.host) > -1) {
     // on the storefront
     appendScript('scripts/requestLog.js');
 

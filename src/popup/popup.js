@@ -1,7 +1,7 @@
 (function () {
     var win = chrome.extension.getBackgroundPage();
-    var $list = $('.js-loglist');
-    var html = '';
+    var $filter = $('.js-filter-logs');
+    var activeLinks = [];
 
     /**
      * we place the url on the background page window so it will always
@@ -21,12 +21,9 @@
 
     // list the log files from the current date
     win.background.getLinks(function (links, box) {
-        links.forEach(function (link) {
-            var name = link.split('/').pop();
-            html += '<li><a href="'+link+'">' + name + '</a></li>';
-        });
+        activeLinks = links;
 
-        $list.html(html);
+        renderLogsList();
         $('.js-base-url').html(box);
     });
 
@@ -47,9 +44,31 @@
         }
     });
 
+    $filter.on('input', function() {
+        renderLogsList();
+    });
 
     function isDWUrl(url) {
         return url.indexOf('.demandware.net/') > -1;
+    }
+
+    function renderLogsList() {
+        var $list = $('.js-loglist');
+        var query = $filter.val();
+        var html = '';
+
+        activeLinks.filter(function(link) {
+                if (!query) {
+                    return true;
+                }
+                return link.split('/').pop().indexOf(query) > -1;
+            })
+            .forEach(function (link) {
+                var name = link.split('/').pop();
+                html += '<li><a href="'+link+'">' + name + '</a></li>';
+            });
+
+        $list.html(html);
     }
 
 })();

@@ -39,3 +39,4 @@ Thumbs.db
 
 # Ignored folders #
 node_modules/
+.vscode

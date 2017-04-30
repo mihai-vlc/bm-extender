@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+
     <ul class="inline-list">
         <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Logs">Logs</a></li>
         <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Cartridges">Cartridges</a></li>
@@ -16,7 +17,10 @@
     </ul>
 
     <h5>Logs for <span class="js-base-url"></span></h5>
-    <ol class="js-loglist">
+    <div>
+        <input class="js-filter-logs log-filter" type="text" name="filter" value="" placeholder="Filter..." />
+    </div>
+    <ol class="js-loglist log-list">
         <li>Loading...</li>
     </ol>
 
