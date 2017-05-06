@@ -21,7 +21,7 @@ var appendStyle = function (path) {
     document.head.appendChild(defaultStyle);
 }
 
-var includedDomains = localStorage.getItem('bm-extender-included-domains').split(',');
+var includedDomains = (localStorage.getItem('bm-extender-included-domains') || '').split(',');
 
 if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     // on the BM site

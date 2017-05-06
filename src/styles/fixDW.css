@@ -65,14 +65,15 @@
     z-index: 10;
 }
 
-.xbm-x-dw [section-name="site-prefs"] .menu_items_bm {
-    top: auto;
-    bottom: -110px;
-}
-
 .xbm-x-dw .x-sidebar .x-admin .menu_items_bm {
     top: auto;
     bottom: -100%;
+}
+
+.xbm-x-dw .x-admin [section-name="operations"] .menu_items_bm,
+.xbm-x-dw [section-name="site-prefs"] .menu_items_bm {
+    top: auto;
+    bottom: -200px;
 }
 
 .xbm-x-dw .x-sidebar .section-name:hover .menu_items_bm {

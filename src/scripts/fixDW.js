@@ -197,7 +197,7 @@
             return;
         }
 
-        if ($('[name="SelectedSeriesID"]').length) {
+        if ($('[name="SelectedSeriesID"], [name="BasketPrefs_BasketLifetime"]').length) {
             return;
         }
 
