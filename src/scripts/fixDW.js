@@ -41,7 +41,7 @@
     var siteMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-SiteMenuBM";
     var adminMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-AdminMenuBM";
 
-    var siteMenu = getData(siteMenuURL, key + 'site')
+    var siteMenu = getData(siteMenuURL, key + 'site');
     var adminMenu = getData(adminMenuURL, key + 'admin');
     var searchTemplate = [
         '<div class="x-search">',
@@ -74,20 +74,32 @@
 
     $searchInput = $('.x-search-input');
 
-    // attach the data grabed from the request to the sidebar
+    // attach the data grabbed from the request to the sidebar
     // and remove the title attribute from all the elements
     siteMenu.then(function (data) {
         $sidebar.find('.x-site')
             .append(data)
             .find('[title]')
-            .removeAttr('title');
+                .removeAttr('title')
+            .end()
+            // clear the csrf token so it will be reloaded automatically by the BM code
+            .find('[href*="csrf_token"]')
+            .each(function() {
+                this.href = removeURLParameter(this.href, 'csrf_token');
+            });
     });
 
     adminMenu.then(function (data) {
         $sidebar.find('.x-admin')
             .append(data)
             .find('[title]')
-            .removeAttr('title');
+                .removeAttr('title')
+            .end()
+            // clear the csrf token so it will be reloaded automatically by the BM code
+            .find('[href*="csrf_token"]')
+            .each(function() {
+                this.href = removeURLParameter(this.href, 'csrf_token');
+            });
     });
 
     // when both the siteMenu and the adminMenu are loaded
@@ -478,6 +490,28 @@
         }
     }
 
+    function removeURLParameter(url, parameter) {
+        //prefer to use l.search if you have a location/link object
+        var urlparts= url.split('?');   
+        if (urlparts.length>=2) {
+
+            var prefix= encodeURIComponent(parameter)+'=';
+            var pars= urlparts[1].split(/[&;]/g);
+
+            //reverse iteration as may be destructive
+            for (var i= pars.length; i-- > 0;) {    
+                //idiom for string.startsWith
+                if (pars[i].lastIndexOf(prefix, 0) !== -1) {  
+                    pars.splice(i, 1);
+                }
+            }
+
+            url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+            return url;
+        } else {
+            return url;
+        }
+    }
 
 })(jQuery);
 
