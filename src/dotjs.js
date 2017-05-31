@@ -1,7 +1,10 @@
-var appendScript = function(path){
+var appendScript = function(path, cb){
     var xhr = new XMLHttpRequest();
     xhr.onload = function(){
         eval(this.responseText);
+        if (cb) {
+            cb();
+        }
     }
     xhr.open('GET', chrome.extension.getURL(path));
     xhr.send();
@@ -25,8 +28,8 @@ var includedDomains = (localStorage.getItem('bm-extender-included-domains') || '
 
 if (location.pathname.indexOf('on/demandware.store/Sites-Site') > -1) {
     // on the BM site
-    appendScriptInDocument('scripts/fixDW-libs.js', function() {
-        appendScriptInDocument('scripts/fixDW.js');
+    appendScript('scripts/fixDW-libs.js', function () {
+        appendScript('scripts/fixDW.js');
     });
     appendStyle('styles/fixDW.css');
     appendScript('scripts/requestLog.js');
