@@ -70,7 +70,7 @@
     $main.prepend($sidebar);
 
     // add the search input in the header
-    $('.menu.storelink').after(searchTemplate);
+    $('.menu.storelink').last().after(searchTemplate);
 
     $searchInput = $('.x-search-input');
 
@@ -190,7 +190,7 @@
 
     fixCustomObjectSelect();
 
-    $('select:not(.dropdown,[onfocus],[onchange])').select2();
+    $('select:not(.dropdown,.dropwown,[onfocus],[onchange])').select2();
 
     initializeTextAreaDiff();
 
@@ -492,16 +492,16 @@
 
     function removeURLParameter(url, parameter) {
         //prefer to use l.search if you have a location/link object
-        var urlparts= url.split('?');   
+        var urlparts= url.split('?');
         if (urlparts.length>=2) {
 
             var prefix= encodeURIComponent(parameter)+'=';
             var pars= urlparts[1].split(/[&;]/g);
 
             //reverse iteration as may be destructive
-            for (var i= pars.length; i-- > 0;) {    
+            for (var i= pars.length; i-- > 0;) {
                 //idiom for string.startsWith
-                if (pars[i].lastIndexOf(prefix, 0) !== -1) {  
+                if (pars[i].lastIndexOf(prefix, 0) !== -1) {
                     pars.splice(i, 1);
                 }
             }
