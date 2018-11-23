@@ -48,6 +48,12 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.4.0
+    - Implemented an options page where you can tweak the available preferences.
+    - The options can be accessed by clicking on the Edit options link from the popup 
+    or by right clicking on the extension icon > edit options
+    - The localStorage preference items are no longer supported
+
 - 1.3.0
     - Stared doing release notes
     - Add support for inline diff on textareas by using [jsDiff](https://github.com/kpdecker/jsdiff)

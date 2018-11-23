@@ -35,9 +35,11 @@ var background = {
     },
 
     getLinks: function (cb) {
-        background.pagePort.postMessage({
-            fn: 'getLinks'
-        });
+        if (background.pagePort) {
+            background.pagePort.postMessage({
+                fn: 'getLinks'
+            });
+        }
 
         subscribe('onLinks', cb)
     }

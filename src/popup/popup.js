@@ -1,4 +1,5 @@
 (function () {
+    /*global chrome */
     var win = chrome.extension.getBackgroundPage();
     var $filter = $('.js-filter-logs');
     var activeLinks = [];
@@ -31,6 +32,17 @@
     $(document).on('click', 'a', function () {
         var url;
 
+        if ($(this).hasClass('js-options')) {
+            if (chrome.runtime.openOptionsPage) {
+                chrome.runtime.openOptionsPage();
+            } else {
+                chrome.tabs.create({
+                    url: chrome.runtime.getURL('options.html')
+                });
+            }
+            return;
+        }
+
         if ($(this).hasClass('js-base-link') && win.baseUrl) {
             url = win.baseUrl + this.pathname;
         } else {
@@ -38,7 +50,11 @@
         }
 
         if ($(this).hasClass('js-window')) {
-            chrome.windows.create({ url: url, type: 'popup', width: 700 });
+            chrome.windows.create({
+                url: url,
+                type: 'popup',
+                width: 700
+            });
         } else {
             chrome.tabs.create({ url: url });
         }

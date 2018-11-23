@@ -5,6 +5,8 @@
         return;
     }
 
+    var appOptions = $('#bm-extender-app-options').data('options');
+
     var text = $el.html();
 
     var start = new Date();
@@ -40,7 +42,7 @@
     text = text.replace(/\[Template:([a-z0-9\/]+):/gmi, '[Template:<b class="token string">$1</b>:');
     text = text.replace(/\[Pipeline:([a-z]+):/gmi, '[Pipeline:<b class="token string">$1</b>:');
 
-    if (localStorage.getItem('bm-logs-replace-escaped')) {
+    if (appOptions.logsReplaceEscaped == 'true') {
         text = text.replace(/&amp;gt;/gmi, '&gt;');
         text = text.replace(/&amp;lt;/gmi, '&lt;');
         text = text.replace(/&amp;quot;/gmi, '&quot;');

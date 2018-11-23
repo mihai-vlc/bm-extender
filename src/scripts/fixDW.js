@@ -24,6 +24,8 @@
         return;
     }
 
+    var appOptions = $('#bm-extender-app-options').data('options');
+
     // if we are updateing the BM modules clear the session in order to
     // keep the navigation updated
     var path = location.pathname;
@@ -35,6 +37,7 @@
     var url = location.protocol + '//' + location.host;
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
+    var isSidebarDisabled = (appOptions.disableSidebar == 'true');
 
     var searchData = [];
 
@@ -67,7 +70,9 @@
     $sidebar.find('.x-site-name').html(siteID);
 
     // add the sidebar on the page
-    $main.prepend($sidebar);
+    if (!isSidebarDisabled) {
+        $main.prepend($sidebar);
+    }
 
     // add the search input in the header
     $('.menu.storelink').last().after(searchTemplate);
