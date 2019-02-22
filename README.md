@@ -4,10 +4,8 @@ A chrome extension that adds custom functionality to the DW BM.
 
 ## Features
 
-![menu](http://puu.sh/hItCr/56155b7460.png)
-![search](http://puu.sh/hItOQ/6ed8eb62ec.png)
-![](http://puu.sh/hIu1Z/126f0137dc.png)
-![](http://puu.sh/vBaJq/c93dd83bb5.png)
+![menu and search](screenshots/menu.png)
+![logs](screenshots/logs.png)
 
 ### BM functionality
 - sidebar menu
