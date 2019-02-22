@@ -46,6 +46,8 @@
 
     var siteMenu = getData(siteMenuURL, key + 'site');
     var adminMenu = getData(adminMenuURL, key + 'admin');
+    var catalogsMenu = getCatalogsList();
+
     var searchTemplate = [
         '<div class="x-search">',
             '<input disabled type="text" class="x-search-input perm_not_disabled" ng-model="xIgnore" placeholder=" Search">',
@@ -92,6 +94,34 @@
             .each(function() {
                 this.href = removeURLParameter(this.href, 'csrf_token');
             });
+
+        // append the list of catalogs
+        catalogsMenu.then(function (catalogs) {
+            var subItems = [
+                {
+                    url: '/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-SearchStart',
+                    name: 'Search Catalogs'
+                }
+            ];
+
+            if (catalogs && catalogs.length) {
+                subItems = subItems.concat(catalogs);
+            }
+
+            var subItemsHtml = subItems.map(function (item) {
+                var { name, url } = item;
+                return (`<div class="overview_item_bm">
+                    <div class="overview_subtitle_bm">
+                        <a href="${url}" class="overview_subtitle_bm bm-menu-item">
+                            ${name}
+                        </a>
+                    </div>
+                </div>`);
+            }).join('\n');
+            $sidebar.find('.x-site').find('[data-automation="prod-cat_catalogs"]').append(`
+                <div class="menu_items_bm">${subItemsHtml}</div>
+            `)
+        });
     });
 
     adminMenu.then(function (data) {
@@ -110,7 +140,7 @@
     // when both the siteMenu and the adminMenu are loaded
     // enable the seach input and extract the search data for the
     // autocomplete plugin
-    $.when(siteMenu, adminMenu).done(function () {
+    $.when(siteMenu, adminMenu, catalogsMenu).done(function () {
         $sidebar.find('a').each(function(i) {
             var $t = $(this);
             var cat = '';
@@ -243,6 +273,22 @@
         return d.promise();
     }
 
+
+    function getCatalogsList() {
+        var catalogsListURL = "/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-Start";
+        return getData(catalogsListURL, key + 'catalogs').then(function(data) {
+            var $catalogs = $(data).find('form[name="MasterCatalogForm"]').find('a.catalog');
+            if (!$catalogs.length) {
+                return [];
+            }
+            return $catalogs.map(function() {
+                return {
+                    name: this.innerText,
+                    url: removeURLParameter(this.href, 'csrf_token')
+                };
+            }).toArray();
+        });
+    }
 
     function searchProducts(query) {
         var $hidden = $('<input type="hidden" />');

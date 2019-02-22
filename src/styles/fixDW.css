@@ -76,7 +76,12 @@
     bottom: -200px;
 }
 
-.xbm-x-dw .x-sidebar .section-name:hover .menu_items_bm {
+.xbm-x-dw .x-sidebar .section-name .overview_subtitle_bm {
+  position: relative;
+}
+
+.xbm-x-dw .x-sidebar .section-name .overview_subtitle_bm:hover > .menu_items_bm,
+.xbm-x-dw .x-sidebar .section-name:hover .leftmenu_sub_bm > .menu_items_bm {
     display: block;
 }
 
