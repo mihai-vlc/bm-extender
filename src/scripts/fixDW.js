@@ -190,6 +190,7 @@
     $('body').addClass('xbm-x-dw');
 
     makeStickyButtons();
+    addLockButton();
 
     $('.table_detail, .table_detail4').each(function () {
         var $t = $(this);
@@ -256,6 +257,25 @@
         $button
             .closest('table')
             .addClass('x-dw-buttons-table');
+    }
+
+    function addLockButton() {
+        var $lockLink = $('table.confirm_box .table_detail_link');
+
+        if (!$lockLink.length) {
+            return;
+        }
+
+        var lockLink = $lockLink.attr('href');
+        var lockText = $lockLink.text();
+
+        if (!lockLink.match(/(lock=lock|unlock=unlock)/)) {
+            return;
+        }
+
+        $('.x-dw-buttons-table').find('tr:first').append(`<td>
+            <a class="button" href="${lockLink}">${lockText}</a>
+        </td>`);
     }
 
     // grab the data from the ajax request and cache it
