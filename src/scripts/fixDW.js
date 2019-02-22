@@ -241,6 +241,8 @@
     }
 
     function makeStickyButtons() {
+        var wrapperSelector = 'table';
+
         if ($('#bm_content_column > table').height() < $(window).height()) {
             return;
         }
@@ -249,13 +251,18 @@
             return;
         }
 
+        // order preferences page
+        if ($('[name="GenerateCustomerNumberEnabled"]').length) {
+            wrapperSelector = 'div';
+        }
+
         var $button = $('[name="update"], [name="apply"], [name="assign"]').last();
         if ($button.hasClass('dw-nc-button')) {
             return;
         }
 
         $button
-            .closest('table')
+            .closest(wrapperSelector)
             .addClass('x-dw-buttons-table');
     }
 
