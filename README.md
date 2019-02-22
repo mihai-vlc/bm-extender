@@ -48,6 +48,12 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.5.0
+    - Fixes the display of the sticky buttons on the order preferences page.
+    - Adds the lock button to the sticky action items.
+    - Implements the catalogs list sub-menu items.
+
+
 - 1.4.0
     - Implemented an options page where you can tweak the available preferences.
     - The options can be accessed by clicking on the Edit options link from the popup 
