@@ -108,6 +108,19 @@
                 subItems = subItems.concat(catalogs);
             }
 
+            subItems.push({
+                url: '/on/demandware.store/Sites-Site/default/ViewCatalogImport_52-SelectFile',
+                name: 'Import Catalogs'
+            });
+            subItems.push({
+                url: '/on/demandware.store/Sites-Site/default/ViewCatalogExport_52-SelectCatalog',
+                name: 'Export Catalogs'
+            });
+            subItems.push({
+                url: '/on/demandware.store/Sites-Site/default/ViewCatalogImpex_52-BrowseImportFiles',
+                name: 'Upload Catalogs'
+            });
+            
             var subItemsHtml = subItems.map(function (item) {
                 var { name, url } = item;
                 return (`<div class="overview_item_bm">
