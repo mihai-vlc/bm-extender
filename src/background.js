@@ -1,5 +1,6 @@
+var baseIrl = null;
 var background = {
-    pagePort: false,
+    pagePort: null,
     init: function () {
 
         chrome.runtime.onConnect.addListener(function(port) {
@@ -36,12 +37,23 @@ var background = {
 
     getLinks: function (cb) {
         if (background.pagePort) {
-            background.pagePort.postMessage({
-                fn: 'getLinks'
-            });
+            try {
+                background.pagePort.postMessage({
+                    fn: 'getLinks'
+                });
+            } catch (e) {
+                // disconnected port, log the error and open a new tab
+                // to connect to a new port again
+                console.error(e);
+                if (window.baseUrl) {
+                    chrome.tabs.create({
+                        url: window.baseUrl + '/on/demandware.store/Sites-Site'
+                    });
+                }
+            }
         }
 
-        subscribe('onLinks', cb)
+        subscribe('onLinks', cb);
     }
 };
 

@@ -16,30 +16,25 @@
         var a = document.createElement("a");
         a.href = tabs[0].url;
         win.baseUrl = 'https://' + a.hostname;
-
     });
 
 
     // list the log files from the current date
-    win.background.getLinks(function (links, box) {
+    win.background.getLinks(function (links, instanceHost) {
         activeLinks = links;
 
         renderLogsList();
-        $('.js-base-url').html(box);
+        $('.js-base-url').html(instanceHost);
+        win.baseUrl = instanceHost;
     });
 
 
-    $(document).on('click', 'a', function () {
+    $(document).on('click', 'a', function (e) {
+        e.preventDefault();
         var url;
 
         if ($(this).hasClass('js-options')) {
-            if (chrome.runtime.openOptionsPage) {
-                chrome.runtime.openOptionsPage();
-            } else {
-                chrome.tabs.create({
-                    url: chrome.runtime.getURL('options.html')
-                });
-            }
+            openOptionsPage();
             return;
         }
 
@@ -85,6 +80,16 @@
             });
 
         $list.html(html);
+    }
+
+    function openOptionsPage() {
+        if (chrome.runtime.openOptionsPage) {
+            chrome.runtime.openOptionsPage();
+        } else {
+            chrome.tabs.create({
+                url: chrome.runtime.getURL('options.html')
+            });
+        }
     }
 
 })();
