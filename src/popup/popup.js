@@ -70,14 +70,14 @@
 
     function renderLogsList() {
         var $list = $('.js-loglist');
-        var query = $filter.val();
+        var query = $filter.val().toLowerCase();
         var html = '';
 
         activeLinks.filter(function(link) {
                 if (!query) {
                     return true;
                 }
-                return link.split('/').pop().indexOf(query) > -1;
+                return link.split('/').pop().toLowerCase().indexOf(query) > -1;
             })
             .forEach(function (link) {
                 var name = link.split('/').pop();
