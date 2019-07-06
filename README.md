@@ -46,6 +46,15 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.6.0
+    - Adds the current version and the Report issues link the popup page
+    - Fixes the initialization of the JsDiff plugin, upgraded the plugin to v4
+    - Adds the sidebar on the angular ui pages
+    - Improves the error handling and the retention of the last open instance
+    - Updates the description of the extension
+    - Makes the log file filtering case insesitive
+
+
 - 1.5.0
     - Fixes the display of the sticky buttons on the order preferences page.
     - Adds the lock button to the sticky action items.

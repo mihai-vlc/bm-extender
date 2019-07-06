@@ -1,13 +1,14 @@
 (function () {
     /*global chrome */
     var win = chrome.extension.getBackgroundPage();
+    var manifestData = chrome.runtime.getManifest();
     var $filter = $('.js-filter-logs');
     var activeLinks = [];
 
-    /**
-     * we place the url on the background page window so it will always
-     * remember the last demandware url visited
-     */
+    renderExtensionVersion(manifestData);
+
+    // we send and save the url on the background page window so it will always
+    // remember the last demandware url visited
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
         if (! isDWUrl(tabs[0].url)) {
             return;
@@ -20,6 +21,7 @@
 
 
     // list the log files from the current date
+    // the links are retrived from the requestLog via the background page
     win.background.getLinks(function (links, instanceHost) {
         activeLinks = links;
 
@@ -90,6 +92,10 @@
                 url: chrome.runtime.getURL('options.html')
             });
         }
+    }
+
+    function renderExtensionVersion(manifestData) {
+        $('.js-version').html(manifestData.version);
     }
 
 })();
