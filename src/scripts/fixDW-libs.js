@@ -1,12 +1,12 @@
 /**
- * 
+ *
  * !!!! http://requirejs.org/docs/errors.html#mismatch
  * When adding new scripts that use UMD make sure you disable it.
  * In BM requirejs is used and this script will throw an error because it
  * defines anonymous modules.
  * The convention in this file is to alter the UMD condition and make it
  * fallback to the global scope. functionx, objectx are used for this.
- * 
+ *
  * */
 
 
@@ -18,7 +18,7 @@
 *  Ajax Autocomplete for jQuery is freely distributable under the terms of an MIT-style license.
 *  For details, see the web site: https://github.com/devbridge/jQuery-Autocomplete
 */
-//  !!! functionx is intentional 
+//  !!! functionx is intentional
 !function(a){"use strict";"functionx"==typeof define&&define.amd?define(["jquery"],a):a("objectx"==typeof exports&&"functionx"==typeof require?require("jquery"):jQuery)}(function(a){"use strict";function b(c,d){var e=function(){},f=this,g={ajaxSettings:{},autoSelectFirst:!1,appendTo:document.body,serviceUrl:null,lookup:null,onSelect:null,width:"auto",minChars:1,maxHeight:300,deferRequestBy:0,params:{},formatResult:b.formatResult,delimiter:null,zIndex:9999,type:"GET",noCache:!1,onSearchStart:e,onSearchComplete:e,onSearchError:e,preserveInput:!1,containerClass:"autocomplete-suggestions",tabDisabled:!1,dataType:"text",currentRequest:null,triggerSelectOnValidInput:!0,preventBadQueries:!0,lookupFilter:function(a,b,c){return-1!==a.value.toLowerCase().indexOf(c)},paramName:"query",transformResult:function(b){return"string"==typeof b?a.parseJSON(b):b},showNoSuggestionNotice:!1,noSuggestionNotice:"No results",orientation:"bottom",forceFixPosition:!1};f.element=c,f.el=a(c),f.suggestions=[],f.badQueries=[],f.selectedIndex=-1,f.currentValue=f.element.value,f.intervalId=0,f.cachedResponse={},f.onChangeInterval=null,f.onChange=null,f.isLocal=!1,f.suggestionsContainer=null,f.noSuggestionsContainer=null,f.options=a.extend({},g,d),f.classes={selected:"autocomplete-selected",suggestion:"autocomplete-suggestion"},f.hint=null,f.hintValue="",f.selection=null,f.initialize(),f.setOptions(d)}var c=function(){return{escapeRegExChars:function(a){return a.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,"\\$&")},createNode:function(a){var b=document.createElement("div");return b.className=a,b.style.position="absolute",b.style.display="none",b}}}(),d={ESC:27,TAB:9,RETURN:13,LEFT:37,UP:38,RIGHT:39,DOWN:40};b.utils=c,a.Autocomplete=b,b.formatResult=function(a,b){var d="("+c.escapeRegExChars(b)+")";return a.value.replace(new RegExp(d,"gi"),"<strong>$1</strong>")},b.prototype={killerFn:null,initialize:function(){var c,d=this,e="."+d.classes.suggestion,f=d.classes.selected,g=d.options;d.element.setAttribute("autocomplete","off"),d.killerFn=function(b){0===a(b.target).closest("."+d.options.containerClass).length&&(d.killSuggestions(),d.disableKillerFn())},d.noSuggestionsContainer=a('<div class="autocomplete-no-suggestion"></div>').html(this.options.noSuggestionNotice).get(0),d.suggestionsContainer=b.utils.createNode(g.containerClass),c=a(d.suggestionsContainer),c.appendTo(g.appendTo),"auto"!==g.width&&c.width(g.width),c.on("mouseover.autocomplete",e,function(){d.activate(a(this).data("index"))}),c.on("mouseout.autocomplete",function(){d.selectedIndex=-1,c.children("."+f).removeClass(f)}),c.on("click.autocomplete",e,function(){d.select(a(this).data("index"))}),d.fixPositionCapture=function(){d.visible&&d.fixPosition()},a(window).on("resize.autocomplete",d.fixPositionCapture),d.el.on("keydown.autocomplete",function(a){d.onKeyPress(a)}),d.el.on("keyup.autocomplete",function(a){d.onKeyUp(a)}),d.el.on("blur.autocomplete",function(){d.onBlur()}),d.el.on("focus.autocomplete",function(){d.onFocus()}),d.el.on("change.autocomplete",function(a){d.onKeyUp(a)}),d.el.on("input.autocomplete",function(a){d.onKeyUp(a)})},onFocus:function(){var a=this;a.fixPosition(),a.options.minChars<=a.el.val().length&&a.onValueChange()},onBlur:function(){this.enableKillerFn()},setOptions:function(b){var c=this,d=c.options;a.extend(d,b),c.isLocal=a.isArray(d.lookup),c.isLocal&&(d.lookup=c.verifySuggestionsFormat(d.lookup)),d.orientation=c.validateOrientation(d.orientation,"bottom"),a(c.suggestionsContainer).css({"max-height":d.maxHeight+"px",width:d.width+"px","z-index":d.zIndex})},clearCache:function(){this.cachedResponse={},this.badQueries=[]},clear:function(){this.clearCache(),this.currentValue="",this.suggestions=[]},disable:function(){var a=this;a.disabled=!0,clearInterval(a.onChangeInterval),a.currentRequest&&a.currentRequest.abort()},enable:function(){this.disabled=!1},fixPosition:function(){var b=this,c=a(b.suggestionsContainer),d=c.parent().get(0);if(d===document.body||b.options.forceFixPosition){var e=b.options.orientation,f=c.outerHeight(),g=b.el.outerHeight(),h=b.el.offset(),i={top:h.top,left:h.left};if("auto"===e){var j=a(window).height(),k=a(window).scrollTop(),l=-k+h.top-f,m=k+j-(h.top+g+f);e=Math.max(l,m)===l?"top":"bottom"}if(i.top+="top"===e?-f:g,d!==document.body){var n,o=c.css("opacity");b.visible||c.css("opacity",0).show(),n=c.offsetParent().offset(),i.top-=n.top,i.left-=n.left,b.visible||c.css("opacity",o).hide()}"auto"===b.options.width&&(i.width=b.el.outerWidth()-2+"px"),c.css(i)}},enableKillerFn:function(){var b=this;a(document).on("click.autocomplete",b.killerFn)},disableKillerFn:function(){var b=this;a(document).off("click.autocomplete",b.killerFn)},killSuggestions:function(){var a=this;a.stopKillSuggestions(),a.intervalId=window.setInterval(function(){a.hide(),a.stopKillSuggestions()},50)},stopKillSuggestions:function(){window.clearInterval(this.intervalId)},isCursorAtEnd:function(){var a,b=this,c=b.el.val().length,d=b.element.selectionStart;return"number"==typeof d?d===c:document.selection?(a=document.selection.createRange(),a.moveStart("character",-c),c===a.text.length):!0},onKeyPress:function(a){var b=this;if(!b.disabled&&!b.visible&&a.which===d.DOWN&&b.currentValue)return void b.suggest();if(!b.disabled&&b.visible){switch(a.which){case d.ESC:b.el.val(b.currentValue),b.hide();break;case d.RIGHT:if(b.hint&&b.options.onHint&&b.isCursorAtEnd()){b.selectHint();break}return;case d.TAB:if(b.hint&&b.options.onHint)return void b.selectHint();if(-1===b.selectedIndex)return void b.hide();if(b.select(b.selectedIndex),b.options.tabDisabled===!1)return;break;case d.RETURN:if(-1===b.selectedIndex)return void b.hide();b.select(b.selectedIndex);break;case d.UP:b.moveUp();break;case d.DOWN:b.moveDown();break;default:return}a.stopImmediatePropagation(),a.preventDefault()}},onKeyUp:function(a){var b=this;if(!b.disabled){switch(a.which){case d.UP:case d.DOWN:return}clearInterval(b.onChangeInterval),b.currentValue!==b.el.val()&&(b.findBestHint(),b.options.deferRequestBy>0?b.onChangeInterval=setInterval(function(){b.onValueChange()},b.options.deferRequestBy):b.onValueChange())}},onValueChange:function(){var b,c=this,d=c.options,e=c.el.val(),f=c.getQuery(e);return c.selection&&c.currentValue!==f&&(c.selection=null,(d.onInvalidateSelection||a.noop).call(c.element)),clearInterval(c.onChangeInterval),c.currentValue=e,c.selectedIndex=-1,d.triggerSelectOnValidInput&&(b=c.findSuggestionIndex(f),-1!==b)?void c.select(b):void(f.length<d.minChars?c.hide():c.getSuggestions(f))},findSuggestionIndex:function(b){var c=this,d=-1,e=b.toLowerCase();return a.each(c.suggestions,function(a,b){return b.value.toLowerCase()===e?(d=a,!1):void 0}),d},getQuery:function(b){var c,d=this.options.delimiter;return d?(c=b.split(d),a.trim(c[c.length-1])):b},getSuggestionsLocal:function(b){var c,d=this,e=d.options,f=b.toLowerCase(),g=e.lookupFilter,h=parseInt(e.lookupLimit,10);return c={suggestions:a.grep(e.lookup,function(a){return g(a,b,f)})},h&&c.suggestions.length>h&&(c.suggestions=c.suggestions.slice(0,h)),c},getSuggestions:function(b){var c,d,e,f,g=this,h=g.options,i=h.serviceUrl;if(h.params[h.paramName]=b,d=h.ignoreParams?null:h.params,h.onSearchStart.call(g.element,h.params)!==!1){if(a.isFunction(h.lookup))return void h.lookup(b,function(a){g.suggestions=a.suggestions,g.suggest(),h.onSearchComplete.call(g.element,b,a.suggestions)});g.isLocal?c=g.getSuggestionsLocal(b):(a.isFunction(i)&&(i=i.call(g.element,b)),e=i+"?"+a.param(d||{}),c=g.cachedResponse[e]),c&&a.isArray(c.suggestions)?(g.suggestions=c.suggestions,g.suggest(),h.onSearchComplete.call(g.element,b,c.suggestions)):g.isBadQuery(b)?h.onSearchComplete.call(g.element,b,[]):(g.currentRequest&&g.currentRequest.abort(),f={url:i,data:d,type:h.type,dataType:h.dataType},a.extend(f,h.ajaxSettings),g.currentRequest=a.ajax(f).done(function(a){var c;g.currentRequest=null,c=h.transformResult(a),g.processResponse(c,b,e),h.onSearchComplete.call(g.element,b,c.suggestions)}).fail(function(a,c,d){h.onSearchError.call(g.element,b,a,c,d)}))}},isBadQuery:function(a){if(!this.options.preventBadQueries)return!1;for(var b=this.badQueries,c=b.length;c--;)if(0===a.indexOf(b[c]))return!0;return!1},hide:function(){var b=this,c=a(b.suggestionsContainer);a.isFunction(b.options.onHide)&&b.visible&&b.options.onHide.call(b.element,c),b.visible=!1,b.selectedIndex=-1,clearInterval(b.onChangeInterval),a(b.suggestionsContainer).hide(),b.signalHint(null)},suggest:function(){if(0===this.suggestions.length)return void(this.options.showNoSuggestionNotice?this.noSuggestions():this.hide());var b,c,d=this,e=d.options,f=e.groupBy,g=e.formatResult,h=d.getQuery(d.currentValue),i=d.classes.suggestion,j=d.classes.selected,k=a(d.suggestionsContainer),l=a(d.noSuggestionsContainer),m=e.beforeRender,n="",o=function(a){var c=a.data[f];return b===c?"":(b=c,'<div class="autocomplete-group"><strong>'+b+"</strong></div>")};return e.triggerSelectOnValidInput&&(c=d.findSuggestionIndex(h),-1!==c)?void d.select(c):(a.each(d.suggestions,function(a,b){f&&(n+=o(b,h,a)),n+='<div class="'+i+'" data-index="'+a+'">'+g(b,h)+"</div>"}),this.adjustContainerWidth(),l.detach(),k.html(n),a.isFunction(m)&&m.call(d.element,k),d.fixPosition(),k.show(),e.autoSelectFirst&&(d.selectedIndex=0,k.scrollTop(0),k.children("."+i).first().addClass(j)),d.visible=!0,void d.findBestHint())},noSuggestions:function(){var b=this,c=a(b.suggestionsContainer),d=a(b.noSuggestionsContainer);this.adjustContainerWidth(),d.detach(),c.empty(),c.append(d),b.fixPosition(),c.show(),b.visible=!0},adjustContainerWidth:function(){var b,c=this,d=c.options,e=a(c.suggestionsContainer);"auto"===d.width&&(b=c.el.outerWidth()-2,e.width(b>0?b:300))},findBestHint:function(){var b=this,c=b.el.val().toLowerCase(),d=null;c&&(a.each(b.suggestions,function(a,b){var e=0===b.value.toLowerCase().indexOf(c);return e&&(d=b),!e}),b.signalHint(d))},signalHint:function(b){var c="",d=this;b&&(c=d.currentValue+b.value.substr(d.currentValue.length)),d.hintValue!==c&&(d.hintValue=c,d.hint=b,(this.options.onHint||a.noop)(c))},verifySuggestionsFormat:function(b){return b.length&&"string"==typeof b[0]?a.map(b,function(a){return{value:a,data:null}}):b},validateOrientation:function(b,c){return b=a.trim(b||"").toLowerCase(),-1===a.inArray(b,["auto","bottom","top"])&&(b=c),b},processResponse:function(a,b,c){var d=this,e=d.options;a.suggestions=d.verifySuggestionsFormat(a.suggestions),e.noCache||(d.cachedResponse[c]=a,e.preventBadQueries&&0===a.suggestions.length&&d.badQueries.push(b)),b===d.getQuery(d.currentValue)&&(d.suggestions=a.suggestions,d.suggest())},activate:function(b){var c,d=this,e=d.classes.selected,f=a(d.suggestionsContainer),g=f.find("."+d.classes.suggestion);return f.find("."+e).removeClass(e),d.selectedIndex=b,-1!==d.selectedIndex&&g.length>d.selectedIndex?(c=g.get(d.selectedIndex),a(c).addClass(e),c):null},selectHint:function(){var b=this,c=a.inArray(b.hint,b.suggestions);b.select(c)},select:function(a){var b=this;b.hide(),b.onSelect(a)},moveUp:function(){var b=this;if(-1!==b.selectedIndex)return 0===b.selectedIndex?(a(b.suggestionsContainer).children().first().removeClass(b.classes.selected),b.selectedIndex=-1,b.el.val(b.currentValue),void b.findBestHint()):void b.adjustScroll(b.selectedIndex-1)},moveDown:function(){var a=this;a.selectedIndex!==a.suggestions.length-1&&a.adjustScroll(a.selectedIndex+1)},adjustScroll:function(b){var c=this,d=c.activate(b);if(d){var e,f,g,h=a(d).outerHeight();e=d.offsetTop,f=a(c.suggestionsContainer).scrollTop(),g=f+c.options.maxHeight-h,f>e?a(c.suggestionsContainer).scrollTop(e):e>g&&a(c.suggestionsContainer).scrollTop(e-c.options.maxHeight+h),c.options.preserveInput||c.el.val(c.getValue(c.suggestions[b].value)),c.signalHint(null)}},onSelect:function(b){var c=this,d=c.options.onSelect,e=c.suggestions[b];c.currentValue=c.getValue(e.value),c.currentValue===c.el.val()||c.options.preserveInput||c.el.val(c.currentValue),c.signalHint(null),c.suggestions=[],c.selection=e,a.isFunction(d)&&d.call(c.element,e)},getValue:function(a){var b,c,d=this,e=d.options.delimiter;return e?(b=d.currentValue,c=b.split(e),1===c.length?a:b.substr(0,b.length-c[c.length-1].length)+a):a},dispose:function(){var b=this;b.el.off(".autocomplete").removeData("autocomplete"),b.disableKillerFn(),a(window).off("resize.autocomplete",b.fixPositionCapture),a(b.suggestionsContainer).remove()}},a.fn.autocomplete=a.fn.devbridgeAutocomplete=function(c,d){var e="autocomplete";return 0===arguments.length?this.first().data(e):this.each(function(){var f=a(this),g=f.data(e);"string"==typeof c?g&&"function"==typeof g[c]&&g[c](d):(g&&g.dispose&&g.dispose(),g=new b(this,c),f.data(e,g))})}});
 
 /////////////////////////////////////////////////////////////
@@ -33,7 +33,7 @@ if(this.$element.prop("multiple"))this.current(function(d){var e=[];a=[a],a.push
 ////////////////////////////////////////////////////
 /*!
 
- diff v3.2.0
+ diff v4.0.1
 
 Software License Agreement (BSD License)
 
@@ -68,282 +68,5 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @license
 */
-// !!! functionx is intentional
-!function(a,b){"object"==typeof exports&&"object"==typeof module?module.exports=b():"functionx"==typeof define&&define.amd?define([],b):"object"==typeof exports?exports.JsDiff=b():a.JsDiff=b()}(this,function(){/******/
-return function(a){/******/
-// The require function
-/******/
-function b(d){/******/
-// Check if module is in cache
-/******/
-if(c[d])/******/
-return c[d].exports;/******/
-// Create a new module (and put it into the cache)
-/******/
-var e=c[d]={/******/
-exports:{},/******/
-id:d,/******/
-loaded:!1};/******/
-// Return the exports of the module
-/******/
-/******/
-// Execute the module function
-/******/
-/******/
-// Flag the module as loaded
-/******/
-return a[d].call(e.exports,e,e.exports,b),e.loaded=!0,e.exports}// webpackBootstrap
-/******/
-// The module cache
-/******/
-var c={};/******/
-// Load entry module and return exports
-/******/
-/******/
-// expose the modules object (__webpack_modules__)
-/******/
-/******/
-// expose the module cache
-/******/
-/******/
-// __webpack_public_path__
-/******/
-return b.m=a,b.c=c,b.p="",b(0)}([/* 0 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";/*istanbul ignore start*/
-function d(a){return a&&a.__esModule?a:{"default":a}}b.__esModule=!0,b.canonicalize=b.convertChangesToXML=b.convertChangesToDMP=b.parsePatch=b.applyPatches=b.applyPatch=b.createPatch=b.createTwoFilesPatch=b.structuredPatch=b.diffArrays=b.diffJson=b.diffCss=b.diffSentences=b.diffTrimmedLines=b.diffLines=b.diffWordsWithSpace=b.diffWords=b.diffChars=b.Diff=void 0;/*istanbul ignore end*/
-var/*istanbul ignore start*/e=c(1),f=d(e),/*istanbul ignore start*/g=c(2),/*istanbul ignore start*/h=c(3),/*istanbul ignore start*/i=c(5),/*istanbul ignore start*/j=c(6),/*istanbul ignore start*/k=c(7),/*istanbul ignore start*/l=c(8),/*istanbul ignore start*/m=c(9),/*istanbul ignore start*/n=c(10),/*istanbul ignore start*/o=c(11),/*istanbul ignore start*/p=c(13),/*istanbul ignore start*/q=c(14),/*istanbul ignore start*/r=c(15);b.Diff=f["default"],/*istanbul ignore start*/
-b.diffChars=g.diffChars,/*istanbul ignore start*/
-b.diffWords=h.diffWords,/*istanbul ignore start*/
-b.diffWordsWithSpace=h.diffWordsWithSpace,/*istanbul ignore start*/
-b.diffLines=i.diffLines,/*istanbul ignore start*/
-b.diffTrimmedLines=i.diffTrimmedLines,/*istanbul ignore start*/
-b.diffSentences=j.diffSentences,/*istanbul ignore start*/
-b.diffCss=k.diffCss,/*istanbul ignore start*/
-b.diffJson=l.diffJson,/*istanbul ignore start*/
-b.diffArrays=m.diffArrays,/*istanbul ignore start*/
-b.structuredPatch=p.structuredPatch,/*istanbul ignore start*/
-b.createTwoFilesPatch=p.createTwoFilesPatch,/*istanbul ignore start*/
-b.createPatch=p.createPatch,/*istanbul ignore start*/
-b.applyPatch=n.applyPatch,/*istanbul ignore start*/
-b.applyPatches=n.applyPatches,/*istanbul ignore start*/
-b.parsePatch=o.parsePatch,/*istanbul ignore start*/
-b.convertChangesToDMP=q.convertChangesToDMP,/*istanbul ignore start*/
-b.convertChangesToXML=r.convertChangesToXML,/*istanbul ignore start*/
-b.canonicalize=l.canonicalize},/* 1 */
-/***/
-function(a,b){/*istanbul ignore start*/
-"use strict";function c(){}function d(a,b,c,d,e){for(var f=0,g=b.length,h=0,i=0;f<g;f++){var j=b[f];if(j.removed){
-// Reverse add and remove so removes are output first to match common convention
-// The diffing algorithm is tied to add then remove output and this is the simplest
-// route to get the desired output with minimal overhead.
-if(j.value=a.join(d.slice(i,i+j.count)),i+=j.count,f&&b[f-1].added){var k=b[f-1];b[f-1]=b[f],b[f]=k}}else{if(!j.added&&e){var l=c.slice(h,h+j.count);l=l.map(function(a,b){var c=d[i+b];return c.length>a.length?c:a}),j.value=a.join(l)}else j.value=a.join(c.slice(h,h+j.count));h+=j.count,
-// Common case
-j.added||(i+=j.count)}}
-// Special case handle for when one terminal is ignored. For this case we merge the
-// terminal into the prior string and drop the change.
-var m=b[g-1];return g>1&&(m.added||m.removed)&&a.equals("",m.value)&&(b[g-2].value+=m.value,b.pop()),b}function e(a){return{newPos:a.newPos,components:a.components.slice(0)}}b.__esModule=!0,b["default"]=/*istanbul ignore end*/c,c.prototype={/*istanbul ignore start*/
-/*istanbul ignore end*/
-diff:function(a,b){function c(a){return h?(setTimeout(function(){h(void 0,a)},0),!0):a}
-// Main worker method. checks all permutations of a given edit length for acceptance.
-function f(){for(var f=-1*l;f<=l;f+=2){var g=/*istanbul ignore start*/void 0,h=n[f-1],m=n[f+1],o=(m?m.newPos:0)-f;h&&(
-// No one else is going to attempt to use this value, clear it
-n[f-1]=void 0);var p=h&&h.newPos+1<j,q=m&&0<=o&&o<k;if(p||q){
-// If we have hit the end of both strings, then we are done
-if(
-// Select the diagonal that we want to branch from. We select the prior
-// path whose position in the new string is the farthest from the origin
-// and does not pass the bounds of the diff graph
-!p||q&&h.newPos<m.newPos?(g=e(m),i.pushComponent(g.components,void 0,!0)):(g=h,// No need to clone, we've pulled it from the list
-g.newPos++,i.pushComponent(g.components,!0,void 0)),o=i.extractCommon(g,b,a,f),g.newPos+1>=j&&o+1>=k)return c(d(i,g.components,b,a,i.useLongestToken));
-// Otherwise track this path as a potential candidate and continue.
-n[f]=g}else
-// If this path is a terminal then prune
-n[f]=void 0}l++}/*istanbul ignore start*/
-var/*istanbul ignore end*/g=arguments.length<=2||void 0===arguments[2]?{}:arguments[2],h=g.callback;"function"==typeof g&&(h=g,g={}),this.options=g;var i=this;
-// Allow subclasses to massage the input prior to running
-a=this.castInput(a),b=this.castInput(b),a=this.removeEmpty(this.tokenize(a)),b=this.removeEmpty(this.tokenize(b));var j=b.length,k=a.length,l=1,m=j+k,n=[{newPos:-1,components:[]}],o=this.extractCommon(n[0],b,a,0);if(n[0].newPos+1>=j&&o+1>=k)
-// Identity per the equality and tokenizer
-return c([{value:this.join(b),count:b.length}]);
-// Performs the length of edit iteration. Is a bit fugly as this has to support the
-// sync and async mode which is never fun. Loops over execEditLength until a value
-// is produced.
-if(h)!function q(){setTimeout(function(){
-// This should not happen, but we want to be safe.
-/* istanbul ignore next */
-// This should not happen, but we want to be safe.
-/* istanbul ignore next */
-return l>m?h():void(f()||q())},0)}();else for(;l<=m;){var p=f();if(p)return p}},/*istanbul ignore start*/
-/*istanbul ignore end*/
-pushComponent:function(a,b,c){var d=a[a.length-1];d&&d.added===b&&d.removed===c?
-// We need to clone here as the component clone operation is just
-// as shallow array clone
-a[a.length-1]={count:d.count+1,added:b,removed:c}:a.push({count:1,added:b,removed:c})},/*istanbul ignore start*/
-/*istanbul ignore end*/
-extractCommon:function(a,b,c,d){for(var e=b.length,f=c.length,g=a.newPos,h=g-d,i=0;g+1<e&&h+1<f&&this.equals(b[g+1],c[h+1]);)g++,h++,i++;return i&&a.components.push({count:i}),a.newPos=g,h},/*istanbul ignore start*/
-/*istanbul ignore end*/
-equals:function(a,b){return a===b},/*istanbul ignore start*/
-/*istanbul ignore end*/
-removeEmpty:function(a){for(var b=[],c=0;c<a.length;c++)a[c]&&b.push(a[c]);return b},/*istanbul ignore start*/
-/*istanbul ignore end*/
-castInput:function(a){return a},/*istanbul ignore start*/
-/*istanbul ignore end*/
-tokenize:function(a){return a.split("")},/*istanbul ignore start*/
-/*istanbul ignore end*/
-join:function(a){return a.join("")}}},/* 2 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";function d(a){return a&&a.__esModule?a:{"default":a}}function e(a,b,c){return h.diff(a,b,c)}b.__esModule=!0,b.characterDiff=void 0,b.diffChars=e;var/*istanbul ignore start*/f=c(1),g=d(f),h=/*istanbul ignore start*/b.characterDiff=new/*istanbul ignore start*/g["default"]},/* 3 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";/*istanbul ignore start*/
-function d(a){return a&&a.__esModule?a:{"default":a}}function e(a,b,c){var d=/*istanbul ignore start*/(0,i.generateOptions)(c,{ignoreWhitespace:!0});return l.diff(a,b,d)}function f(a,b,c){return l.diff(a,b,c)}b.__esModule=!0,b.wordDiff=void 0,b.diffWords=e,/*istanbul ignore start*/
-b.diffWordsWithSpace=f;var/*istanbul ignore start*/g=c(1),h=d(g),/*istanbul ignore start*/i=c(4),j=/^[A-Za-z\xC0-\u02C6\u02C8-\u02D7\u02DE-\u02FF\u1E00-\u1EFF]+$/,k=/\S/,l=/*istanbul ignore start*/b.wordDiff=new/*istanbul ignore start*/h["default"];l.equals=function(a,b){return a===b||this.options.ignoreWhitespace&&!k.test(a)&&!k.test(b)},l.tokenize=function(a){
-// Join the boundary splits that we do not consider to be boundaries. This is primarily the extended Latin character set.
-for(var b=a.split(/(\s+|\b)/),c=0;c<b.length-1;c++)
-// If we have an empty string in the next field and we have only word chars before and after, merge
-!b[c+1]&&b[c+2]&&j.test(b[c])&&j.test(b[c+2])&&(b[c]+=b[c+2],b.splice(c+1,2),c--);return b}},/* 4 */
-/***/
-function(a,b){/*istanbul ignore start*/
-"use strict";function c(a,b){if("function"==typeof a)b.callback=a;else if(a)for(var c in a)/* istanbul ignore else */
-a.hasOwnProperty(c)&&(b[c]=a[c]);return b}b.__esModule=!0,b.generateOptions=c},/* 5 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";/*istanbul ignore start*/
-function d(a){return a&&a.__esModule?a:{"default":a}}function e(a,b,c){return j.diff(a,b,c)}function f(a,b,c){var d=/*istanbul ignore start*/(0,i.generateOptions)(c,{ignoreWhitespace:!0});return j.diff(a,b,d)}b.__esModule=!0,b.lineDiff=void 0,b.diffLines=e,/*istanbul ignore start*/
-b.diffTrimmedLines=f;var/*istanbul ignore start*/g=c(1),h=d(g),/*istanbul ignore start*/i=c(4),j=/*istanbul ignore start*/b.lineDiff=new/*istanbul ignore start*/h["default"];j.tokenize=function(a){var b=[],c=a.split(/(\n|\r\n)/);
-// Ignore the final empty token that occurs if the string ends with a new line
-c[c.length-1]||c.pop();
-// Merge the content and line separators into single tokens
-for(var d=0;d<c.length;d++){var e=c[d];d%2&&!this.options.newlineIsToken?b[b.length-1]+=e:(this.options.ignoreWhitespace&&(e=e.trim()),b.push(e))}return b}},/* 6 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";function d(a){return a&&a.__esModule?a:{"default":a}}function e(a,b,c){return h.diff(a,b,c)}b.__esModule=!0,b.sentenceDiff=void 0,b.diffSentences=e;var/*istanbul ignore start*/f=c(1),g=d(f),h=/*istanbul ignore start*/b.sentenceDiff=new/*istanbul ignore start*/g["default"];h.tokenize=function(a){return a.split(/(\S.+?[.!?])(?=\s+|$)/)}},/* 7 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";function d(a){return a&&a.__esModule?a:{"default":a}}function e(a,b,c){return h.diff(a,b,c)}b.__esModule=!0,b.cssDiff=void 0,b.diffCss=e;var/*istanbul ignore start*/f=c(1),g=d(f),h=/*istanbul ignore start*/b.cssDiff=new/*istanbul ignore start*/g["default"];h.tokenize=function(a){return a.split(/([{}:;,]|\s+)/)}},/* 8 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";/*istanbul ignore start*/
-function d(a){return a&&a.__esModule?a:{"default":a}}function e(a,b,c){return l.diff(a,b,c)}
-// This function handles the presence of circular references by bailing out when encountering an
-// object that is already on the "stack" of items being processed.
-function f(a,b,c){b=b||[],c=c||[];var d=/*istanbul ignore start*/void 0;for(d=0;d<b.length;d+=1)if(b[d]===a)return c[d];var e=/*istanbul ignore start*/void 0;if("[object Array]"===k.call(a)){for(b.push(a),e=new Array(a.length),c.push(e),d=0;d<a.length;d+=1)e[d]=f(a[d],b,c);return b.pop(),c.pop(),e}if(a&&a.toJSON&&(a=a.toJSON()),/*istanbul ignore start*/"object"===("undefined"==typeof/*istanbul ignore end*/a?"undefined":g(a))&&null!==a){b.push(a),e={},c.push(e);var h=[],i=/*istanbul ignore start*/void 0;for(i in a)/* istanbul ignore else */
-a.hasOwnProperty(i)&&h.push(i);for(h.sort(),d=0;d<h.length;d+=1)i=h[d],e[i]=f(a[i],b,c);b.pop(),c.pop()}else e=a;return e}b.__esModule=!0,b.jsonDiff=void 0;var g="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(a){return typeof a}:function(a){return a&&"function"==typeof Symbol&&a.constructor===Symbol?"symbol":typeof a};b.diffJson=e,/*istanbul ignore start*/
-b.canonicalize=f;var/*istanbul ignore start*/h=c(1),i=d(h),/*istanbul ignore start*/j=c(5),k=Object.prototype.toString,l=/*istanbul ignore start*/b.jsonDiff=new/*istanbul ignore start*/i["default"];
-// Discriminate between two lines of pretty-printed, serialized JSON where one of them has a
-// dangling comma and the other doesn't. Turns out including the dangling comma yields the nicest output:
-l.useLongestToken=!0,l.tokenize=/*istanbul ignore start*/j.lineDiff.tokenize,l.castInput=function(a){/*istanbul ignore start*/
-var/*istanbul ignore end*/b=this.options.undefinedReplacement;return"string"==typeof a?a:JSON.stringify(f(a),function(a,c){return"undefined"==typeof c?b:c},"  ")},l.equals=function(a,b){/*istanbul ignore start*/
-return i["default"].prototype.equals(a.replace(/,([\r\n])/g,"$1"),b.replace(/,([\r\n])/g,"$1"))}},/* 9 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";function d(a){return a&&a.__esModule?a:{"default":a}}function e(a,b,c){return h.diff(a,b,c)}b.__esModule=!0,b.arrayDiff=void 0,b.diffArrays=e;var/*istanbul ignore start*/f=c(1),g=d(f),h=/*istanbul ignore start*/b.arrayDiff=new/*istanbul ignore start*/g["default"];h.tokenize=h.join=function(a){return a.slice()}},/* 10 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";function d(a){return a&&a.__esModule?a:{"default":a}}/*istanbul ignore end*/
-function e(a,b){/**
-	   * Checks if the hunk exactly fits on the provided location
-	   */
-function c(a,b){for(var c=0;c<a.lines.length;c++){var d=a.lines[c],f=d[0],g=d.substr(1);if(" "===f||"-"===f){
-// Context sanity check
-if(!j(b+1,e[b],f,g)&&(k++,k>l))return!1;b++}}return!0}/*istanbul ignore start*/
-var/*istanbul ignore end*/d=arguments.length<=2||void 0===arguments[2]?{}:arguments[2];if("string"==typeof b&&(b=/*istanbul ignore start*/(0,g.parsePatch)(b)),Array.isArray(b)){if(b.length>1)throw new Error("applyPatch only works with a single input.");b=b[0]}
-// Search best fit offsets for each hunk based on the previous ones
-for(var e=a.split(/\r\n|[\n\v\f\r\x85]/),f=a.match(/\r\n|[\n\v\f\r\x85]/g)||[],h=b.hunks,j=d.compareLine||function(a,b,c,d){/*istanbul ignore end*/
-return b===d},k=0,l=d.fuzzFactor||0,m=0,n=0,o=/*istanbul ignore start*/void 0,p=/*istanbul ignore start*/void 0,q=0;q<h.length;q++){for(var r=h[q],s=e.length-r.oldLines,t=0,u=n+r.oldStart-1,v=/*istanbul ignore start*/(0,i["default"])(u,m,s);void 0!==t;t=v())if(c(r,u+t)){r.offset=n+=t;break}if(void 0===t)return!1;
-// Set lower text limit to end of the current hunk, so next ones don't try
-// to fit over already patched text
-m=r.offset+r.oldStart+r.oldLines}
-// Apply patch hunks
-for(var w=0;w<h.length;w++){var x=h[w],y=x.offset+x.newStart-1;0==x.newLines&&y++;for(var z=0;z<x.lines.length;z++){var A=x.lines[z],B=A[0],C=A.substr(1),D=x.linedelimiters[z];if(" "===B)y++;else if("-"===B)e.splice(y,1),f.splice(y,1);else if("+"===B)e.splice(y,0,C),f.splice(y,0,D),y++;else if("\\"===B){var E=x.lines[z-1]?x.lines[z-1][0]:null;"+"===E?o=!0:"-"===E&&(p=!0)}}}
-// Handle EOFNL insertion/removal
-if(o)for(;!e[e.length-1];)e.pop(),f.pop();else p&&(e.push(""),f.push("\n"));for(var F=0;F<e.length-1;F++)e[F]=e[F]+f[F];return e.join("")}
-// Wrapper that supports multiple file patches via callbacks.
-function f(a,b){function c(){var f=a[d++];return f?void b.loadFile(f,function(a,d){if(a)return b.complete(a);var g=e(d,f,b);b.patched(f,g,function(a){return a?b.complete(a):void c()})}):b.complete()}"string"==typeof a&&(a=/*istanbul ignore start*/(0,g.parsePatch)(a));var d=0;c()}b.__esModule=!0,b.applyPatch=e,/*istanbul ignore start*/
-b.applyPatches=f;var/*istanbul ignore start*/g=c(11),/*istanbul ignore start*/h=c(12),i=d(h)},/* 11 */
-/***/
-function(a,b){/*istanbul ignore start*/
-"use strict";function c(a){function b(){var a={};
-// Parse diff metadata
-for(h.push(a);i<f.length;){var b=f[i];
-// File header found, end parsing diff metadata
-if(/^(\-\-\-|\+\+\+|@@)\s/.test(b))break;
-// Diff index
-var g=/^(?:Index:|diff(?: -r \w+)+)\s+(.+?)\s*$/.exec(b);g&&(a.index=g[1]),i++}for(
-// Parse file headers if they are defined. Unified diff requires them, but
-// there's no technical issues to have an isolated hunk without file header
-c(a),c(a),
-// Parse hunks
-a.hunks=[];i<f.length;){var j=f[i];if(/^(Index:|diff|\-\-\-|\+\+\+)\s/.test(j))break;if(/^@@/.test(j))a.hunks.push(d());else{if(j&&e.strict)
-// Ignore unexpected content unless in strict mode
-throw new Error("Unknown line "+(i+1)+" "+JSON.stringify(j));i++}}}
-// Parses the --- and +++ headers, if none are found, no lines
-// are consumed.
-function c(a){var b=/^(---|\+\+\+)\s+([\S ]*)(?:\t(.*?)\s*)?$/,c=b.exec(f[i]);if(c){var d="---"===c[1]?"old":"new";a[d+"FileName"]=c[2],a[d+"Header"]=c[3],i++}}
-// Parses a hunk
-// This assumes that we are at the start of a hunk.
-function d(){for(var a=i,b=f[i++],c=b.split(/@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/),d={oldStart:+c[1],oldLines:+c[2]||1,newStart:+c[3],newLines:+c[4]||1,lines:[],linedelimiters:[]},h=0,j=0;i<f.length&&!(0===f[i].indexOf("--- ")&&i+2<f.length&&0===f[i+1].indexOf("+++ ")&&0===f[i+2].indexOf("@@"));i++){var k=f[i][0];if("+"!==k&&"-"!==k&&" "!==k&&"\\"!==k)break;d.lines.push(f[i]),d.linedelimiters.push(g[i]||"\n"),"+"===k?h++:"-"===k?j++:" "===k&&(h++,j++)}
-// Perform optional sanity checking
-if(
-// Handle the empty block count case
-h||1!==d.newLines||(d.newLines=0),j||1!==d.oldLines||(d.oldLines=0),e.strict){if(h!==d.newLines)throw new Error("Added line count did not match for hunk at line "+(a+1));if(j!==d.oldLines)throw new Error("Removed line count did not match for hunk at line "+(a+1))}return d}for(/*istanbul ignore start*/
-var/*istanbul ignore end*/e=arguments.length<=1||void 0===arguments[1]?{}:arguments[1],f=a.split(/\r\n|[\n\v\f\r\x85]/),g=a.match(/\r\n|[\n\v\f\r\x85]/g)||[],h=[],i=0;i<f.length;)b();return h}b.__esModule=!0,b.parsePatch=c},/* 12 */
-/***/
-function(a,b){/*istanbul ignore start*/
-"use strict";b.__esModule=!0,b["default"]=/*istanbul ignore end*/function(a,b,c){var d=!0,e=!1,f=!1,g=1;return function h(){if(d&&!f){
-// Check if trying to fit beyond text length, and if not, check it fits
-// after offset location (or desired location on first iteration)
-if(e?g++:d=!1,a+g<=c)return g;f=!0}if(!e)
-// Check if trying to fit before text beginning, and if not, check it fits
-// before offset location
-// Check if trying to fit before text beginning, and if not, check it fits
-// before offset location
-return f||(d=!0),b<=a-g?-g++:(e=!0,h())}}},/* 13 */
-/***/
-function(a,b,c){/*istanbul ignore start*/
-"use strict";/*istanbul ignore start*/
-function d(a){if(Array.isArray(a)){for(var b=0,c=Array(a.length);b<a.length;b++)c[b]=a[b];return c}return Array.from(a)}/*istanbul ignore end*/
-function e(a,b,c,e,f,g,i){// Append an empty value to make cleanup easier
-function j(a){return a.map(function(a){return" "+a})}i||(i={}),"undefined"==typeof i.context&&(i.context=4);var k=/*istanbul ignore start*/(0,h.diffLines)(c,e,i);k.push({value:"",lines:[]});for(var l=[],m=0,n=0,o=[],p=1,q=1,r=function(/*istanbul ignore end*/a){var b=k[a],f=b.lines||b.value.replace(/\n$/,"").split("\n");if(b.lines=f,b.added||b.removed){/*istanbul ignore start*/
-var g;/*istanbul ignore end*/
-// If we have previous context, start with that
-if(!m){var h=k[a-1];m=p,n=q,h&&(o=i.context>0?j(h.lines.slice(-i.context)):[],m-=o.length,n-=o.length)}
-// Output our changes
-/*istanbul ignore start*/
-(g=/*istanbul ignore end*/o).push.apply(/*istanbul ignore start*/g,/*istanbul ignore start*/d(/*istanbul ignore end*/f.map(function(a){return(b.added?"+":"-")+a}))),
-// Track the updated file position
-b.added?q+=f.length:p+=f.length}else{
-// Identical context lines. Track line changes
-if(m)
-// Close out any changes that have been output (or join overlapping)
-if(f.length<=2*i.context&&a<k.length-2){/*istanbul ignore start*/
-var r;/*istanbul ignore end*/
-// Overlapping
-/*istanbul ignore start*/
-(r=/*istanbul ignore end*/o).push.apply(/*istanbul ignore start*/r,/*istanbul ignore start*/d(/*istanbul ignore end*/j(f)))}else{/*istanbul ignore start*/
-var s,t=Math.min(f.length,i.context);/*istanbul ignore start*/
-(s=/*istanbul ignore end*/o).push.apply(/*istanbul ignore start*/s,/*istanbul ignore start*/d(/*istanbul ignore end*/j(f.slice(0,t))));var u={oldStart:m,oldLines:p-m+t,newStart:n,newLines:q-n+t,lines:o};if(a>=k.length-2&&f.length<=i.context){
-// EOF is inside this hunk
-var v=/\n$/.test(c),w=/\n$/.test(e);0!=f.length||v?v&&w||o.push("\\ No newline at end of file"):
-// special case: old has no eol and no trailing context; no-nl can end up before adds
-o.splice(u.oldLines,0,"\\ No newline at end of file")}l.push(u),m=0,n=0,o=[]}p+=f.length,q+=f.length}},s=0;s<k.length;s++)/*istanbul ignore start*/
-r(/*istanbul ignore end*/s);return{oldFileName:a,newFileName:b,oldHeader:f,newHeader:g,hunks:l}}function f(a,b,c,d,f,g,h){var i=e(a,b,c,d,f,g,h),j=[];a==b&&j.push("Index: "+a),j.push("==================================================================="),j.push("--- "+i.oldFileName+("undefined"==typeof i.oldHeader?"":"\t"+i.oldHeader)),j.push("+++ "+i.newFileName+("undefined"==typeof i.newHeader?"":"\t"+i.newHeader));for(var k=0;k<i.hunks.length;k++){var l=i.hunks[k];j.push("@@ -"+l.oldStart+","+l.oldLines+" +"+l.newStart+","+l.newLines+" @@"),j.push.apply(j,l.lines)}return j.join("\n")+"\n"}function g(a,b,c,d,e,g){return f(a,a,b,c,d,e,g)}b.__esModule=!0,b.structuredPatch=e,/*istanbul ignore start*/
-b.createTwoFilesPatch=f,/*istanbul ignore start*/
-b.createPatch=g;var/*istanbul ignore start*/h=c(5)},/* 14 */
-/***/
-function(a,b){/*istanbul ignore start*/
-"use strict";
-// See: http://code.google.com/p/google-diff-match-patch/wiki/API
-function c(a){for(var b=[],c=/*istanbul ignore start*/void 0,d=/*istanbul ignore start*/void 0,e=0;e<a.length;e++)c=a[e],d=c.added?1:c.removed?-1:0,b.push([d,c.value]);return b}b.__esModule=!0,b.convertChangesToDMP=c},/* 15 */
-/***/
-function(a,b){/*istanbul ignore start*/
-"use strict";function c(a){for(var b=[],c=0;c<a.length;c++){var e=a[c];e.added?b.push("<ins>"):e.removed&&b.push("<del>"),b.push(d(e.value)),e.added?b.push("</ins>"):e.removed&&b.push("</del>")}return b.join("")}function d(a){var b=a;return b=b.replace(/&/g,"&amp;"),b=b.replace(/</g,"&lt;"),b=b.replace(/>/g,"&gt;"),b=b.replace(/"/g,"&quot;")}b.__esModule=!0,b.convertChangesToXML=c}])});
-
-
-
-
-
-
+!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?n(exports):"functionx"==typeof define&&define.amd?define(["exports"],n):n((e=e||self).Diff={})}(window,function(e){"use strict";function t(){}function g(e,n,t,r,i){for(var o=0,s=n.length,l=0,a=0;o<s;o++){var u=n[o];if(u.removed){if(u.value=e.join(r.slice(a,a+u.count)),a+=u.count,o&&n[o-1].added){var f=n[o-1];n[o-1]=n[o],n[o]=f}}else{if(!u.added&&i){var d=t.slice(l,l+u.count);d=d.map(function(e,n){var t=r[a+n];return t.length>e.length?t:e}),u.value=e.join(d)}else u.value=e.join(t.slice(l,l+u.count));l+=u.count,u.added||(a+=u.count)}}var c=n[s-1];return 1<s&&"string"==typeof c.value&&(c.added||c.removed)&&e.equals("",c.value)&&(n[s-2].value+=c.value,n.pop()),n}t.prototype={diff:function(a,u){var e=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{},n=e.callback;"function"==typeof e&&(n=e,e={}),this.options=e;var f=this;function d(e){return n?(setTimeout(function(){n(void 0,e)},0),!0):e}a=this.castInput(a),u=this.castInput(u),a=this.removeEmpty(this.tokenize(a));var c=(u=this.removeEmpty(this.tokenize(u))).length,h=a.length,p=1,t=c+h,v=[{newPos:-1,components:[]}],r=this.extractCommon(v[0],u,a,0);if(v[0].newPos+1>=c&&h<=r+1)return d([{value:this.join(u),count:u.length}]);function i(){for(var e=-1*p;e<=p;e+=2){var n=void 0,t=v[e-1],r=v[e+1],i=(r?r.newPos:0)-e;t&&(v[e-1]=void 0);var o=t&&t.newPos+1<c,s=r&&0<=i&&i<h;if(o||s){if(!o||s&&t.newPos<r.newPos?(n={newPos:(l=r).newPos,components:l.components.slice(0)},f.pushComponent(n.components,void 0,!0)):((n=t).newPos++,f.pushComponent(n.components,!0,void 0)),i=f.extractCommon(n,u,a,e),n.newPos+1>=c&&h<=i+1)return d(g(f,n.components,u,a,f.useLongestToken));v[e]=n}else v[e]=void 0}var l;p++}if(n)!function e(){setTimeout(function(){if(t<p)return n();i()||e()},0)}();else for(;p<=t;){var o=i();if(o)return o}},pushComponent:function(e,n,t){var r=e[e.length-1];r&&r.added===n&&r.removed===t?e[e.length-1]={count:r.count+1,added:n,removed:t}:e.push({count:1,added:n,removed:t})},extractCommon:function(e,n,t,r){for(var i=n.length,o=t.length,s=e.newPos,l=s-r,a=0;s+1<i&&l+1<o&&this.equals(n[s+1],t[l+1]);)s++,l++,a++;return a&&e.components.push({count:a}),e.newPos=s,l},equals:function(e,n){return this.options.comparator?this.options.comparator(e,n):e===n||this.options.ignoreCase&&e.toLowerCase()===n.toLowerCase()},removeEmpty:function(e){for(var n=[],t=0;t<e.length;t++)e[t]&&n.push(e[t]);return n},castInput:function(e){return e},tokenize:function(e){return e.split("")},join:function(e){return e.join("")}};var r=new t;function i(e,n){if("function"==typeof e)n.callback=e;else if(e)for(var t in e)e.hasOwnProperty(t)&&(n[t]=e[t]);return n}var o=/^[A-Za-z\xC0-\u02C6\u02C8-\u02D7\u02DE-\u02FF\u1E00-\u1EFF]+$/,s=/\S/,l=new t;l.equals=function(e,n){return this.options.ignoreCase&&(e=e.toLowerCase(),n=n.toLowerCase()),e===n||this.options.ignoreWhitespace&&!s.test(e)&&!s.test(n)},l.tokenize=function(e){for(var n=e.split(/(\s+|[()[\]{}'"]|\b)/),t=0;t<n.length-1;t++)!n[t+1]&&n[t+2]&&o.test(n[t])&&o.test(n[t+2])&&(n[t]+=n[t+2],n.splice(t+1,2),t--);return n};var a=new t;function u(e,n,t){return a.diff(e,n,t)}a.tokenize=function(e){var n=[],t=e.split(/(\n|\r\n)/);t[t.length-1]||t.pop();for(var r=0;r<t.length;r++){var i=t[r];r%2&&!this.options.newlineIsToken?n[n.length-1]+=i:(this.options.ignoreWhitespace&&(i=i.trim()),n.push(i))}return n};var f=new t;f.tokenize=function(e){return e.split(/(\S.+?[.!?])(?=\s+|$)/)};var d=new t;function c(e){return(c="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function k(e){return function(e){if(Array.isArray(e)){for(var n=0,t=new Array(e.length);n<e.length;n++)t[n]=e[n];return t}}(e)||function(e){if(Symbol.iterator in Object(e)||"[object Arguments]"===Object.prototype.toString.call(e))return Array.from(e)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance")}()}d.tokenize=function(e){return e.split(/([{}:;,]|\s+)/)};var h=Object.prototype.toString,p=new t;function v(e,n,t,r,i){var o,s;for(n=n||[],t=t||[],r&&(e=r(i,e)),o=0;o<n.length;o+=1)if(n[o]===e)return t[o];if("[object Array]"===h.call(e)){for(n.push(e),s=new Array(e.length),t.push(s),o=0;o<e.length;o+=1)s[o]=v(e[o],n,t,r,i);return n.pop(),t.pop(),s}if(e&&e.toJSON&&(e=e.toJSON()),"object"===c(e)&&null!==e){n.push(e),s={},t.push(s);var l,a=[];for(l in e)e.hasOwnProperty(l)&&a.push(l);for(a.sort(),o=0;o<a.length;o+=1)s[l=a[o]]=v(e[l],n,t,r,l);n.pop(),t.pop()}else s=e;return s}p.useLongestToken=!0,p.tokenize=a.tokenize,p.castInput=function(e){var n=this.options,t=n.undefinedReplacement,r=n.stringifyReplacer,i=void 0===r?function(e,n){return void 0===n?t:n}:r;return"string"==typeof e?e:JSON.stringify(v(e,null,null,i),i,"  ")},p.equals=function(e,n){return t.prototype.equals.call(p,e.replace(/,([\r\n])/g,"$1"),n.replace(/,([\r\n])/g,"$1"))};var m=new t;function z(e){var s=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},l=e.split(/\r\n|[\n\v\f\r\x85]/),a=e.match(/\r\n|[\n\v\f\r\x85]/g)||[],i=[],u=0;function n(){var e={};for(i.push(e);u<l.length;){var n=l[u];if(/^(\-\-\-|\+\+\+|@@)\s/.test(n))break;var t=/^(?:Index:|diff(?: -r \w+)+)\s+(.+?)\s*$/.exec(n);t&&(e.index=t[1]),u++}for(o(e),o(e),e.hunks=[];u<l.length;){var r=l[u];if(/^(Index:|diff|\-\-\-|\+\+\+)\s/.test(r))break;if(/^@@/.test(r))e.hunks.push(f());else{if(r&&s.strict)throw new Error("Unknown line "+(u+1)+" "+JSON.stringify(r));u++}}}function o(e){var n=/^(---|\+\+\+)\s+(.*)$/.exec(l[u]);if(n){var t="---"===n[1]?"old":"new",r=n[2].split("\t",2),i=r[0].replace(/\\\\/g,"\\");/^".*"$/.test(i)&&(i=i.substr(1,i.length-2)),e[t+"FileName"]=i,e[t+"Header"]=(r[1]||"").trim(),u++}}function f(){for(var e=u,n=l[u++].split(/@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/),t={oldStart:+n[1],oldLines:+n[2]||1,newStart:+n[3],newLines:+n[4]||1,lines:[],linedelimiters:[]},r=0,i=0;u<l.length&&!(0===l[u].indexOf("--- ")&&u+2<l.length&&0===l[u+1].indexOf("+++ ")&&0===l[u+2].indexOf("@@"));u++){var o=0==l[u].length&&u!=l.length-1?" ":l[u][0];if("+"!==o&&"-"!==o&&" "!==o&&"\\"!==o)break;t.lines.push(l[u]),t.linedelimiters.push(a[u]||"\n"),"+"===o?r++:"-"===o?i++:" "===o&&(r++,i++)}if(r||1!==t.newLines||(t.newLines=0),i||1!==t.oldLines||(t.oldLines=0),s.strict){if(r!==t.newLines)throw new Error("Added line count did not match for hunk at line "+(e+1));if(i!==t.oldLines)throw new Error("Removed line count did not match for hunk at line "+(e+1))}return t}for(;u<l.length;)n();return i}function E(n,t,r){var i=!0,o=!1,s=!1,l=1;return function e(){if(i&&!s){if(o?l++:i=!1,n+l<=r)return l;s=!0}if(!o)return s||(i=!0),t<=n-l?-l++:(o=!0,e())}}function w(e,n){var t=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{};if("string"==typeof n&&(n=z(n)),Array.isArray(n)){if(1<n.length)throw new Error("applyPatch only works with a single input.");n=n[0]}var r,i,s=e.split(/\r\n|[\n\v\f\r\x85]/),o=e.match(/\r\n|[\n\v\f\r\x85]/g)||[],l=n.hunks,a=t.compareLine||function(e,n,t,r){return n===r},u=0,f=t.fuzzFactor||0,d=0,c=0;function h(e,n){for(var t=0;t<e.lines.length;t++){var r=e.lines[t],i=0<r.length?r[0]:" ",o=0<r.length?r.substr(1):r;if(" "===i||"-"===i){if(!a(n+1,s[n],i,o)&&f<++u)return!1;n++}}return!0}for(var p=0;p<l.length;p++){for(var v=l[p],g=s.length-v.oldLines,m=0,w=c+v.oldStart-1,y=E(w,d,g);void 0!==m;m=y())if(h(v,w+m)){v.offset=c+=m;break}if(void 0===m)return!1;d=v.offset+v.oldStart+v.oldLines}for(var x=0,L=0;L<l.length;L++){var S=l[L],k=S.oldStart+S.offset+x-1;x+=S.newLines-S.oldLines,k<0&&(k=0);for(var b=0;b<S.lines.length;b++){var F=S.lines[b],N=0<F.length?F[0]:" ",H=0<F.length?F.substr(1):F,P=S.linedelimiters[b];if(" "===N)k++;else if("-"===N)s.splice(k,1),o.splice(k,1);else if("+"===N)s.splice(k,0,H),o.splice(k,0,P),k++;else if("\\"===N){var C=S.lines[b-1]?S.lines[b-1][0]:null;"+"===C?r=!0:"-"===C&&(i=!0)}}}if(r)for(;!s[s.length-1];)s.pop(),o.pop();else i&&(s.push(""),o.push("\n"));for(var j=0;j<s.length-1;j++)s[j]=s[j]+o[j];return s.join("")}function y(e,n,c,h,t,r,p){p||(p={}),void 0===p.context&&(p.context=4);var v=u(c,h,p);function g(e){return e.map(function(e){return" "+e})}v.push({value:"",lines:[]});for(var m=[],w=0,y=0,x=[],L=1,S=1,i=function(e){var n=v[e],t=n.lines||n.value.replace(/\n$/,"").split("\n");if(n.lines=t,n.added||n.removed){var r;if(!w){var i=v[e-1];w=L,y=S,i&&(x=0<p.context?g(i.lines.slice(-p.context)):[],w-=x.length,y-=x.length)}(r=x).push.apply(r,k(t.map(function(e){return(n.added?"+":"-")+e}))),n.added?S+=t.length:L+=t.length}else{if(w)if(t.length<=2*p.context&&e<v.length-2){var o;(o=x).push.apply(o,k(g(t)))}else{var s,l=Math.min(t.length,p.context);(s=x).push.apply(s,k(g(t.slice(0,l))));var a={oldStart:w,oldLines:L-w+l,newStart:y,newLines:S-y+l,lines:x};if(e>=v.length-2&&t.length<=p.context){var u=/\n$/.test(c),f=/\n$/.test(h),d=0==t.length&&x.length>a.oldLines;!u&&d&&x.splice(a.oldLines,0,"\\ No newline at end of file"),(u||d)&&f||x.push("\\ No newline at end of file")}m.push(a),y=w=0,x=[]}L+=t.length,S+=t.length}},o=0;o<v.length;o++)i(o);return{oldFileName:e,newFileName:n,oldHeader:t,newHeader:r,hunks:m}}function x(e,n,t,r,i,o,s){var l=y(e,n,t,r,i,o,s),a=[];e==n&&a.push("Index: "+e),a.push("==================================================================="),a.push("--- "+l.oldFileName+(void 0===l.oldHeader?"":"\t"+l.oldHeader)),a.push("+++ "+l.newFileName+(void 0===l.newHeader?"":"\t"+l.newHeader));for(var u=0;u<l.hunks.length;u++){var f=l.hunks[u];a.push("@@ -"+f.oldStart+","+f.oldLines+" +"+f.newStart+","+f.newLines+" @@"),a.push.apply(a,f.lines)}return a.join("\n")+"\n"}function L(e,n){if(n.length>e.length)return!1;for(var t=0;t<n.length;t++)if(n[t]!==e[t])return!1;return!0}function S(e){var n=function r(e){var i=0;var o=0;e.forEach(function(e){if("string"!=typeof e){var n=r(e.mine),t=r(e.theirs);void 0!==i&&(n.oldLines===t.oldLines?i+=n.oldLines:i=void 0),void 0!==o&&(n.newLines===t.newLines?o+=n.newLines:o=void 0)}else void 0===o||"+"!==e[0]&&" "!==e[0]||o++,void 0===i||"-"!==e[0]&&" "!==e[0]||i++});return{oldLines:i,newLines:o}}(e.lines),t=n.oldLines,r=n.newLines;void 0!==t?e.oldLines=t:delete e.oldLines,void 0!==r?e.newLines=r:delete e.newLines}function b(e,n){if("string"!=typeof e)return e;if(/^@@/m.test(e)||/^Index:/m.test(e))return z(e)[0];if(!n)throw new Error("Must provide a base reference or pass in a patch");return y(void 0,void 0,n,e)}function F(e){return e.newFileName&&e.newFileName!==e.oldFileName}function N(e,n,t){return n===t?n:(e.conflict=!0,{mine:n,theirs:t})}function H(e,n){return e.oldStart<n.oldStart&&e.oldStart+e.oldLines<n.oldStart}function P(e,n){return{oldStart:e.oldStart,oldLines:e.oldLines,newStart:e.newStart+n,newLines:e.newLines,lines:e.lines}}function C(e,n,t,r,i){var o={offset:n,lines:t,index:0},s={offset:r,lines:i,index:0};for(I(e,o,s),I(e,s,o);o.index<o.lines.length&&s.index<s.lines.length;){var l=o.lines[o.index],a=s.lines[s.index];if("-"!==l[0]&&"+"!==l[0]||"-"!==a[0]&&"+"!==a[0])if("+"===l[0]&&" "===a[0]){var u;(u=e.lines).push.apply(u,k($(o)))}else if("+"===a[0]&&" "===l[0]){var f;(f=e.lines).push.apply(f,k($(s)))}else"-"===l[0]&&" "===a[0]?O(e,o,s):"-"===a[0]&&" "===l[0]?O(e,s,o,!0):l===a?(e.lines.push(l),o.index++,s.index++):A(e,$(o),$(s));else j(e,o,s)}T(e,o),T(e,s),S(e)}function j(e,n,t){var r,i,o=$(n),s=$(t);if(q(o)&&q(s)){var l,a;if(L(o,s)&&M(t,o,o.length-s.length))return void(l=e.lines).push.apply(l,k(o));if(L(s,o)&&M(n,s,s.length-o.length))return void(a=e.lines).push.apply(a,k(s))}else if(i=s,(r=o).length===i.length&&L(r,i)){var u;return void(u=e.lines).push.apply(u,k(o))}A(e,o,s)}function O(e,n,t,r){var i,o=$(n),s=function(e,n){var t=[],r=[],i=0,o=!1,s=!1;for(;i<n.length&&e.index<e.lines.length;){var l=e.lines[e.index],a=n[i];if("+"===a[0])break;if(o=o||" "!==l[0],r.push(a),i++,"+"===l[0])for(s=!0;"+"===l[0];)t.push(l),l=e.lines[++e.index];a.substr(1)===l.substr(1)?(t.push(l),e.index++):s=!0}"+"===(n[i]||"")[0]&&o&&(s=!0);if(s)return t;for(;i<n.length;)r.push(n[i++]);return{merged:r,changes:t}}(t,o);s.merged?(i=e.lines).push.apply(i,k(s.merged)):A(e,r?s:o,r?o:s)}function A(e,n,t){e.conflict=!0,e.lines.push({conflict:!0,mine:n,theirs:t})}function I(e,n,t){for(;n.offset<t.offset&&n.index<n.lines.length;){var r=n.lines[n.index++];e.lines.push(r),n.offset++}}function T(e,n){for(;n.index<n.lines.length;){var t=n.lines[n.index++];e.lines.push(t)}}function $(e){for(var n=[],t=e.lines[e.index][0];e.index<e.lines.length;){var r=e.lines[e.index];if("-"===t&&"+"===r[0]&&(t="+"),t!==r[0])break;n.push(r),e.index++}return n}function q(e){return e.reduce(function(e,n){return e&&"-"===n[0]},!0)}function M(e,n,t){for(var r=0;r<t;r++){var i=n[n.length-t+r].substr(1);if(e.lines[e.index+r]!==" "+i)return!1}return e.index+=t,!0}m.tokenize=function(e){return e.slice()},m.join=m.removeEmpty=function(e){return e},e.Diff=t,e.diffChars=function(e,n,t){return r.diff(e,n,t)},e.diffWords=function(e,n,t){return t=i(t,{ignoreWhitespace:!0}),l.diff(e,n,t)},e.diffWordsWithSpace=function(e,n,t){return l.diff(e,n,t)},e.diffLines=u,e.diffTrimmedLines=function(e,n,t){var r=i(t,{ignoreWhitespace:!0});return a.diff(e,n,r)},e.diffSentences=function(e,n,t){return f.diff(e,n,t)},e.diffCss=function(e,n,t){return d.diff(e,n,t)},e.diffJson=function(e,n,t){return p.diff(e,n,t)},e.diffArrays=function(e,n,t){return m.diff(e,n,t)},e.structuredPatch=y,e.createTwoFilesPatch=x,e.createPatch=function(e,n,t,r,i,o){return x(e,e,n,t,r,i,o)},e.applyPatch=w,e.applyPatches=function(e,o){"string"==typeof e&&(e=z(e));var n=0;!function r(){var i=e[n++];if(!i)return o.complete();o.loadFile(i,function(e,n){if(e)return o.complete(e);var t=w(n,i,o);o.patched(i,t,function(e){if(e)return o.complete(e);r()})})}()},e.parsePatch=z,e.merge=function(e,n,t){e=b(e,t),n=b(n,t);var r={};(e.index||n.index)&&(r.index=e.index||n.index),(e.newFileName||n.newFileName)&&(F(e)?F(n)?(r.oldFileName=N(r,e.oldFileName,n.oldFileName),r.newFileName=N(r,e.newFileName,n.newFileName),r.oldHeader=N(r,e.oldHeader,n.oldHeader),r.newHeader=N(r,e.newHeader,n.newHeader)):(r.oldFileName=e.oldFileName,r.newFileName=e.newFileName,r.oldHeader=e.oldHeader,r.newHeader=e.newHeader):(r.oldFileName=n.oldFileName||e.oldFileName,r.newFileName=n.newFileName||e.newFileName,r.oldHeader=n.oldHeader||e.oldHeader,r.newHeader=n.newHeader||e.newHeader)),r.hunks=[];for(var i=0,o=0,s=0,l=0;i<e.hunks.length||o<n.hunks.length;){var a=e.hunks[i]||{oldStart:1/0},u=n.hunks[o]||{oldStart:1/0};if(H(a,u))r.hunks.push(P(a,s)),i++,l+=a.newLines-a.oldLines;else if(H(u,a))r.hunks.push(P(u,l)),o++,s+=u.newLines-u.oldLines;else{var f={oldStart:Math.min(a.oldStart,u.oldStart),oldLines:0,newStart:Math.min(a.newStart+s,u.oldStart+l),newLines:0,lines:[]};C(f,a.oldStart,a.lines,u.oldStart,u.lines),o++,i++,r.hunks.push(f)}}return r},e.convertChangesToDMP=function(e){for(var n,t,r=[],i=0;i<e.length;i++)t=(n=e[i]).added?1:n.removed?-1:0,r.push([t,n.value]);return r},e.convertChangesToXML=function(e){for(var n=[],t=0;t<e.length;t++){var r=e[t];r.added?n.push("<ins>"):r.removed&&n.push("<del>"),n.push((i=r.value,void 0,i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"))),r.added?n.push("</ins>"):r.removed&&n.push("</del>")}var i;return n.join("")},e.canonicalize=v,Object.defineProperty(e,"__esModule",{value:!0})});
 
