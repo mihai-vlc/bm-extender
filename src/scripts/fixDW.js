@@ -62,6 +62,7 @@
             '<div class="x-admin"></div>',
         '</td>'].join('');
 
+    var $uiWrapper = $('.bm-ui-wrapper');
     var $main = $('#bm_content_column').parent();
     var $sidebar = $(sidebarTemplate);
     var $form = $('<form />').appendTo('body');
@@ -73,7 +74,12 @@
 
     // add the sidebar on the page
     if (!isSidebarDisabled) {
-        $main.prepend($sidebar);
+        if ($uiWrapper.length > 0) {
+            // page has a full width agular application on it
+            $uiWrapper.prepend($sidebar);
+        } else {
+            $main.prepend($sidebar);
+        }
     }
 
     // add the search input in the header
@@ -120,7 +126,7 @@
                 url: '/on/demandware.store/Sites-Site/default/ViewCatalogImpex_52-BrowseImportFiles',
                 name: 'Upload Catalogs'
             });
-            
+
             var subItemsHtml = subItems.map(function (item) {
                 var { name, url } = item;
                 return (`<div class="overview_item_bm">

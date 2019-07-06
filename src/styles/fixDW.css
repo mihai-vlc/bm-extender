@@ -207,6 +207,14 @@
     overflow: auto;
 }
 
+.bm-ui-wrapper {
+  display: flex;
+}
+
+.bm-ui-wrapper .x-sidebar + div[ng-view] {
+  position: relative;
+  opacity: 1;
+}
 
 /**************** Select 2 plugin ****************/
 .select2-container {
