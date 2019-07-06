@@ -27,7 +27,7 @@
 
         renderLogsList();
         $('.js-base-url').html(instanceHost);
-        win.baseUrl = instanceHost;
+        win.baseUrl = 'https://' + instanceHost;
     });
 
 
