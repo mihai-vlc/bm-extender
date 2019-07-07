@@ -11,3 +11,9 @@ Logs
     See if there is a way to intercept the requests to the logs so we cancel the original
     one and instead we load the last X bytes of the file (using the range header).
 
+
+WebDav
+    Add some options to upload files via drag and drop.
+    Add some options to delete files via the web interface.
+    Make the sections of indexOf clickable (like a breadcrumb)
+    Reuse the sorting logic from the logs section.
