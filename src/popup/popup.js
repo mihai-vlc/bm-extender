@@ -68,6 +68,7 @@
     function renderLogsList() {
         var $list = $('.js-loglist');
         var query = $filter.val().toLowerCase();
+        var queryRegex = new RegExp(query, 'i');
         var html = '';
 
         activeLinks.filter(function(link) {
@@ -78,6 +79,11 @@
             })
             .forEach(function (link) {
                 var name = link.split('/').pop();
+
+                if (query) {
+                    name = name.replace(queryRegex, '<strong>$&</strong>');
+                }
+
                 html += '<li><a href="'+link+'">' + name + '</a></li>';
             });
 
