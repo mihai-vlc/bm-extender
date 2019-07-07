@@ -1,0 +1,13 @@
+General navigation
+    Add a list of recently visited sections at the top of the page.
+    Add an option to redirect to the previous section after changing the active site.
+        Example: if I am on coupons and I change the site, I should return to coupons
+
+
+Logs
+    Make file listing the table columns clickable so you can sort by the most recently updated.
+    See if there is a way to detect the file size (maybe a head request) and skip the highlight
+    for large files.
+    See if there is a way to intercept the requests to the logs so we cancel the original
+    one and instead we load the last X bytes of the file (using the range header).
+
