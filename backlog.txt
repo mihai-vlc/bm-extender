@@ -1,7 +1,5 @@
 General navigation
     Add a list of recently visited sections at the top of the page.
-    Add an option to redirect to the previous section after changing the active site.
-        Example: if I am on coupons and I change the site, I should return to coupons
 
 
 Logs
@@ -17,3 +15,6 @@ WebDav
     Add some options to delete files via the web interface.
     Make the sections of indexOf clickable (like a breadcrumb)
     Reuse the sorting logic from the logs section.
+
+Options page
+    Add a nicer notification on the save action.

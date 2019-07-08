@@ -82,7 +82,8 @@
     chrome.storage.sync.get({
         includedDomains: '',
         logsReplaceEscaped: false,
-        disableSidebar: false
+        disableSidebar: false,
+        disableBackgroundSiteChange: false
     }, loadApplication);
 
 })();

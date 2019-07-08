@@ -36,17 +36,28 @@
         });
 
         chrome.storage.sync.set(options, function () {
-            alert('The options were saved')
+            alert('The options were saved');
         });
     }
 
     function getSerializedForm($form) {
         var serializedForm = $form.serializeArray();
         var checkboxes = $form.find('input[type=checkbox]:not(:checked)').map(function() {
-            return {"name": this.name, "value": false}
+            return {"name": this.name, "value": false};
         }).get();
 
-        serializedForm = serializedForm.concat(checkboxes);
+        serializedForm = serializedForm.concat(checkboxes).map(function (field) {
+            var value = field.value;
+
+            if (value === 'true' || value === 'false') {
+                value = Boolean(value);
+            }
+
+            return {
+                name: field.name,
+                value: value
+            };
+        });
 
         return serializedForm;
     }
@@ -54,7 +65,8 @@
     chrome.storage.sync.get({
         includedDomains: '',
         logsReplaceEscaped: false,
-        disableSidebar: false
+        disableSidebar: false,
+        disableBackgroundSiteChange: false
     }, loadApplication);
 
 })();

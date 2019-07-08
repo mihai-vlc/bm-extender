@@ -248,8 +248,9 @@
 
     initializeTextAreaDiff();
 
-    initializeBackgroundSiteChange();
-
+    if (!appOptions.disableBackgroundSiteChange) {
+        initializeBackgroundSiteChange();
+    }
 
     /**
      * Helper functions
