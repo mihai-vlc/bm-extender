@@ -26,7 +26,7 @@
 
     var appOptions = $('#bm-extender-app-options').data('options');
 
-    // if we are updateing the BM modules clear the session in order to
+    // if we are updating the BM modules clear the session in order to
     // keep the navigation updated
     var path = location.pathname;
     if (path.indexOf("ViewACL-BM") > -1 || path.indexOf("ViewACL-Dispatch") > -1) {
@@ -205,7 +205,8 @@
     fillExportField();
 
 
-    // attach the xbm-x-dw class
+    // This css class is used for activating the CSS styles on the
+    // custom elements on the page (sidebar and search box)
     $('body').addClass('xbm-x-dw');
 
     makeStickyButtons();
@@ -226,12 +227,10 @@
     });
 
     // keep the session active
-    if ($('.header--Sandbox').length) {
-        setInterval(function () {
-            // dummy request
-            $.get(adminMenuURL);
-        }, 600000); // every 10 min
-    }
+    setInterval(function () {
+        // dummy request
+        $.get(adminMenuURL);
+    }, 600000); // every 10 min
 
 
     // fix the table layout
@@ -248,6 +247,8 @@
     $('select:not(.dropdown,.dropwown,[onfocus],[onchange])').select2();
 
     initializeTextAreaDiff();
+
+    initializeBackgroundSiteChange();
 
 
     /**
@@ -607,6 +608,34 @@
             return url;
         } else {
             return url;
+        }
+    }
+
+    /**
+     * Performs the site change via an ajax request and reloads the current page
+     * in order to stay on the same page and avoid unecessary clicks.
+     */
+    function initializeBackgroundSiteChange() {
+        var $siteSelect = $('#SelectedSiteID');
+        $siteSelect.attr('onchange', '');
+
+        $siteSelect.on('change', function (e) {
+            var $form = $siteSelect.closest('form');
+            $.post($form.attr('action'), $form.serialize()).then(function() {
+                relaodAsGet();
+            });
+        });
+    }
+
+    // reload as a GET request
+    function relaodAsGet() {
+        // angular UI keeps the current page in the URL hash
+        // we know that that inial page load was a get
+        if (window.location.href.indexOf('#')) {
+            window.location.reload();
+        } else {
+            // avoid resubmitting the forms
+            window.location.href = window.location.href;
         }
     }
 
