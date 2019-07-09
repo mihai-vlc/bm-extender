@@ -1,6 +1,5 @@
 General navigation
-    Add a list of recently visited sections at the top of the page.
-
+    Fix the recent links validation for angular ui pages.
 
 Logs
     Make file listing the table columns clickable so you can sort by the most recently updated.
