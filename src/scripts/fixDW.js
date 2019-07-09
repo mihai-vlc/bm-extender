@@ -5,6 +5,7 @@
  * Apr 2015
  */
 
+/*jshint esversion: 6 */
 
 (function ($) {
 
@@ -139,7 +140,7 @@
             }).join('\n');
             $sidebar.find('.x-site').find('[data-automation="prod-cat_catalogs"]').append(`
                 <div class="menu_items_bm">${subItemsHtml}</div>
-            `)
+            `);
         });
     });
 
@@ -179,6 +180,9 @@
 
         searchData.push.apply(searchData, getSpecialSearchData());
         $searchInput.removeAttr('disabled');
+
+        trackRecentlyViewedSections(searchData);
+        renderRecentlyViewedSections();
     });
 
     // load the autocomplete plugin
@@ -638,6 +642,47 @@
             // avoid resubmitting the forms
             window.location.href = window.location.href;
         }
+    }
+
+    /**
+     * Keeps track of the BM sections visited recently.
+     */
+    function trackRecentlyViewedSections() {
+        var currentPage = window.location.href;
+        var lastSections = [];
+
+        // TODO extract this into a function
+        try {
+            lastSections = JSON.parse(localStorage.getItem('bm_extender_last_pages') || '[]');
+        } catch (e) {
+            localStorage.setItem('bm_extender_last_pages', '[]');
+        }
+
+        searchData.filter(x => x.url).forEach(function (page) {
+            if (currentPage.indexOf(page.url) > -1) {
+                if (lastSections.filter(x => x.url == page.url).length) {
+                    return;
+                }
+
+                lastSections.push({
+                    label: $.trim(page.value),
+                    url: page.url
+                });
+            }
+        });
+
+        lastSections = lastSections.slice(-5);
+
+        localStorage.setItem('bm_extender_last_pages', lastSections.toJSON());
+
+        console.log("last sections", lastSections);
+    }
+
+    /**
+     * Renders a navigation links at the top of the page with the visited links
+     */
+    function renderRecentlyViewedSections() {
+
     }
 
 })(jQuery);
