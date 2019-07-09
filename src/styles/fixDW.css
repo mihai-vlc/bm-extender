@@ -207,6 +207,16 @@
     overflow: auto;
 }
 
+.xbm-x-dw .bm-recent-links {
+
+}
+
+.xbm-x-dw .bm-recent-links a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
 .bm-ui-wrapper {
   display: flex;
 }

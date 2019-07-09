@@ -649,14 +649,7 @@
      */
     function trackRecentlyViewedSections() {
         var currentPage = window.location.href;
-        var lastSections = [];
-
-        // TODO extract this into a function
-        try {
-            lastSections = JSON.parse(localStorage.getItem('bm_extender_last_pages') || '[]');
-        } catch (e) {
-            localStorage.setItem('bm_extender_last_pages', '[]');
-        }
+        var lastSections = getLastVisitedSections();
 
         searchData.filter(x => x.url).forEach(function (page) {
             if (currentPage.indexOf(page.url) > -1) {
@@ -673,16 +666,57 @@
 
         lastSections = lastSections.slice(-5);
 
-        localStorage.setItem('bm_extender_last_pages', lastSections.toJSON());
+        // becuase on standard old BM pages `toJSON` is defined
+        // on the array protorype which causes the data to be
+        // stirngified twice
+        if (lastSections.toJSON) {
+            jsonSections = lastSections.toJSON();
+        } else {
+            jsonSections = JSON.stringify(lastSections);
+        }
 
-        console.log("last sections", lastSections);
+        localStorage.setItem('bm_extender_last_pages', jsonSections);
     }
 
     /**
      * Renders a navigation links at the top of the page with the visited links
      */
     function renderRecentlyViewedSections() {
+        var lastSections = getLastVisitedSections();
 
+        if (lastSections.length) {
+            var linksHtml = lastSections.map(page => {
+                return `<a href="${page.url}">${page.label}</a>`;
+            }).join(' | ');
+
+
+            if ($('#bm_header_row').length) {
+                $('#bm_header_row').after(`
+                    <tr class="bm-recent-links">
+                        <td colspan="9">${linksHtml}</td>
+                    </tr>
+                `);
+            } else {
+                $uiWrapper.before(`
+                    <div class="bm-recent-links">
+                        ${linksHtml}
+                    </div>
+                `);
+            }
+        }
+
+    }
+
+    function getLastVisitedSections() {
+        var lastSections = [];
+        try {
+            lastSections = JSON.parse(localStorage.getItem('bm_extender_last_pages') || '[]');
+        } catch (e) {
+            console.error(e);
+            localStorage.setItem('bm_extender_last_pages', '[]');
+        }
+
+        return lastSections;
     }
 
 })(jQuery);
