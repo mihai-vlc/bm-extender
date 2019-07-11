@@ -48,6 +48,9 @@
     var siteMenu = getData(siteMenuURL, key + 'site');
     var adminMenu = getData(adminMenuURL, key + 'admin');
     var catalogsMenu = getCatalogsList();
+    var $uiWrapper = $('.bm-ui-wrapper');
+    var $main = $('#bm_content_column').parent();
+    var isAngularUiPage = ($uiWrapper.length > 0);
 
     var searchTemplate = [
         '<div class="x-search">',
@@ -55,16 +58,14 @@
         '</div>'].join('');
 
     var sidebarTemplate = [
-        '<td class="x-sidebar">',
+        `<${isAngularUiPage ? 'div' : 'td'} class="x-sidebar">`,
             searchTemplate,
             '<h4>Site - <b class="x-site-name"></b></h4>',
             '<div class="x-site"></div>',
             '<h4>Administration</h4>',
             '<div class="x-admin"></div>',
-        '</td>'].join('');
+        `</${isAngularUiPage ? 'div' : 'td'}>`].join('');
 
-    var $uiWrapper = $('.bm-ui-wrapper');
-    var $main = $('#bm_content_column').parent();
     var $sidebar = $(sidebarTemplate);
     var $form = $('<form />').appendTo('body');
     var $searchInput;
@@ -75,8 +76,7 @@
 
     // add the sidebar on the page
     if (!isSidebarDisabled) {
-        if ($uiWrapper.length > 0) {
-            // page has a full width agular application on it
+        if (isAngularUiPage) {
             $uiWrapper.prepend($sidebar);
         } else {
             $main.prepend($sidebar);
@@ -635,7 +635,7 @@
     // reload as a GET request
     function relaodAsGet() {
         // angular UI keeps the current page in the URL hash
-        // we know that that inial page load was a get
+        // in this case we know that the inial page load was a get
         if (window.location.href.indexOf('#')) {
             window.location.reload();
         } else {
@@ -682,7 +682,7 @@
             });
         });
 
-        lastSections = lastSections.slice(-5);
+        lastSections = lastSections.slice(-7);
 
         // becuase on standard old BM pages `toJSON` is defined
         // on the array protorype which causes the data to be
