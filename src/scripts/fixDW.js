@@ -649,19 +649,37 @@
      */
     function trackRecentlyViewedSections() {
         var currentPage = window.location.href;
+        var currentHashPage = window.location.hash;
         var lastSections = getLastVisitedSections();
 
         searchData.filter(x => x.url).forEach(function (page) {
-            if (currentPage.indexOf(page.url) > -1) {
-                if (lastSections.filter(x => x.url == page.url).length) {
-                    return;
-                }
+            var savePage = false;
 
-                lastSections.push({
-                    label: $.trim(page.value),
-                    url: page.url
-                });
+            if (currentPage.indexOf(page.url) > -1) {
+                savePage = true;
+            } else if (page.url.indexOf('ViewApplication-BM') > -1) {
+                // these are angular UI pages and the path is stored
+                // in the URL hash for their router
+                var url = new URL(page.url);
+                var screen = url.searchParams.get('screen');
+                if (currentHashPage.indexOf(screen) > -1) {
+                    savePage = true;
+                }
             }
+
+            if (!savePage) {
+                return;
+            }
+
+            var pageAlreadyStored = (lastSections.filter(x => x.url == page.url).length > 0);
+            if (pageAlreadyStored) {
+                return;
+            }
+
+            lastSections.push({
+                label: $.trim(page.value),
+                url: page.url
+            });
         });
 
         lastSections = lastSections.slice(-5);
@@ -707,6 +725,9 @@
 
     }
 
+    /**
+     * Returns the list of recetly visited pages from local storage.
+     */
     function getLastVisitedSections() {
         var lastSections = [];
         try {
