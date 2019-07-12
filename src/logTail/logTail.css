@@ -7,3 +7,8 @@ html, body {
 .container {
 	padding: 5px 10px;
 }
+
+body pre.language-log {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
