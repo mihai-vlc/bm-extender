@@ -1,4 +1,3 @@
-/*global Vue*/
 (function () {
 
     function loadApplication(appOptions) {

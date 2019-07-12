@@ -1,4 +1,6 @@
-var baseIrl = null;
+var baseUrl = null;
+var onLogTailHandle;
+
 var background = {
     pagePort: null,
     init: function () {
@@ -58,9 +60,13 @@ var background = {
 
     setLogTail: function (response) {
         publish('onLogTail', [response]);
+        // @workaround, we need to find a better way of dealing
+        // with this communication between the main page and
+        // the popups
+        unsubscribe(onLogTailHandle);
     },
 
-    getLogTail: function (url, cb) {
+    getLogTail: function (url, size, cb) {
         if (!background.pagePort) {
             return;
         }
@@ -69,11 +75,12 @@ var background = {
             background.pagePort.postMessage({
                 fn: 'fetchLogTail',
                 data: {
-                    url: url
+                    url: url,
+                    size: size
                 }
             });
 
-            subscribe('onLogTail', cb);
+            onLogTailHandle = subscribe('onLogTail', cb);
         } catch (e) {
             cb(e);
         }

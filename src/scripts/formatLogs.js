@@ -5,7 +5,7 @@
         return;
     }
 
-    var appOptions = $('#bm-extender-app-options').data('options');
+    var appOptions = $('#bm-extender-app-options').data('options') || {};
 
     var text = $el.html();
 
