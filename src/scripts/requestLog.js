@@ -1,6 +1,6 @@
 (function () {
 
-    var url = 'https://' + window.location.host + '/on/demandware.servlet/webdav/Sites/Logs';
+    var logsPageUrl = 'https://' + window.location.host + '/on/demandware.servlet/webdav/Sites/Logs';
 
 
     var port = chrome.runtime.connect({name: "reqLog"});
@@ -15,13 +15,19 @@
             });
         }
 
+        if (msg.fn == 'fetchLogTail') {
+            getLogTail(msg.data.url, function (response) {
+                port.postMessage({
+                    fn: 'setLogTail',
+                    data: [response]
+                });
+            });
+        }
     });
-
-
 
     function getLinks(callback) {
         $.ajax({
-            url: url,
+            url: logsPageUrl,
             success: function (data) {
                 var d = new Date();
                 d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
@@ -44,6 +50,9 @@
     }
 
 
+    function getLogTail(url, callback) {
+        callback(123);
+    }
 
 })();
 

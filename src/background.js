@@ -54,6 +54,29 @@ var background = {
         }
 
         subscribe('onLinks', cb);
+    },
+
+    setLogTail: function (response) {
+        publish('onLogTail', [response]);
+    },
+
+    getLogTail: function (url, cb) {
+        if (!background.pagePort) {
+            return;
+        }
+
+        try {
+            background.pagePort.postMessage({
+                fn: 'fetchLogTail',
+                data: {
+                    url: url
+                }
+            });
+
+            subscribe('onLogTail', cb);
+        } catch (e) {
+            cb(e);
+        }
     }
 };
 

@@ -40,6 +40,12 @@
             return;
         }
 
+
+        if ($(this).hasClass('js-open-tail-window')) {
+            openTailLogWindow(this.href);
+            return;
+        }
+
         if ($(this).hasClass('js-base-link') && win.baseUrl) {
             url = win.baseUrl + this.pathname;
         } else {
@@ -84,7 +90,10 @@
                     name = name.replace(queryRegex, '<strong>$&</strong>');
                 }
 
-                html += '<li><a href="'+link+'">' + name + '</a></li>';
+                html += `<li>
+                     <a href="${link}">${name}</a> |
+                     <a href="${link}" class="js-open-tail-window">tail</a>
+                   </li>`;
             });
 
         $list.html(html);
@@ -98,6 +107,24 @@
                 url: chrome.runtime.getURL('options.html')
             });
         }
+    }
+
+    function openTailLogWindow(logPath) {
+        var w = 1200;
+        var h = 800;
+        var left = (screen.width/2)-(w/2);
+        var top = (screen.height/2)-(h/2);
+        var url = new URL(chrome.runtime.getURL('logTail/logTail.html'));
+        url.searchParams.append('logPath', logPath);
+
+        chrome.windows.create({
+            'url': url.toString(),
+            'type': 'popup',
+            'width': w,
+            'height': h,
+            'left': left,
+            'top': top
+        });
     }
 
     function renderExtensionVersion(manifestData) {

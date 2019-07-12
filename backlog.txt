@@ -1,10 +1,10 @@
 General navigation
-    Fix the recent links validation for angular ui pages.
 
 Logs
     Make file listing the table columns clickable so you can sort by the most recently updated.
     See if there is a way to detect the file size (maybe a head request) and skip the highlight
     for large files.
+        Maybe we can add a new link in the popup that will show a new window including only the latest logs.
     See if there is a way to intercept the requests to the logs so we cancel the original
     one and instead we load the last X bytes of the file (using the range header).
 
@@ -17,3 +17,6 @@ WebDav
 
 Options page
     Add a nicer notification on the save action.
+
+
+
