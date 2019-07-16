@@ -46,6 +46,18 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.7.0
+    - Implements the log tail functionality
+    - Fixes the wrapping element for the sidebar on angular ui pages
+    - Adds the last section teacking logic for the angularUI pages
+    - Adds the initial version of the most recently visited links
+    - Adds the initial structure for tracking the visited pages
+    - Adds a configuration option to disable the site backhround change
+    - Adds the background site change functionality.
+    - Updates the links in the popup header. 
+    - Adds the search highlight
+
+
 - 1.6.0
     - Adds the current version and the Report issues link the popup page
     - Fixes the initialization of the JsDiff plugin, upgraded the plugin to v4
