@@ -29,8 +29,8 @@
     var newLogsPattern = new RegExp('(\\[' + year + '-' + month + '-' +
             day + ' ' + hour + ':(' + minutesPattern + '):\\d+\.\\d+ GMT\\])', 'gm');
 
-    text = text.replace(/(^\[.+?\])/gm, '</div><div class="section"><b class="token selector block-separator italic">$1</b>');
-    text = text.replace(newLogsPattern, '(NEW) <b class="token number">$1</b>');
+    text = text.replace(/(^\[.+?\])/gm, '</div><div class="section"><b class="token selector block-separator italic"> $1 </b>');
+    text = text.replace(newLogsPattern, '(NEW) <b class="token number"> $1 </b>');
     text = text.replace(/(WARN|warning|DEBUG|INFO)/gm, '<b class="token important italic">$1</b>');
     text = text.replace(/(ERROR)/gm, '<b class="token danger italic">$1</b>');
     text = text.replace(/(Sites\-([\w-]+)?Site)/gm, '<b class="token keyword italic">$1</b>');
