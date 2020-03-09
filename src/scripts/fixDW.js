@@ -8,6 +8,9 @@
 /*jshint esversion: 6 */
 
 (function ($) {
+    if (!$) {
+        return;
+    }
 
     var Storage = {
         setItem: function (key, value) {
@@ -252,9 +255,6 @@
 
     initializeTextAreaDiff();
 
-    if (!appOptions.disableBackgroundSiteChange) {
-        initializeBackgroundSiteChange();
-    }
 
     /**
      * Helper functions
@@ -616,33 +616,6 @@
         }
     }
 
-    /**
-     * Performs the site change via an ajax request and reloads the current page
-     * in order to stay on the same page and avoid unecessary clicks.
-     */
-    function initializeBackgroundSiteChange() {
-        var $siteSelect = $('#SelectedSiteID');
-        $siteSelect.attr('onchange', '');
-
-        $siteSelect.on('change', function (e) {
-            var $form = $siteSelect.closest('form');
-            $.post($form.attr('action'), $form.serialize()).then(function() {
-                relaodAsGet();
-            });
-        });
-    }
-
-    // reload as a GET request
-    function relaodAsGet() {
-        // angular UI keeps the current page in the URL hash
-        // in this case we know that the inial page load was a get
-        if (window.location.href.indexOf('#')) {
-            window.location.reload();
-        } else {
-            // avoid resubmitting the forms
-            window.location.href = window.location.href;
-        }
-    }
 
     /**
      * Keeps track of the BM sections visited recently.
@@ -740,5 +713,5 @@
         return lastSections;
     }
 
-})(jQuery);
+})(window.jQuery);
 
