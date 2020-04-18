@@ -48,7 +48,8 @@ Pull requests are welcomed.
 ## Release notes
 - 1.7.5
     - Restricted permissions to the active tab and the SFCC urls to match the new 
-    chrome web store review process. 
+    chrome web store review process. #3
+    - Fixes the logs view conflict with other chrome extensions. #2
 
 - 1.7.0
     - Implements the log tail functionality
