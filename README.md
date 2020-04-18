@@ -46,6 +46,10 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.7.5
+    - Restricted permissions to the active tab and the SFCC urls to match the new 
+    chrome web store review process. 
+
 - 1.7.0
     - Implements the log tail functionality
     - Fixes the wrapping element for the sidebar on angular ui pages
