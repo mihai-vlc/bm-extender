@@ -46,6 +46,8 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.7.6
+    - Updates the URL pattern to allow support for custom domains on the staging instance.
 - 1.7.5
     - Restricted permissions to the active tab and the SFCC urls to match the new 
     chrome web store review process. #3
