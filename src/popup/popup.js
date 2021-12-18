@@ -68,7 +68,7 @@
     });
 
     function isDWUrl(url) {
-        return url.indexOf('.demandware.net/') > -1;
+        return location.pathname.indexOf('on/demandware.store/Sites-Site') > -1;
     }
 
     function renderLogsList() {
