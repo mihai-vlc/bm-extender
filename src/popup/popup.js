@@ -92,7 +92,7 @@
 
                 html += `<li>
                      <a href="${link}">${name}</a> |
-                     <a href="${link}" class="js-open-tail-window">tail</a>
+                     <a href="${link}" class="js-open-tail-window text-bold">tail</a>
                    </li>`;
             });
 

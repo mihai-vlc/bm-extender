@@ -1,5 +1,5 @@
 body {
-    min-width: 450px;
+    min-width: 550px;
     line-height: 1.5;
     font-size: 14px;
 }
@@ -7,6 +7,10 @@ body {
 .enable-box {
     line-height: 2em;
     font-size: 15px;
+}
+
+.text-bold {
+    font-weight: bold;
 }
 
 .inline-list {
@@ -23,6 +27,16 @@ body {
     padding-right: 10px;
 }
 
+.fixed-list {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 5px 10px;
+    border-top: 1px solid #ccc;
+}
+
 .log-filter {
     padding: 5px;
     width: 275px;
@@ -30,6 +44,6 @@ body {
 
 .log-list {
     margin: 10px 0;
-    padding: 0 0 0 20px;
+    padding: 0 0 40px 20px;
 }
 

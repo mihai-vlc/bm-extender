@@ -1,7 +1,7 @@
 (function ($) {
     var win = chrome.extension.getBackgroundPage();
     var pageUrl = new URL(window.location.href);
-    var logSize = 10000;
+    var logSize = 20000;
     var logPath = pageUrl.searchParams.get('logPath');
 
 	win.background.getLogTail(logPath, logSize, handleLogLoaded);
@@ -11,7 +11,7 @@
 
     $('.js-load-more').on('click', function (e) {
     	e.preventDefault();
-    	logSize = logSize + 10000;
+    	logSize = logSize + 20000;
 
     	win.background.getLogTail(logPath, logSize, handleLogLoaded);
     });
