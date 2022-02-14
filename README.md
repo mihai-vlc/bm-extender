@@ -46,6 +46,11 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.8.0
+    - Updated the layout of the popup to make it wider
+    - Increased the size of the log tail
+    - Added the link to the unofficial SFCC site
+
 - 1.7.6
     - Updates the URL pattern to allow support for custom domains on the staging instance.
 - 1.7.5
