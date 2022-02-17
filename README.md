@@ -46,6 +46,9 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.8.1
+    - Fixes the compatibility with the new BM menu layout
+
 - 1.8.0
     - Updated the layout of the popup to make it wider
     - Increased the size of the log tail
