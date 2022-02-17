@@ -80,7 +80,7 @@
     // add the sidebar on the page
     if (!isSidebarDisabled) {
         if (isAngularUiPage) {
-            $uiWrapper.prepend($sidebar);
+            // $uiWrapper.prepend($sidebar);
         } else {
             $main.prepend($sidebar);
         }
