@@ -189,7 +189,7 @@
         $searchInput.removeAttr('disabled');
 
         trackRecentlyViewedSections(searchData);
-        renderRecentlyViewedSections();
+        // renderRecentlyViewedSections();
     });
 
     // load the autocomplete plugin
