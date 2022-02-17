@@ -24,7 +24,7 @@
 
     // perform the requests for the navigation only
     // if the user is logged in
-    if ( ! $('.loggedin').length) {
+    if ( ! $('.loggedin, #NotificationsHeaderLink').length) {
         return;
     }
 
@@ -87,7 +87,11 @@
     }
 
     // add the search input in the header
-    $('.menu.storelink').last().after(searchTemplate);
+    if ($('ul.bm-site-navigation-menus').length > 0) {
+        $('ul.bm-site-navigation-menus').parent().append(searchTemplate);
+    } else {
+        $('.menu.storelink').last().after(searchTemplate);
+    }
 
     $searchInput = $('.x-search-input');
 
