@@ -42,7 +42,7 @@
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
     var isSidebarDisabled = (appOptions.disableSidebar === true);
-    var isDarkModeBm= (appOptions.darkModeBm === true);
+    var isDarkModeBm = (appOptions.darkModeBm === true);
 
     var searchData = [];
 
