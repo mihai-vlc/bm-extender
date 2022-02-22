@@ -41,7 +41,8 @@
     var url = location.protocol + '//' + location.host;
     var siteID = $('#SelectedSiteID option[selected]:last').html();
     var key = 'dwre-sidebar-' + location.host + siteID;
-    var isSidebarDisabled = (appOptions.disableSidebar == 'true');
+    var isSidebarDisabled = (appOptions.disableSidebar === true);
+    var isDarkModeBm= (appOptions.darkModeBm === true);
 
     var searchData = [];
 
@@ -84,6 +85,11 @@
         } else {
             $main.prepend($sidebar);
         }
+    }
+
+    // enable dark mode BM
+    if (isDarkModeBm) {
+        document.querySelector("html").style.filter = "invert(1) hue-rotate(.5turn)";
     }
 
     // add the search input in the header
