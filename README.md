@@ -16,6 +16,7 @@ A chrome extension that adds custom functionality to the DW BM.
 - keep the session active
 - small layout fixes
 - update the page title with more useful information
+- dark mode (enabled from options menu)
 
 
 ### Popup functionality
@@ -46,6 +47,10 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.9.0
+    - Adds support for the dark mode.
+    The dark mode can be enabled from the options page.
+
 - 1.8.1
     - Fixes the compatibility with the new BM menu layout
 
