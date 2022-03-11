@@ -12,6 +12,13 @@
     font-size: 14px;
 }
 
+.xbm-x-dw .header__site-switcher__instance .slds-badge {
+  height: auto;
+  border-radius: 5px;
+  font-size: 25px;
+  padding: 5px 30px;
+}
+
 .xbm-x-dw .x-sidebar .content {
     width: auto;
 }
