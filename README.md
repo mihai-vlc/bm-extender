@@ -47,6 +47,9 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.10.0
+    - Increases the font size for the site badge
+
 - 1.9.0
     - Adds support for the dark mode.
     The dark mode can be enabled from the options page.
