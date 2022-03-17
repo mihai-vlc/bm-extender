@@ -265,6 +265,8 @@
 
     initializeTextAreaDiff();
 
+    // Make the header background the same color as the instance type color
+    $(".slds-grid_align-spread, .slds-grid--align-spread").css("background-color", $(".slds-badge").css('background-color'));
 
     /**
      * Helper functions
