@@ -103,7 +103,7 @@
 
     // attach the data grabbed from the request to the sidebar
     // and remove the title attribute from all the elements
-    siteMenu.then(function (data) {
+    siteMenu = siteMenu.then(function (data) {
         $sidebar.find('.x-site')
             .append(data)
             .find('[title]')
@@ -116,7 +116,7 @@
             });
 
         // append the list of catalogs
-        catalogsMenu.then(function (catalogs) {
+        catalogsMenu = catalogsMenu.then(function (catalogs) {
             var subItems = [
                 {
                     url: '/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-SearchStart',
@@ -157,7 +157,7 @@
         });
     });
 
-    adminMenu.then(function (data) {
+    adminMenu = adminMenu.then(function (data) {
         $sidebar.find('.x-admin')
             .append(data)
             .find('[title]')
