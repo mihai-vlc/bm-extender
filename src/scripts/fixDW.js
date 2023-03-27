@@ -116,7 +116,7 @@
             });
 
         // append the list of catalogs
-        catalogsMenu = catalogsMenu.then(function (catalogs) {
+        return catalogsMenu.then(function (catalogs) {
             var subItems = [
                 {
                     url: '/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-SearchStart',

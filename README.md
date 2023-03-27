@@ -47,6 +47,9 @@ Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you fi
 Pull requests are welcomed.
 
 ## Release notes
+- 1.11.2
+    - Fixes the loading of the search menu elements
+
 - 1.11.0
     - Updates the styles for the BM badge.
 
