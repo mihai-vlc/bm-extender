@@ -47,6 +47,12 @@ Please open an [issue](https://github.com/mihai-vlc/bm-extender/issues) if you f
 Pull requests are welcomed.
 
 ## Release notes
+- 2.0.0
+    - Upgrade to manifest V3
+    - Adds linting and types
+    - Improves the message handling for the request logs
+    - Fixes the autocomplete selection for the reports and dashboards
+
 - 1.11.2
     - Fixes the loading of the search menu elements
 
