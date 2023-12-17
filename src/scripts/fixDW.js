@@ -185,6 +185,7 @@
             searchData.push({
                 value: $(this).text().trim(),
                 url: $(this).attr('href'),
+                classNames: $(this).attr('class'),
                 data: {
                     category: cat
                 }
@@ -208,6 +209,12 @@
 
             if ($.isFunction(suggestion.onSelect)) {
                 suggestion.onSelect.call(this);
+                return;
+            }
+
+            if (!suggestion.url || suggestion.url == 'javascript: void 0;') {
+                const classNames = suggestion.classNames.split(' ').map(v => '.'+v).join("");
+                $('.x-sidebar ' + classNames).click();
                 return;
             }
 
