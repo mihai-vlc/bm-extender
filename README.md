@@ -43,7 +43,7 @@ mode -> Load unpacked extension -> select the `src/` folder for this repo
 - Change the code and test it in the browser.
 
 ## Contributions
-Please open an [issue](https://github.com/ionutvmi/bm-extender/issues) if you find any problems.  
+Please open an [issue](https://github.com/mihai-vlc/bm-extender/issues) if you find any problems.  
 Pull requests are welcomed.
 
 ## Release notes

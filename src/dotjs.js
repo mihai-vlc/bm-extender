@@ -1,26 +1,11 @@
 (function () {
-    /*global chrome*/
 
     function loadApplication(appOptions) {
 
-        var appendScript = function(path, cb) {
-            initializeOptions(appOptions);
-            var xhr = new XMLHttpRequest();
-            xhr.onload = function(){
-                eval(this.responseText); // jshint ignore:line
-                if (cb) {
-                    cb();
-                }
-            };
-
-            xhr.open('GET', chrome.extension.getURL(path));
-            xhr.send();
-        };
-
-        var appendScriptInDocument = function(path, cb){
+        var appendScriptInDocument = function (path, cb) {
             initializeOptions(appOptions);
             var script = document.createElement('script');
-            script.src = chrome.extension.getURL(path);
+            script.src = chrome.runtime.getURL(path);
             script.onload = cb || $.noop;
             document.body.appendChild(script);
         };
@@ -28,7 +13,7 @@
         var appendStyle = function (path) {
             var defaultStyle = document.createElement('link');
             defaultStyle.rel = 'stylesheet';
-            defaultStyle.href = chrome.extension.getURL(path);
+            defaultStyle.href = chrome.runtime.getURL(path);
             document.head.appendChild(defaultStyle);
         };
 
@@ -40,18 +25,25 @@
                 appendScriptInDocument('scripts/fixDW.js');
             });
             appendStyle('styles/fixDW.css');
-            appendScript('scripts/requestLog.js');
-
+            loadContentScript('scripts/requestLog.js');
         } else if (isStorefrontSite(includedDomains)) {
             // on the storefront
-            appendScript('scripts/requestLog.js');
-
+            loadContentScript('scripts/requestLog.js');
         } else if (location.pathname.indexOf('on/demandware.servlet/webdav/Sites/Logs/') > -1) {
             // on the logs page
-            appendScript('scripts/formatLogs.js');
+            loadContentScript('scripts/formatLogs.js');
             appendStyle('styles/highlighter.css');
         }
     }
+
+
+    function loadContentScript(scriptPath) {
+        chrome.runtime.sendMessage({
+            type: "loadContentScript",
+            scriptPath: scriptPath
+        });
+    }
+
 
     function isStorefrontSite(includedDomains) {
         if (location.pathname.indexOf('on/demandware.store/Sites-') > -1) {
@@ -84,6 +76,7 @@
         logsReplaceEscaped: false,
         disableSidebar: false,
         darkModeBm: false
-    }, loadApplication);
+    })
+        .then(loadApplication);
 
 })();

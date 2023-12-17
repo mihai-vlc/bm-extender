@@ -1,9 +1,0 @@
-{
-  "globals": {
-  	"Vue"
-  },
-  "env": {
-    "browser": true,
-  },
-  "parser": "babel-eslint"
-}

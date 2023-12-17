@@ -174,7 +174,7 @@
     // enable the seach input and extract the search data for the
     // autocomplete plugin
     $.when(siteMenu, adminMenu, catalogsMenu).done(function () {
-        $sidebar.find('a').each(function(i) {
+        $sidebar.find('a').each(function() {
             var $t = $(this);
             var cat = '';
             var $parent = $t.closest('.menu_items_bm');
@@ -590,6 +590,7 @@
         $('.bm-diff-window').on('input', 'textarea', processDiff);
 
         function processDiff() {
+            /*global Diff*/
             var text1 = $('.js-bm-diff-text1').val();
             var text2 = $('.js-bm-diff-text2').val();
             var $fragment = $(document.createDocumentFragment());
@@ -669,9 +670,10 @@
 
         lastSections = lastSections.slice(-7);
 
+        let jsonSections;
         // becuase on standard old BM pages `toJSON` is defined
         // on the array protorype which causes the data to be
-        // stirngified twice
+        // stringified twice
         if (lastSections.toJSON) {
             jsonSections = lastSections.toJSON();
         } else {
@@ -684,6 +686,7 @@
     /**
      * Renders a navigation links at the top of the page with the visited links
      */
+    // eslint-disable-next-line no-unused-vars
     function renderRecentlyViewedSections() {
         var lastSections = getLastVisitedSections();
 

@@ -1,34 +1,45 @@
-(function () {
-    /*global chrome */
-    var win = chrome.extension.getBackgroundPage();
-    var manifestData = chrome.runtime.getManifest();
-    var $filter = $('.js-filter-logs');
-    var activeLinks = [];
+(async function () {
+    var $filterInput = $('.js-filter-logs');
+    let logsData = null;
+    let sfccTabData = null;
 
-    renderExtensionVersion(manifestData);
+    renderExtensionVersion();
 
-    // we send and save the url on the background page window so it will always
-    // remember the last demandware url visited
-    chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
-        if (! isDWUrl(tabs[0].url)) {
+    try {
+        // last accessed SFCC tab
+        sfccTabData = await chrome.runtime.sendMessage({ type: "getSFCCTabData" });
+
+        if (!sfccTabData || !sfccTabData.id) {
+            $('.js-loglist').html(`<li>No active SFCC tab found</li>`);
             return;
         }
 
-        var a = document.createElement("a");
-        a.href = tabs[0].url;
-        win.baseUrl = 'https://' + a.hostname;
-    });
+        logsData = await chrome.tabs.sendMessage(sfccTabData.id, {
+            type: "getLogsData"
+        });
 
 
-    // list the log files from the current date
-    // the links are retrived from the requestLog via the background page
-    win.background.getLinks(function (links, instanceHost) {
-        activeLinks = links;
+        if (!logsData) {
+            $('.js-loglist').html(`<li>No logs found</li>`);
+            return;
+        }
 
-        renderLogsList();
-        $('.js-base-url').html(instanceHost);
-        win.baseUrl = 'https://' + instanceHost;
-    });
+        renderLogsList(logsData.links);
+        $('.js-base-url').html(logsData.instanceHost);
+
+    } catch (e) {
+        $('.js-loglist').html(`
+            <li>${e}</li>
+            <li>Please make sure a SFCC instance is open is one of the tabs</li>
+        `);
+
+        if (e.toString().includes("Receiving end does not exist") && sfccTabData.url) {
+            chrome.tabs.create({ 
+                url: sfccTabData.url + '/on/demandware.store/Sites-Site/default/ViewApplication-DisplayWelcomePage'
+            });
+        }
+        return;
+    }
 
 
     $(document).on('click', 'a', function (e) {
@@ -46,8 +57,8 @@
             return;
         }
 
-        if ($(this).hasClass('js-base-link') && win.baseUrl) {
-            url = win.baseUrl + this.pathname;
+        if ($(this).hasClass('js-base-link')) {
+            url = sfccTabData.url + this.pathname;
         } else {
             url = this.href;
         }
@@ -63,26 +74,28 @@
         }
     });
 
-    $filter.on('input', function() {
-        renderLogsList();
+    $filterInput.on('input', function () {
+        renderLogsList(logsData.links);
     });
 
-    function isDWUrl(url) {
-        return location.pathname.indexOf('on/demandware.store/Sites-Site') > -1;
-    }
-
-    function renderLogsList() {
+    function renderLogsList(activeLinks) {
         var $list = $('.js-loglist');
-        var query = $filter.val().toLowerCase();
+
+        if (!activeLinks) {
+            $list.html('<li>No logs found</li>');
+            return;
+        }
+
+        var query = $filterInput.val().toLowerCase();
         var queryRegex = new RegExp(query, 'i');
         var html = '';
 
-        activeLinks.filter(function(link) {
-                if (!query) {
-                    return true;
-                }
-                return link.split('/').pop().toLowerCase().indexOf(query) > -1;
-            })
+        activeLinks.filter(function (link) {
+            if (!query) {
+                return true;
+            }
+            return link.split('/').pop().toLowerCase().indexOf(query) > -1;
+        })
             .forEach(function (link) {
                 var name = link.split('/').pop();
 
@@ -112,8 +125,8 @@
     function openTailLogWindow(logPath) {
         var w = 1200;
         var h = 800;
-        var left = (screen.width/2)-(w/2);
-        var top = (screen.height/2)-(h/2);
+        var left = (screen.width / 2) - (w / 2);
+        var top = (screen.height / 2) - (h / 2);
         var url = new URL(chrome.runtime.getURL('logTail/logTail.html'));
         url.searchParams.append('logPath', logPath);
 
@@ -127,7 +140,9 @@
         });
     }
 
-    function renderExtensionVersion(manifestData) {
+    function renderExtensionVersion() {
+        var manifestData = chrome.runtime.getManifest();
+
         $('.js-version').html(manifestData.version);
     }
 

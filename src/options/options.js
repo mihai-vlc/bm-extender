@@ -34,7 +34,7 @@
             options[item.name] = item.value;
         });
 
-        chrome.storage.sync.set(options, function () {
+        chrome.storage.sync.set(options).then(function () {
             alert('The options were saved');
         });
     }
@@ -66,6 +66,7 @@
         logsReplaceEscaped: false,
         disableSidebar: false,
         darkModeBm: false
-    }, loadApplication);
+    })
+    .then(loadApplication);
 
 })();
