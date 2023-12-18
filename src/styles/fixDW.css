@@ -160,19 +160,6 @@
     line-height: 1.3;
 }
 
-.cc-instance span[title] { position: relative }
-
-.cc-instance span[title]::after {
-    content: attr(title);
-    white-space: nowrap;
-    width: 111px;
-    overflow: hidden;
-    display: inline-block;
-    position: absolute;
-    left: 126px;
-    top: 0px;
-}
-
 .bm-diff-window {
     position: fixed;
     top: 0;

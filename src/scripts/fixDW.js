@@ -275,6 +275,14 @@
     // Make the header background the same color as the instance type color
     $(".slds-grid_align-spread, .slds-grid--align-spread").css("background-color", $(".slds-badge").css('background-color'));
 
+    // Show the full sandbox name
+    const instanceName = $('.cc-instance span[title]').attr('title');
+    if (instanceName) {
+        let currentName = $('.cc-instance span[title]').html();
+        currentName = currentName.split('-')[0];
+        $('.cc-instance span[title]').html(currentName + ' - ' + instanceName.split('.').shift());
+    }
+
     /**
      * Helper functions
      */
