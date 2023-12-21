@@ -18,17 +18,16 @@
         },
         getItem: function (key) {
             return sessionStorage.getItem(key);
-        }
+        },
     };
-
 
     // perform the requests for the navigation only
     // if the user is logged in
-    if ( ! $('.loggedin, #NotificationsHeaderLink').length) {
+    if (!$(".loggedin, #NotificationsHeaderLink").length) {
         return;
     }
 
-    var appOptions = $('#bm-extender-app-options').data('options');
+    var appOptions = $("#bm-extender-app-options").data("options");
 
     // if we are updating the BM modules clear the session in order to
     // keep the navigation updated
@@ -37,46 +36,47 @@
         sessionStorage.clear();
     }
 
-
-    var url = location.protocol + '//' + location.host;
-    var siteID = $('#SelectedSiteID option[selected]:last').html();
-    var key = 'dwre-sidebar-' + location.host + siteID;
-    var isSidebarDisabled = (appOptions.disableSidebar === true);
-    var isDarkModeBm = (appOptions.darkModeBm === true);
+    var url = location.protocol + "//" + location.host;
+    var siteID = $("#SelectedSiteID option[selected]:last").html();
+    var key = "dwre-sidebar-" + location.host + siteID;
+    var isSidebarDisabled = appOptions.disableSidebar === true;
+    var isDarkModeBm = appOptions.darkModeBm === true;
 
     var searchData = [];
 
     var siteMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-SiteMenuBM";
-    var adminMenuURL = url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-AdminMenuBM";
+    var adminMenuURL =
+        url + "/on/demandware.store/Sites-Site/default/SiteNavigationBar-AdminMenuBM";
 
-    var siteMenu = getData(siteMenuURL, key + 'site');
-    var adminMenu = getData(adminMenuURL, key + 'admin');
+    var siteMenu = getData(siteMenuURL, key + "site");
+    var adminMenu = getData(adminMenuURL, key + "admin");
     var catalogsMenu = getCatalogsList();
-    var $uiWrapper = $('.bm-ui-wrapper');
-    var $main = $('#bm_content_column').parent();
-    var isAngularUiPage = ($uiWrapper.length > 0);
+    var $uiWrapper = $(".bm-ui-wrapper");
+    var $main = $("#bm_content_column").parent();
+    var isAngularUiPage = $uiWrapper.length > 0;
 
     var searchTemplate = [
         '<div class="x-search">',
-            '<input disabled type="text" class="x-search-input perm_not_disabled" ng-model="xIgnore" placeholder=" Search">',
-        '</div>'].join('');
+        '<input disabled type="text" class="x-search-input perm_not_disabled" ng-model="xIgnore" placeholder=" Search">',
+        "</div>",
+    ].join("");
 
     var sidebarTemplate = [
-        `<${isAngularUiPage ? 'div' : 'td'} class="x-sidebar">`,
-            searchTemplate,
-            '<h4>Site - <b class="x-site-name"></b></h4>',
-            '<div class="x-site"></div>',
-            '<h4>Administration</h4>',
-            '<div class="x-admin"></div>',
-        `</${isAngularUiPage ? 'div' : 'td'}>`].join('');
+        `<${isAngularUiPage ? "div" : "td"} class="x-sidebar">`,
+        searchTemplate,
+        '<h4>Site - <b class="x-site-name"></b></h4>',
+        '<div class="x-site"></div>',
+        "<h4>Administration</h4>",
+        '<div class="x-admin"></div>',
+        `</${isAngularUiPage ? "div" : "td"}>`,
+    ].join("");
 
     var $sidebar = $(sidebarTemplate);
-    var $form = $('<form />').appendTo('body');
+    var $form = $("<form />").appendTo("body");
     var $searchInput;
 
-
     // attach the site id to the sidebar
-    $sidebar.find('.x-site-name').html(siteID);
+    $sidebar.find(".x-site-name").html(siteID);
 
     // add the sidebar on the page
     if (!isSidebarDisabled) {
@@ -93,35 +93,36 @@
     }
 
     // add the search input in the header
-    if ($('ul.bm-site-navigation-menus').length > 0) {
-        $('ul.bm-site-navigation-menus').parent().append(searchTemplate);
+    if ($("ul.bm-site-navigation-menus").length > 0) {
+        $("ul.bm-site-navigation-menus").parent().append(searchTemplate);
     } else {
-        $('.menu.storelink').last().after(searchTemplate);
+        $(".menu.storelink").last().after(searchTemplate);
     }
 
-    $searchInput = $('.x-search-input');
+    $searchInput = $(".x-search-input");
 
     // attach the data grabbed from the request to the sidebar
     // and remove the title attribute from all the elements
     siteMenu = siteMenu.then(function (data) {
-        $sidebar.find('.x-site')
+        $sidebar
+            .find(".x-site")
             .append(data)
-            .find('[title]')
-                .removeAttr('title')
+            .find("[title]")
+            .removeAttr("title")
             .end()
             // clear the csrf token so it will be reloaded automatically by the BM code
             .find('[href*="csrf_token"]')
-            .each(function() {
-                this.href = removeURLParameter(this.href, 'csrf_token');
+            .each(function () {
+                this.href = removeURLParameter(this.href, "csrf_token");
             });
 
         // append the list of catalogs
         return catalogsMenu.then(function (catalogs) {
             var subItems = [
                 {
-                    url: '/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-SearchStart',
-                    name: 'Search Catalogs'
-                }
+                    url: "/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-SearchStart",
+                    name: "Search Catalogs",
+                },
             ];
 
             if (catalogs && catalogs.length) {
@@ -129,44 +130,47 @@
             }
 
             subItems.push({
-                url: '/on/demandware.store/Sites-Site/default/ViewCatalogImport_52-SelectFile',
-                name: 'Import Catalogs'
+                url: "/on/demandware.store/Sites-Site/default/ViewCatalogImport_52-SelectFile",
+                name: "Import Catalogs",
             });
             subItems.push({
-                url: '/on/demandware.store/Sites-Site/default/ViewCatalogExport_52-SelectCatalog',
-                name: 'Export Catalogs'
+                url: "/on/demandware.store/Sites-Site/default/ViewCatalogExport_52-SelectCatalog",
+                name: "Export Catalogs",
             });
             subItems.push({
-                url: '/on/demandware.store/Sites-Site/default/ViewCatalogImpex_52-BrowseImportFiles',
-                name: 'Upload Catalogs'
+                url: "/on/demandware.store/Sites-Site/default/ViewCatalogImpex_52-BrowseImportFiles",
+                name: "Upload Catalogs",
             });
 
-            var subItemsHtml = subItems.map(function (item) {
-                var { name, url } = item;
-                return (`<div class="overview_item_bm">
+            var subItemsHtml = subItems
+                .map(function (item) {
+                    var { name, url } = item;
+                    return `<div class="overview_item_bm">
                     <div class="overview_subtitle_bm">
                         <a href="${url}" class="overview_subtitle_bm bm-menu-item">
                             ${name}
                         </a>
                     </div>
-                </div>`);
-            }).join('\n');
-            $sidebar.find('.x-site').find('[data-automation="prod-cat_catalogs"]').append(`
+                </div>`;
+                })
+                .join("\n");
+            $sidebar.find(".x-site").find('[data-automation="prod-cat_catalogs"]').append(`
                 <div class="menu_items_bm">${subItemsHtml}</div>
             `);
         });
     });
 
     adminMenu = adminMenu.then(function (data) {
-        $sidebar.find('.x-admin')
+        $sidebar
+            .find(".x-admin")
             .append(data)
-            .find('[title]')
-                .removeAttr('title')
+            .find("[title]")
+            .removeAttr("title")
             .end()
             // clear the csrf token so it will be reloaded automatically by the BM code
             .find('[href*="csrf_token"]')
-            .each(function() {
-                this.href = removeURLParameter(this.href, 'csrf_token');
+            .each(function () {
+                this.href = removeURLParameter(this.href, "csrf_token");
             });
     });
 
@@ -174,26 +178,26 @@
     // enable the seach input and extract the search data for the
     // autocomplete plugin
     $.when(siteMenu, adminMenu, catalogsMenu).done(function () {
-        $sidebar.find('a').each(function() {
+        $sidebar.find("a").each(function () {
             var $t = $(this);
-            var cat = '';
-            var $parent = $t.closest('.menu_items_bm');
+            var cat = "";
+            var $parent = $t.closest(".menu_items_bm");
             if ($parent.length) {
-                cat = $parent.parent().find('.bm-menu-head a').text();
+                cat = $parent.parent().find(".bm-menu-head a").text();
             }
 
             searchData.push({
                 value: $(this).text().trim(),
-                url: $(this).attr('href'),
-                classNames: $(this).attr('class'),
+                url: $(this).attr("href"),
+                classNames: $(this).attr("class"),
                 data: {
-                    category: cat
-                }
+                    category: cat,
+                },
             });
         });
 
         searchData.push.apply(searchData, getSpecialSearchData());
-        $searchInput.removeAttr('disabled');
+        $searchInput.removeAttr("disabled");
 
         trackRecentlyViewedSections(searchData);
         // renderRecentlyViewedSections();
@@ -203,51 +207,52 @@
     $searchInput.autocomplete({
         lookup: searchData,
         preserveInput: true,
-        groupBy: 'category',
+        groupBy: "category",
         autoSelectFirst: true,
         onSelect: function (suggestion) {
-
             if ($.isFunction(suggestion.onSelect)) {
                 suggestion.onSelect.call(this);
                 return;
             }
 
-            if (!suggestion.url || suggestion.url == 'javascript: void 0;') {
-                const classNames = suggestion.classNames.split(' ').map(v => '.'+v).join("");
-                $('.x-sidebar ' + classNames).click();
+            if (!suggestion.url || suggestion.url == "javascript: void 0;") {
+                const classNames = suggestion.classNames
+                    .split(" ")
+                    .map((v) => "." + v)
+                    .join("");
+                $(".x-sidebar " + classNames).click();
                 return;
             }
 
             window.location.href = suggestion.url;
         },
         lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
-            return suggestion.special ||
-                suggestion.value.toLowerCase().indexOf(queryLowerCase) !== -1;
-        }
+            return (
+                suggestion.special || suggestion.value.toLowerCase().indexOf(queryLowerCase) !== -1
+            );
+        },
     });
 
     fillExportField();
 
-
     // This css class is used for activating the CSS styles on the
     // custom elements on the page (sidebar and search box)
-    $('body').addClass('xbm-x-dw');
+    $("body").addClass("xbm-x-dw");
 
     makeStickyButtons();
     addLockButton();
 
-    $('.table_detail, .table_detail4').each(function () {
+    $(".table_detail, .table_detail4").each(function () {
         var $t = $(this);
         // avoid nested tables
-        if ( ! $t.find('.table_detail, .table_detail4').length) {
-            $t.closest('table').addClass('x-dw-table-detail');
+        if (!$t.find(".table_detail, .table_detail4").length) {
+            $t.closest("table").addClass("x-dw-table-detail");
         }
-
     });
 
-    $('td input[type="checkbox"]').on('change', function () {
-        var method = this.checked ? 'addClass' : 'removeClass';
-        $(this).closest('tr')[method]('x-dw-active-row');
+    $('td input[type="checkbox"]').on("change", function () {
+        var method = this.checked ? "addClass" : "removeClass";
+        $(this).closest("tr")[method]("x-dw-active-row");
     });
 
     // keep the session active
@@ -256,31 +261,33 @@
         $.get(adminMenuURL);
     }, 600000); // every 10 min
 
-
     // fix the table layout
-    $('#bm_content_column').removeAttr('colspan').removeAttr('width');
+    $("#bm_content_column").removeAttr("colspan").removeAttr("width");
 
     // build the preview link for the current category
     buildPreviewLink();
 
     // Update the page title with something more useful
-    $('title').html(getPageTitle());
+    $("title").html(getPageTitle());
 
     fixCustomObjectSelect();
 
-    $('select:not(.dropdown,.dropwown,[onfocus],[onchange])').select2();
+    $("select:not(.dropdown,.dropwown,[onfocus],[onchange])").select2();
 
     initializeTextAreaDiff();
 
     // Make the header background the same color as the instance type color
-    $(".slds-grid_align-spread, .slds-grid--align-spread").css("background-color", $(".slds-badge").css('background-color'));
+    $(".slds-grid_align-spread, .slds-grid--align-spread").css(
+        "background-color",
+        $(".slds-badge").css("background-color")
+    );
 
     // Show the full sandbox name
-    const instanceName = $('.cc-instance span[title]').attr('title');
+    const instanceName = $(".cc-instance span[title]").attr("title");
     if (instanceName) {
-        let currentName = $('.cc-instance span[title]').html();
-        currentName = currentName.split('-')[0];
-        $('.cc-instance span[title]').html(currentName + ' - ' + instanceName.split('.').shift());
+        let currentName = $(".cc-instance span[title]").html();
+        currentName = currentName.split("-")[0];
+        $(".cc-instance span[title]").html(currentName + " - " + instanceName.split(".").shift());
     }
 
     /**
@@ -289,13 +296,15 @@
 
     function fixCustomObjectSelect() {
         // append element to make the object search on submit
-        $('#SimpleObjectTypeDefinitionSelectBox').after('<input type="hidden" name="find" value="">');
+        $("#SimpleObjectTypeDefinitionSelectBox").after(
+            '<input type="hidden" name="find" value="">'
+        );
     }
 
     function makeStickyButtons() {
-        var wrapperSelector = 'table';
+        var wrapperSelector = "table";
 
-        if ($('#bm_content_column > table').height() < $(window).height()) {
+        if ($("#bm_content_column > table").height() < $(window).height()) {
             return;
         }
 
@@ -305,34 +314,32 @@
 
         // order preferences page
         if ($('[name="GenerateCustomerNumberEnabled"]').length) {
-            wrapperSelector = 'div';
+            wrapperSelector = "div";
         }
 
         var $button = $('[name="update"], [name="apply"], [name="assign"]').last();
-        if ($button.hasClass('dw-nc-button')) {
+        if ($button.hasClass("dw-nc-button")) {
             return;
         }
 
-        $button
-            .closest(wrapperSelector)
-            .addClass('x-dw-buttons-table');
+        $button.closest(wrapperSelector).addClass("x-dw-buttons-table");
     }
 
     function addLockButton() {
-        var $lockLink = $('table.confirm_box .table_detail_link');
+        var $lockLink = $("table.confirm_box .table_detail_link");
 
         if (!$lockLink.length) {
             return;
         }
 
-        var lockLink = $lockLink.attr('href');
+        var lockLink = $lockLink.attr("href");
         var lockText = $lockLink.text();
 
         if (!lockLink.match(/(lock=lock|unlock=unlock)/)) {
             return;
         }
 
-        $('.x-dw-buttons-table').find('tr:first').append(`<td>
+        $(".x-dw-buttons-table").find("tr:first").append(`<td>
             <a class="button" href="${lockLink}">${lockText}</a>
         </td>`);
     }
@@ -341,7 +348,7 @@
     // in the storage
     function getData(url, key) {
         var d = new $.Deferred();
-        if ( ! key || ! Storage.getItem(key)) {
+        if (!key || !Storage.getItem(key)) {
             return $.get(url).then(function (data) {
                 Storage.setItem(key, data);
                 return data;
@@ -352,32 +359,34 @@
         return d.promise();
     }
 
-
     function getCatalogsList() {
-        var catalogsListURL = "/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-Start";
-        return getData(catalogsListURL, key + 'catalogs').then(function(data) {
-            var $catalogs = $(data).find('form[name="MasterCatalogForm"]').find('a.catalog');
+        var catalogsListURL =
+            "/on/demandware.store/Sites-Site/default/ViewChannelCatalogList_52-Start";
+        return getData(catalogsListURL, key + "catalogs").then(function (data) {
+            var $catalogs = $(data).find('form[name="MasterCatalogForm"]').find("a.catalog");
             if (!$catalogs.length) {
                 return [];
             }
-            return $catalogs.map(function() {
-                return {
-                    name: this.innerText,
-                    url: removeURLParameter(this.href, 'csrf_token')
-                };
-            }).toArray();
+            return $catalogs
+                .map(function () {
+                    return {
+                        name: this.innerText,
+                        url: removeURLParameter(this.href, "csrf_token"),
+                    };
+                })
+                .toArray();
         });
     }
 
     function searchProducts(query) {
         var $hidden = $('<input type="hidden" />');
-        $hidden.attr('name', 'WFSimpleSearch_NameOrID');
+        $hidden.attr("name", "WFSimpleSearch_NameOrID");
         $hidden.val(query);
 
         // build and submit the form
         $form.empty();
-        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewProductList_52-Dispatch');
-        $form.attr('method', 'post');
+        $form.attr("action", "/on/demandware.store/Sites-Site/default/ViewProductList_52-Dispatch");
+        $form.attr("method", "post");
 
         $form.append($hidden);
         $form.append('<input type="hidden" name="SearchType" value="simple" />');
@@ -388,13 +397,13 @@
 
     function searchCustomers(query) {
         var $hidden = $('<input type="hidden" />');
-        $hidden.attr('name', 'WFCustomerSimpleSearch_SearchTerm');
+        $hidden.attr("name", "WFCustomerSimpleSearch_SearchTerm");
         $hidden.val(query);
 
         // build and submit the form
         $form.empty();
-        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewCustomers-Dispatch');
-        $form.attr('method', 'post');
+        $form.attr("action", "/on/demandware.store/Sites-Site/default/ViewCustomers-Dispatch");
+        $form.attr("method", "post");
 
         $form.append($hidden);
         $form.submit();
@@ -402,13 +411,16 @@
 
     function searchContent(query) {
         var $hidden = $('<input type="hidden" />');
-        $hidden.attr('name', 'SearchTerm');
+        $hidden.attr("name", "SearchTerm");
         $hidden.val(query);
 
         // build and submit the form
         $form.empty();
-        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewLibraryContentList_52-Dispatch');
-        $form.attr('method', 'post');
+        $form.attr(
+            "action",
+            "/on/demandware.store/Sites-Site/default/ViewLibraryContentList_52-Dispatch"
+        );
+        $form.attr("method", "post");
 
         $form.append($hidden);
         $form.submit();
@@ -416,13 +428,13 @@
 
     function searchOrders(query) {
         var $hidden = $('<input type="hidden" />');
-        $hidden.attr('name', 'OrderSearchForm2_SimpleSearchTerm');
+        $hidden.attr("name", "OrderSearchForm2_SimpleSearchTerm");
         $hidden.val(query);
 
         // build and submit the form
         $form.empty();
-        $form.attr('action', '/on/demandware.store/Sites-Site/default/ViewOrderList_52-Dispatch');
-        $form.attr('method', 'get');
+        $form.attr("action", "/on/demandware.store/Sites-Site/default/ViewOrderList_52-Dispatch");
+        $form.attr("method", "get");
 
         $form.append($hidden);
         $form.append('<input type="hidden" name="simpleSearch" value="" />');
@@ -430,18 +442,16 @@
         $form.submit();
     }
 
-
     function fillExportField() {
         // auto complete the name field for export
         var d = new Date();
-        var exportName = 'export_' + (d.getMonth()+1) + '_' + d.getDate();
-        var pageName = $('a.breadcrumb').last().text().split(' ')[0];
+        var exportName = "export_" + (d.getMonth() + 1) + "_" + d.getDate();
+        var pageName = $("a.breadcrumb").last().text().split(" ")[0];
 
         if (pageName) {
-            exportName += '_' + pageName.toLowerCase();
+            exportName += "_" + pageName.toLowerCase();
         }
         $("input[name$=File][type=text]").val(exportName);
-
     }
 
     function getSpecialSearchData() {
@@ -454,8 +464,8 @@
                     searchProducts(val);
                 },
                 data: {
-                    category: "Default"
-                }
+                    category: "Default",
+                },
             },
             {
                 value: "Search customer",
@@ -465,8 +475,8 @@
                     searchCustomers(val);
                 },
                 data: {
-                    category: "Default"
-                }
+                    category: "Default",
+                },
             },
             {
                 value: "Search content",
@@ -476,8 +486,8 @@
                     searchContent(val);
                 },
                 data: {
-                    category: "Default"
-                }
+                    category: "Default",
+                },
             },
             {
                 value: "Search orders",
@@ -487,18 +497,17 @@
                     searchOrders(val);
                 },
                 data: {
-                    category: "Default"
-                }
-            }
+                    category: "Default",
+                },
+            },
         ];
-
     }
 
     function getCurrentCategory() {
-        var $el = $('.button.bm-category-gridview');
+        var $el = $(".button.bm-category-gridview");
 
         if ($el.length) {
-            return $el.attr('href').split('!').pop();
+            return $el.attr("href").split("!").pop();
         }
 
         return null;
@@ -507,49 +516,49 @@
     function buildPreviewLink() {
         var catId = getCurrentCategory();
 
-        if (! catId) {
+        if (!catId) {
             return;
         }
 
         var html =
-            '<a href="/on/demandware.store/Sites-Site/default/ViewStorefront-Catalog?cgid='+ catId +'" target="_blank">' +
-                '<img src="/on/demandware.static/Sites-Site/-/default/v1441242768498/images/preview_ico.gif" title="Preview category in the storefront." alt="Preview" border="0">' +
-            '</a>';
+            '<a href="/on/demandware.store/Sites-Site/default/ViewStorefront-Catalog?cgid=' +
+            catId +
+            '" target="_blank">' +
+            '<img src="/on/demandware.static/Sites-Site/-/default/v1441242768498/images/preview_ico.gif" title="Preview category in the storefront." alt="Preview" border="0">' +
+            "</a>";
 
-        $('#bm-breadcrumb td').first().append(html);
-
+        $("#bm-breadcrumb td").first().append(html);
     }
 
     function getPageTitle() {
-        var $title = $('.overview_title');
+        var $title = $(".overview_title");
 
-        if ( ! $title.length) {
-            $title = $('#bm-breadcrumb')
+        if (!$title.length) {
+            $title = $("#bm-breadcrumb");
         }
 
-        if ( ! $title.length) {
-            $title = $('.library-breadcrumb')
+        if (!$title.length) {
+            $title = $(".library-breadcrumb");
         }
 
-        if ( ! $title.length) {
-            $title = $('title')
+        if (!$title.length) {
+            $title = $("title");
         }
 
         return $title.text();
     }
 
     function initializeTextAreaDiff() {
-        var $textareas = $('textarea');
-        var $body = $('body');
+        var $textareas = $("textarea");
+        var $body = $("body");
 
         if (!$textareas.length) {
             return;
         }
 
-        $textareas.each(function() {
+        $textareas.each(function () {
             $(this).after('<a href="#" class="js-bm-diff-open">diff</a>');
         });
-
 
         var diffTemplate = `
             <div class="bm-diff-window" hidden>
@@ -571,23 +580,21 @@
 
         $body.append(diffTemplate);
 
-        $body.on('click', '.js-bm-diff-close', function(event) {
+        $body.on("click", ".js-bm-diff-close", function (event) {
             event.preventDefault();
-            $('.bm-diff-window').attr('hidden', true);
+            $(".bm-diff-window").attr("hidden", true);
         });
 
-        $body.on('click', '.js-bm-diff-open', function() {
+        $body.on("click", ".js-bm-diff-open", function () {
             event.preventDefault();
-            $('.bm-diff-window')
-                .removeAttr('hidden')
-                .find('textarea').removeAttr('disabled');
+            $(".bm-diff-window").removeAttr("hidden").find("textarea").removeAttr("disabled");
 
-            var inputText = $(this).prev('textarea').val();
-            $('.js-bm-diff-text1').val(inputText);
+            var inputText = $(this).prev("textarea").val();
+            $(".js-bm-diff-text1").val(inputText);
         });
 
         var timeout;
-        $('.js-bm-synch-scroll').on('scroll', function() {
+        $(".js-bm-synch-scroll").on("scroll", function () {
             var scrollTop = $(this).scrollTop();
             var scrollLeft = $(this).scrollLeft();
 
@@ -595,55 +602,51 @@
                 clearTimeout(timeout);
             }
 
-            timeout = setTimeout(function() {
-                $('.js-bm-synch-scroll').not(this)
-                    .scrollTop(scrollTop)
-                    .scrollLeft(scrollLeft);
+            timeout = setTimeout(function () {
+                $(".js-bm-synch-scroll").not(this).scrollTop(scrollTop).scrollLeft(scrollLeft);
             }, 150);
         });
 
-        $('.bm-diff-window').on('input', 'textarea', processDiff);
+        $(".bm-diff-window").on("input", "textarea", processDiff);
 
         function processDiff() {
             /*global Diff*/
-            var text1 = $('.js-bm-diff-text1').val();
-            var text2 = $('.js-bm-diff-text2').val();
+            var text1 = $(".js-bm-diff-text1").val();
+            var text2 = $(".js-bm-diff-text2").val();
             var $fragment = $(document.createDocumentFragment());
             var diff = Diff.diffLines(text1, text2);
 
-            diff.forEach(function(part){
-                var action = part.added ? 'added' : (part.removed ? 'delete' : '');
-                var $part = $('<span />').addClass(action).text(part.value);
+            diff.forEach(function (part) {
+                var action = part.added ? "added" : part.removed ? "delete" : "";
+                var $part = $("<span />").addClass(action).text(part.value);
                 $fragment.append($part);
             });
 
-            $('.js-bm-diff-result').html($fragment);
+            $(".js-bm-diff-result").html($fragment);
         }
     }
 
     function removeURLParameter(url, parameter) {
         //prefer to use l.search if you have a location/link object
-        var urlparts= url.split('?');
-        if (urlparts.length>=2) {
-
-            var prefix= encodeURIComponent(parameter)+'=';
-            var pars= urlparts[1].split(/[&;]/g);
+        var urlparts = url.split("?");
+        if (urlparts.length >= 2) {
+            var prefix = encodeURIComponent(parameter) + "=";
+            var pars = urlparts[1].split(/[&;]/g);
 
             //reverse iteration as may be destructive
-            for (var i= pars.length; i-- > 0;) {
+            for (var i = pars.length; i-- > 0; ) {
                 //idiom for string.startsWith
                 if (pars[i].lastIndexOf(prefix, 0) !== -1) {
                     pars.splice(i, 1);
                 }
             }
 
-            url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+            url = urlparts[0] + (pars.length > 0 ? "?" + pars.join("&") : "");
             return url;
         } else {
             return url;
         }
     }
-
 
     /**
      * Keeps track of the BM sections visited recently.
@@ -653,35 +656,37 @@
         var currentHashPage = window.location.hash;
         var lastSections = getLastVisitedSections();
 
-        searchData.filter(x => x.url).forEach(function (page) {
-            var savePage = false;
+        searchData
+            .filter((x) => x.url)
+            .forEach(function (page) {
+                var savePage = false;
 
-            if (currentPage.indexOf(page.url) > -1) {
-                savePage = true;
-            } else if (page.url.indexOf('ViewApplication-BM') > -1) {
-                // these are angular UI pages and the path is stored
-                // in the URL hash for their router
-                var url = new URL(page.url);
-                var screen = url.searchParams.get('screen');
-                if (currentHashPage.indexOf(screen) > -1) {
+                if (currentPage.indexOf(page.url) > -1) {
                     savePage = true;
+                } else if (page.url.indexOf("ViewApplication-BM") > -1) {
+                    // these are angular UI pages and the path is stored
+                    // in the URL hash for their router
+                    var url = new URL(page.url);
+                    var screen = url.searchParams.get("screen");
+                    if (currentHashPage.indexOf(screen) > -1) {
+                        savePage = true;
+                    }
                 }
-            }
 
-            if (!savePage) {
-                return;
-            }
+                if (!savePage) {
+                    return;
+                }
 
-            var pageAlreadyStored = (lastSections.filter(x => x.url == page.url).length > 0);
-            if (pageAlreadyStored) {
-                return;
-            }
+                var pageAlreadyStored = lastSections.filter((x) => x.url == page.url).length > 0;
+                if (pageAlreadyStored) {
+                    return;
+                }
 
-            lastSections.push({
-                label: $.trim(page.value),
-                url: page.url
+                lastSections.push({
+                    label: $.trim(page.value),
+                    url: page.url,
+                });
             });
-        });
 
         lastSections = lastSections.slice(-7);
 
@@ -695,7 +700,7 @@
             jsonSections = JSON.stringify(lastSections);
         }
 
-        localStorage.setItem('bm_extender_last_pages', jsonSections);
+        localStorage.setItem("bm_extender_last_pages", jsonSections);
     }
 
     /**
@@ -706,13 +711,14 @@
         var lastSections = getLastVisitedSections();
 
         if (lastSections.length) {
-            var linksHtml = lastSections.map(page => {
-                return `<a href="${page.url}">${page.label}</a>`;
-            }).join(' | ');
+            var linksHtml = lastSections
+                .map((page) => {
+                    return `<a href="${page.url}">${page.label}</a>`;
+                })
+                .join(" | ");
 
-
-            if ($('#bm_header_row').length) {
-                $('#bm_header_row').after(`
+            if ($("#bm_header_row").length) {
+                $("#bm_header_row").after(`
                     <tr class="bm-recent-links">
                         <td colspan="9">${linksHtml}</td>
                     </tr>
@@ -725,7 +731,6 @@
                 `);
             }
         }
-
     }
 
     /**
@@ -734,14 +739,12 @@
     function getLastVisitedSections() {
         var lastSections = [];
         try {
-            lastSections = JSON.parse(localStorage.getItem('bm_extender_last_pages') || '[]');
+            lastSections = JSON.parse(localStorage.getItem("bm_extender_last_pages") || "[]");
         } catch (e) {
             console.error(e);
-            localStorage.setItem('bm_extender_last_pages', '[]');
+            localStorage.setItem("bm_extender_last_pages", "[]");
         }
 
         return lastSections;
     }
-
 })(window.jQuery);
-

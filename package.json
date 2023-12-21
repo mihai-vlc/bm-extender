@@ -1,17 +1,17 @@
 {
-  "name": "bm-extender",
-  "description": "A chrome extension that adds custom functionality to the DW BM.",
-  "private": "true",
-  "author": {
-    "name": "Mihai Ionut Vilcu",
-    "email": "mihai.vlc11@gmail.com"
-  },
-  "scripts": {
-    "lint": "eslint ."
-  },
-  "devDependencies": {
-    "@types/chrome": "0.0.254",
-    "@types/jquery": "3.5.29",
-    "eslint": "8.56.0"
-  }
+    "name": "bm-extender",
+    "description": "A chrome extension that adds custom functionality to the DW BM.",
+    "private": "true",
+    "author": {
+        "name": "Mihai Ionut Vilcu",
+        "email": "mihai.vlc11@gmail.com"
+    },
+    "scripts": {
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "@types/chrome": "0.0.254",
+        "@types/jquery": "3.5.29",
+        "eslint": "8.56.0"
+    }
 }

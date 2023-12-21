@@ -1,44 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>DW sidebar popup</title>
-    <link rel="stylesheet" href="popup.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>DW sidebar popup</title>
+        <link rel="stylesheet" href="popup.css" />
+    </head>
+    <body>
+        <ul class="inline-list">
+            <li>
+                <a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Logs">Logs</a>
+            </li>
+            <li>
+                <a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Cartridges">
+                    Cartridges
+                </a>
+            </li>
+            <li>
+                <a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Impex">Impex</a>
+            </li>
+            <li>
+                <a class="js-base-link" href="/on/demandware.store/Sites-Site">Business Manager</a>
+            </li>
+            <li>
+                <a
+                    class="js-base-link"
+                    href="/on/demandware.store/Sites-Site/-/ViewLogConsole-Start"
+                    >Request Logs</a
+                >
+            </li>
+            <li><a href="https://unofficialsfcc.com">Unofficial SFCC</a></li>
+            <li>v<span class="js-version"></span></li>
+        </ul>
 
-    <ul class="inline-list">
-        <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Logs">Logs</a></li>
-        <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Cartridges">Cartridges</a></li>
-        <li><a class="js-base-link" href="/on/demandware.servlet/webdav/Sites/Impex">Impex</a></li>
-        <li><a class="js-base-link" href="/on/demandware.store/Sites-Site">Business Manager</a></li>
-        <li><a class="js-base-link" href="/on/demandware.store/Sites-Site/-/ViewLogConsole-Start">Request Logs</a></li>
-        <li><a href="https://unofficialsfcc.com">Unofficial SFCC</a></li>
-        <li>v<span class="js-version"></span></li>
-    </ul>
+        <h5>Logs for <span class="js-base-url">&lt;no SFCC instance detected&gt;</span></h5>
+        <div>
+            <input
+                class="js-filter-logs log-filter"
+                type="text"
+                name="filter"
+                value=""
+                placeholder="Filter..."
+            />
+        </div>
+        <ol class="js-loglist log-list">
+            <li>Loading...</li>
+            <li>Please make sure a SFCC instance is open is one of the tabs</li>
+        </ol>
 
-    <h5>Logs for <span class="js-base-url">&lt;no SFCC instance detected&gt;</span></h5>
-    <div>
-        <input class="js-filter-logs log-filter" type="text" name="filter" value="" placeholder="Filter..." />
-    </div>
-    <ol class="js-loglist log-list">
-        <li>Loading...</li>
-        <li>Please make sure a SFCC instance is open is one of the tabs</li>
-    </ol>
+        <ul class="inline-list fixed-list">
+            <li>
+                <a href="" class="js-options">Edit options</a>
+            </li>
+            <li>
+                <a href="https://github.com/mihai-vlc/bm-extender#release-notes">Release notes</a>
+            </li>
+            <li>
+                <a href="https://github.com/mihai-vlc/bm-extender/issues">Report issue</a>
+            </li>
+        </ul>
 
-    <ul class="inline-list fixed-list">
-        <li>
-            <a href="" class="js-options">Edit options</a>
-        </li>
-        <li>
-            <a href="https://github.com/mihai-vlc/bm-extender#release-notes">Release notes</a>
-        </li>
-        <li>
-            <a href="https://github.com/mihai-vlc/bm-extender/issues">Report issue</a>
-        </li>
-    </ul>
-
-    <script src="../jquery.js"></script>
-    <script src="popup.js"></script>
-</body>
+        <script src="../jquery.js"></script>
+        <script src="popup.js"></script>
+    </body>
 </html>
