@@ -11,7 +11,7 @@
             type: "getSFCCTabData",
         });
 
-        if (!sfccTabData) {
+        if (!sfccTabData || !sfccTabData.id) {
             $(".js-log-data").html("No active SFCC tabs were found");
             return;
         }
