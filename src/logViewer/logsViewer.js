@@ -1,5 +1,6 @@
 (async function () {
-    console.log("Hello darkness my old friend");
+    /*global timeAgo */
+
     let appState = {
         baseUrl: ''
     };
@@ -17,6 +18,8 @@
             .text(appState.baseUrl);
 
         initSelect(appState.baseUrl);
+
+        timeAgo.init();
 
     } catch (e) {
         $('.js-app-status').html(e);
@@ -41,7 +44,7 @@
         const choices = new Choices('.js-all-log-files', {
             removeItemButton: true,
             searchResultLimit: 999999,
-            allowHTML: false,
+            allowHTML: true,
             shouldSort: false,
             fuseOptions: {
                 includeScore: true
@@ -57,9 +60,9 @@
             groups["jobs"] = [];
             $(jobsListing).find('a[href*="jobs"]').each(function () {
                 const jobName = this.href.split('/').pop();
-                const modifiedTime = new Date($(this).closest('tr').find("td[align=right] tt").last().text());
+                const modifiedTime = $(this).closest('tr').find("td[align=right] tt").last().text();
                 groups["jobs"].push({
-                    label: `Job: ${jobName} - ${timeAgo(modifiedTime)}`,
+                    label: `Job: ${jobName} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
                     value: `jobs/${jobName}`
                 });
             });
@@ -70,7 +73,7 @@
 
             $(logsListing).find('a[href$=".log"]').each(function () {
                 const logFileName = this.href.split('/').pop();
-                const modifiedTime = new Date($(this).closest('tr').find("td[align=right] tt").last().text());
+                const modifiedTime = $(this).closest('tr').find("td[align=right] tt").last().text();
                 const groupMatch = logFileName.match(/(\d{4})(\d{2})(\d{2})\.log$/);
                 let groupId = 'other';
                 if (groupMatch) {
@@ -80,7 +83,7 @@
                 groups[groupId] = groups[groupId] || [];
 
                 groups[groupId].push({
-                    label: `${logFileName} - ${timeAgo(modifiedTime)}`,
+                    label: `${logFileName} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
                     value: logFileName
                 });
             });
@@ -101,8 +104,10 @@
                 $('.js-app-status').append(data);
             });
             choices.hideDropdown();
+            timeAgo.update();
         });
         choices.passedElement.element.addEventListener('removeItem', (event) => {
+            timeAgo.update();
             console.log('remove', event.detail.value);
             $('.js-app-status').empty();
         });
