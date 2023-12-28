@@ -10,12 +10,20 @@
         .all-log-files {
             width: 100%;
         }
+
+        .choices__heading {
+            font-size: 1.7rem;
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>Logs from <span class="js-instance-name"></span></h1>
+    <h1>
+        Logs from
+        <a href="" data-path="/on/demandware.servlet/webdav/Sites/Logs" class="js-instance-name" target="_blank">
+        </a>
+    </h1>
 
     <div>
         <select class="js-all-log-files all-log-files" multiple>
@@ -27,6 +35,7 @@
 
     <script src="../jquery.js"></script>
     <script src="../vendor/choices/choices.min.js"></script>
+    <script src="./timeAgo.js"></script>
     <script src="./logsViewer.js"></script>
 </body>
 

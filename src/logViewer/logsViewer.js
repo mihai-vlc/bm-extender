@@ -11,7 +11,10 @@
         }
 
         // console.log(sfccTabData);
-        $('.js-instance-name').text(appState.baseUrl);
+        let path = $('.js-instance-name').attr('data-path');
+        $('.js-instance-name')
+            .attr('href', appState.baseUrl + path)
+            .text(appState.baseUrl);
 
         initSelect(appState.baseUrl);
 
@@ -46,26 +49,43 @@
         });
 
         choices.setChoices(async () => {
-            const logListResponse = await fetch(baseUrl + "/on/demandware.servlet/webdav/Sites/Logs");
-            const logsList = await logListResponse.text();
-
             var groups = {};
-            $(logsList).find('a[href$=".log"]').each(function () {
+
+            const jobsListingResponse = await fetch(baseUrl + "/on/demandware.servlet/webdav/Sites/Logs/jobs");
+            const jobsListing = await jobsListingResponse.text();
+
+            groups["jobs"] = [];
+            $(jobsListing).find('a[href*="jobs"]').each(function () {
+                const jobName = this.href.split('/').pop();
+                const modifiedTime = new Date($(this).closest('tr').find("td[align=right] tt").last().text());
+                groups["jobs"].push({
+                    label: `Job: ${jobName} - ${timeAgo(modifiedTime)}`,
+                    value: `jobs/${jobName}`
+                });
+            });
+
+
+            const logListingResponse = await fetch(baseUrl + "/on/demandware.servlet/webdav/Sites/Logs");
+            const logsListing = await logListingResponse.text();
+
+            $(logsListing).find('a[href$=".log"]').each(function () {
                 const logFileName = this.href.split('/').pop();
-                const groupMatch = logFileName.match(/(\d{8})\.log$/);
-                let groupId = '0';
+                const modifiedTime = new Date($(this).closest('tr').find("td[align=right] tt").last().text());
+                const groupMatch = logFileName.match(/(\d{4})(\d{2})(\d{2})\.log$/);
+                let groupId = 'other';
                 if (groupMatch) {
-                    groupId = groupMatch[1];
+                    groupId = `${groupMatch[1]} ${groupMatch[2]}  ${groupMatch[3]}`;
                 }
 
                 groups[groupId] = groups[groupId] || [];
 
                 groups[groupId].push({
-                    label: logFileName,
+                    label: `${logFileName} - ${timeAgo(modifiedTime)}`,
                     value: logFileName
                 });
             });
-            return Object.keys(groups).toReversed().map((groupId) => {
+
+            return Object.keys(groups).toSorted(sortDateGroupsFirst).map((groupId) => {
                 return {
                     label: groupId,
                     choices: groups[groupId]
@@ -102,6 +122,25 @@
                 break;
             }
         }
+    }
+
+    function sortDateGroupsFirst(a, b) {
+        const aHasLetters = a.match(/[a-z]/);
+        const bHasLetters = b.match(/[a-z]/);
+
+        if (aHasLetters && bHasLetters) {
+            return a.localeCompare(b);
+        }
+
+        if (aHasLetters) {
+            return 1;
+        }
+
+        if (bHasLetters) {
+            return -1;
+        }
+
+        return b.localeCompare(a);
     }
 
 })();
