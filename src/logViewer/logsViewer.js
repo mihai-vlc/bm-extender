@@ -1,25 +1,36 @@
 (async function () {
     console.log("Hello darkness my old friend");
+    let appState = {
+        baseUrl: ''
+    };
 
     try {
 
+        if (!await initAppState()) {
+            return;
+        }
 
+        // console.log(sfccTabData);
+        $('.js-instance-name').text(appState.baseUrl);
 
+        initSelect(appState.baseUrl);
+
+    } catch (e) {
+        $('.js-app-status').html(e);
+    }
+
+    async function initAppState() {
         let sfccTabData = await chrome.runtime.sendMessage({
             type: "getSFCCTabData",
         });
 
         if (!sfccTabData || !sfccTabData.id) {
-            $('.app-status').html("No active SFCC tabs found");
+            $('.js-app-status').html("No active SFCC tabs found");
+            return false;
         }
 
-        // console.log(sfccTabData);
-        $('.js-instance-name').text(sfccTabData.url);
-
-        initSelect(sfccTabData.url);
-
-    } catch (e) {
-        $('.app-status').html(e);
+        appState.baseUrl = sfccTabData.url;
+        return true;
     }
 
     function initSelect(baseUrl) {
@@ -61,6 +72,36 @@
                 };
             });
         });
+
+
+        choices.passedElement.element.addEventListener('addItem', (event) => {
+            console.log('add', event.detail.value);
+            const logFileName = event.detail.value;
+            readDataInChunks(`${baseUrl}/on/demandware.servlet/webdav/Sites/Logs/${logFileName}`, (data) => {
+                $('.js-app-status').append(data);
+            });
+            choices.hideDropdown();
+        });
+        choices.passedElement.element.addEventListener('removeItem', (event) => {
+            console.log('remove', event.detail.value);
+            $('.js-app-status').empty();
+        });
+    }
+
+    let utf8decoder = new TextDecoder();
+    async function readDataInChunks(url, onChunk) {
+        const response = await fetch(url);
+        const reader = response.body.getReader();
+        for (; ;) {
+            const { done, value } = await reader.read();
+            if (value) {
+                onChunk(utf8decoder.decode(value));
+            }
+
+            if (done) {
+                break;
+            }
+        }
     }
 
 })();
