@@ -7,6 +7,14 @@
     <title>Logs Viewer</title>
     <link rel="stylesheet" href="../vendor/choices/choices.css" />
     <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         .all-log-files {
             width: 100%;
         }
@@ -16,11 +24,54 @@
         }
 
         .choices__heading {
-            font-size: 1.7rem;
+            font-size: 1.5rem;
+            background-color: #eee;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            padding: 0.2rem 0.5rem;
         }
 
         .choices__inner {
             min-height: auto;
+        }
+
+        .search-box {
+            display: flex;
+        }
+
+        .search-box__select {
+            width: 100%;
+        }
+
+        .search-box__button {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .choices__heading {
+                background-color: #333;
+                border-top-color: #222;
+                border-bottom-color: #222;
+                color: #eee;
+            }
+
+            .choices__inner,
+            .choices__input,
+            .choices.is-disabled .choices__inner,
+            .choices.is-disabled .choices__input {
+                background-color: #000;
+            }
+
+            .choices__list--dropdown,
+            .choices__list[aria-expanded] {
+                background-color: #000;
+            }
+
+            .choices__list--dropdown .choices__item--selectable.is-highlighted,
+            .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+                background-color: #333;
+            }
         }
     </style>
 </head>
@@ -33,10 +84,13 @@
         </a>
     </h1>
 
-    <div>
-        <select class="js-all-log-files all-log-files" multiple>
-            <option value="">Search and select log files</option>
-        </select>
+    <div class="search-box">
+        <div class="search-box__select">
+            <select class="js-all-log-files all-log-files" multiple>
+                <option value="">Search and select log files</option>
+            </select>
+        </div>
+        <button class="js-update-logs search-box__button">Full Update</button>
     </div>
 
     <pre class="js-app-status"></pre>

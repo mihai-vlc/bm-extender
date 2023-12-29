@@ -2,7 +2,8 @@
     /*global timeAgo */
 
     let appState = {
-        baseUrl: ''
+        baseUrl: '',
+        activeLogs: null
     };
 
     try {
@@ -18,6 +19,8 @@
             .text(appState.baseUrl);
 
         initSelect(appState.baseUrl);
+
+        $('.js-update-logs').on('click', updateLogs);
 
         timeAgo.init();
 
@@ -41,7 +44,7 @@
 
     function initSelect(baseUrl) {
         /* global Choices */
-        const choices = new Choices('.js-all-log-files', {
+        const activeLogs = new Choices('.js-all-log-files', {
             removeItemButton: true,
             searchResultLimit: 999999,
             allowHTML: true,
@@ -51,10 +54,38 @@
             }
         });
 
-        choices.setChoices(async () => {
+        appState.activeLogs = activeLogs;
+
+
+        loadSelectOptions(activeLogs);
+
+        activeLogs.passedElement.element.addEventListener('addItem', (event) => {
+            const item = event.detail;
+            const logFileName = item.value;
+
+            if (item.customProperties.type == 'job') {
+                processJobLogs(item.value);
+            } else {
+                readDataInChunks(`${baseUrl}/on/demandware.servlet/webdav/Sites/Logs/${logFileName}`, (data) => {
+                    $('.js-app-status').append(data);
+                });
+            }
+
+            activeLogs.hideDropdown();
+            timeAgo.update();
+        });
+        activeLogs.passedElement.element.addEventListener('removeItem', (event) => {
+            timeAgo.update();
+            console.log('remove', event.detail.value);
+            $('.js-app-status').empty();
+        });
+    }
+
+    function loadSelectOptions(activeLogs) {
+        activeLogs.setChoices(async () => {
             var groups = {};
 
-            const jobsListingResponse = await fetch(baseUrl + "/on/demandware.servlet/webdav/Sites/Logs/jobs");
+            const jobsListingResponse = await fetch(appState.baseUrl + "/on/demandware.servlet/webdav/Sites/Logs/jobs");
             const jobsListing = await jobsListingResponse.text();
 
             groups["jobs"] = [];
@@ -63,15 +94,16 @@
                 const modifiedTime = $(this).closest('tr').find("td[align=right] tt").last().text();
                 groups["jobs"].push({
                     label: `Job: ${jobName} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
-                    value: `jobs/${jobName}`,
+                    value: `${jobName}`,
                     customProperties: {
-                        modifiedTime: new Date(modifiedTime)
+                        modifiedTime: new Date(modifiedTime),
+                        type: 'job'
                     }
                 });
             });
 
 
-            const logListingResponse = await fetch(baseUrl + "/on/demandware.servlet/webdav/Sites/Logs");
+            const logListingResponse = await fetch(appState.baseUrl + "/on/demandware.servlet/webdav/Sites/Logs");
             const logsListing = await logListingResponse.text();
 
             $(logsListing).find('a[href$=".log"]').each(function () {
@@ -89,7 +121,8 @@
                     label: `${logFileName} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
                     value: logFileName,
                     customProperties: {
-                        modifiedTime: new Date(modifiedTime)
+                        modifiedTime: new Date(modifiedTime),
+                        type: 'logFile'
                     }
                 });
             });
@@ -101,22 +134,67 @@
                 };
             });
         });
+    }
+
+    async function updateLogs() {
+        if (!appState.activeLogs) {
+            $('.js-app-status').html("No logs found");
+            return;
+        }
+
+        $('.js-app-status').empty();
+
+        appState.activeLogs.getValue().forEach((item) => {
+            const logFileName = item.value;
+
+            if (item.customProperties.type == 'job') {
+                processJobLogs(item.value);
+            } else {
+                readDataInChunks(`${appState.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/${logFileName}`, (data) => {
+                    $('.js-app-status').append(data);
+                });
+            }
+        });
+
+        loadSelectOptions(appState.activeLogs);
+    }
+
+    async function processJobLogs(jobId) {
+        try {
+            const response = await fetch(`${appState.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/jobs/${jobId}`);
+            const data = await response.text();
+            const $logLinks = $(data).find('a[href$=".log"]');
+
+            if ($logLinks.length == 0) {
+                $('.js-app-status').html(`No logs were found for ${jobId}`);
+                return;
+            }
+
+            const recentLogs = $logLinks
+                .map((_, el) => {
+                    const logFileName = el.href.split('/').pop();
+                    const modifiedTime = $(el).closest('tr').find("td[align=right] tt").last().text();
+
+                    return {
+                        logFileName: `${jobId}/${logFileName}`,
+                        modifiedTime: new Date(modifiedTime),
+                    };
+                })
+                .get()
+                .toSorted((a, b) => b.modifiedTime - a.modifiedTime)
+                .slice(0, 1);
+
+            recentLogs.forEach(log => {
+                readDataInChunks(`${appState.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/jobs/${log.logFileName}`, (data) => {
+                    $('.js-app-status').append(data);
+                });
+            })
+        } catch (e) {
+            console.error(e);
+            $('.js-app-status').html(`Failed to load the data for ${jobId}, ${e}`);
+        }
 
 
-        choices.passedElement.element.addEventListener('addItem', (event) => {
-            console.log('add', event.detail.value);
-            const logFileName = event.detail.value;
-            readDataInChunks(`${baseUrl}/on/demandware.servlet/webdav/Sites/Logs/${logFileName}`, (data) => {
-                $('.js-app-status').append(data);
-            });
-            choices.hideDropdown();
-            timeAgo.update();
-        });
-        choices.passedElement.element.addEventListener('removeItem', (event) => {
-            timeAgo.update();
-            console.log('remove', event.detail.value);
-            $('.js-app-status').empty();
-        });
     }
 
     let utf8decoder = new TextDecoder();
