@@ -79,7 +79,10 @@
                         choices: groups[groupId].toSorted(sortLogDate)
                     };
                 });
-            });
+            },
+                'value',
+                'label',
+                true);
         }
 
         onAdd(callback) {
