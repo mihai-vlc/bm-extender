@@ -65,10 +65,13 @@
         });
 
         appState.logsSelector.onRemove((event) => {
-            appState.logPanels.forEach(panel => {
+
+            appState.logPanels = appState.logPanels.filter(panel => {
                 if (panel.logId == event.detail.value) {
                     panel.destroy();
+                    return false;
                 }
+                return true;
             });
 
             timeAgo.update();

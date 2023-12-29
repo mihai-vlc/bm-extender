@@ -63,10 +63,28 @@
 
         .log-panel-content {
             padding: 0.5rem;
-            max-height: 600px;
+            height: 600px;
             overflow: auto;
             white-space: pre-wrap;
             font-size: 1rem;
+        }
+
+        .log-panel-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-panel-buttons button {
+            background-color: transparent;
+            border: 1px solid currentColor;
+            margin-left: 0.5rem;
+            cursor: pointer;
+        }
+
+        .log-panel-buttons svg {
+            width: 25px;
+            height: 25px;
         }
 
         @media (prefers-color-scheme: dark) {

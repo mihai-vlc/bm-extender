@@ -14,6 +14,17 @@
                     includeScore: true
                 }
             });
+
+            this.handleLogPanelClosed = this.handleLogPanelClosed.bind(this);
+            $('body').on('logPanelClosed', this.handleLogPanelClosed);
+        }
+
+        destroy() {
+            $('body').off('logPanelClosed', this.handleLogPanelClosed);
+        }
+
+        handleLogPanelClosed(_event, data) {
+            this.select.removeActiveItemsByValue(data.id);
         }
 
         loadSelectOptions() {
