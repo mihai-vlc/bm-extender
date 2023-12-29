@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logs Viewer</title>
     <link rel="stylesheet" href="../vendor/choices/choices.css" />
+    <link rel="stylesheet" href="../vendor/toastify/toastify.min.css" />
     <style>
         :root {
             color-scheme: light dark;
@@ -46,6 +47,26 @@
         .search-box__button {
             width: 100px;
             cursor: pointer;
+        }
+
+        .log-panel {
+            margin: 1rem auto;
+            border: 1px solid currentColor;
+        }
+
+        .log-panel-title {
+            padding: 0.5rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-bottom: 1px solid currentColor;
+        }
+
+        .log-panel-content {
+            padding: 0.5rem;
+            max-height: 600px;
+            overflow: auto;
+            white-space: pre-wrap;
+            font-size: 1rem;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -93,12 +114,19 @@
         <button class="js-update-logs search-box__button">Full Update</button>
     </div>
 
-    <pre class="js-app-status"></pre>
+    <div class="js-panels-wrapper"></div>
 
     <script src="../jquery.js"></script>
     <script src="../vendor/choices/choices.min.js"></script>
+
+    <script src="../vendor/toastify/toastify-js.js"></script>
+    <script src="./toast.js"></script>
+
     <script src="./timeAgo.js"></script>
-    <script src="./logsViewer.js"></script>
+
+    <script src="./LogPanel.js"></script>
+    <script src="./LogsSelector.js"></script>
+    <script src="./logViewer.js"></script>
 </body>
 
 </html>
