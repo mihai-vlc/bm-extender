@@ -16,6 +16,10 @@
             box-sizing: border-box;
         }
 
+        body {
+            font-size: 1rem;
+        }
+
         .all-log-files {
             width: 100%;
         }
@@ -80,11 +84,22 @@
             color: inherit;
         }
 
+        .log-panel-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+
+        .log-panel-watch,
         .log-panel-buttons button {
             background-color: transparent;
             border: 1px solid currentColor;
             margin-left: 0.5rem;
             cursor: pointer;
+        }
+
+        .log-panel-watch {
+            padding: 0.2rem 0.5rem;
         }
 
         .log-panel-buttons svg {
@@ -149,6 +164,7 @@
 
     <script src="./LogPanel.js"></script>
     <script src="./LogsSelector.js"></script>
+    <script src="./RemoteFileWatcher.js"></script>
     <script src="./logViewer.js"></script>
 </body>
 
