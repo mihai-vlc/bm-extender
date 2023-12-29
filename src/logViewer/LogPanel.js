@@ -45,7 +45,9 @@
             } else {
                 this.$panel.find('.js-log-panel-title').html(this.logId);
                 this.readDataInChunks(`${this.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/${this.logId}`, (data) => {
-                    this.$panel.find('.js-log-panel-content').append(data);
+                    const $content = this.$panel.find('.js-log-panel-content');
+                    $content.append(data);
+                    $content.scrollTop($content[0].scrollHeight);
                 });
 
             }

@@ -21,7 +21,7 @@
 
         initLogsSelector(appState.baseUrl);
 
-        $('.js-update-logs').on('click', updateLogs);
+        $('.js-update-logs').on('click', updateAllLogs);
 
         timeAgo.init();
 
@@ -78,17 +78,16 @@
         });
     }
 
-    async function updateLogs() {
+    async function updateAllLogs() {
+        appState.logsSelector.loadSelectOptions();
+
         if (appState.logPanels.length == 0) {
-            window.toast.error("No active log panels found !");
             return;
         }
 
         appState.logPanels.forEach((panel) => {
             panel.loadContent();
         });
-
-        appState.logsSelector.loadSelectOptions();
     }
 
 
