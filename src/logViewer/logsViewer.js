@@ -63,7 +63,10 @@
                 const modifiedTime = $(this).closest('tr').find("td[align=right] tt").last().text();
                 groups["jobs"].push({
                     label: `Job: ${jobName} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
-                    value: `jobs/${jobName}`
+                    value: `jobs/${jobName}`,
+                    customProperties: {
+                        modifiedTime: new Date(modifiedTime)
+                    }
                 });
             });
 
@@ -84,14 +87,17 @@
 
                 groups[groupId].push({
                     label: `${logFileName} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
-                    value: logFileName
+                    value: logFileName,
+                    customProperties: {
+                        modifiedTime: new Date(modifiedTime)
+                    }
                 });
             });
 
             return Object.keys(groups).toSorted(sortDateGroupsFirst).map((groupId) => {
                 return {
                     label: groupId,
-                    choices: groups[groupId]
+                    choices: groups[groupId].toSorted(sortLogDate)
                 };
             });
         });
@@ -146,6 +152,10 @@
         }
 
         return b.localeCompare(a);
+    }
+
+    function sortLogDate(a, b) {
+        return b.customProperties.modifiedTime - a.customProperties.modifiedTime;
     }
 
 })();

@@ -86,5 +86,5 @@
         //    past: 'last year'
         //  }
         return format(diff, 31536000000, 'year', 'last year', 'in a year', diff < 0);
-    };
+    }
 })();
