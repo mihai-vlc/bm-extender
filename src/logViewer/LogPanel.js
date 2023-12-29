@@ -4,7 +4,7 @@
     class LogPanel {
         static PANEL_TEMPLATE = /*html*/`<div class="log-panel">
             <div class="log-panel-title">
-                <span class="js-log-panel-title"></span>
+                <a href="" target="_blank" class="js-log-panel-title"></a>
                 <div class="log-panel-buttons">
                     <button class="js-log-panel-refresh" title="refresh panel content">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></g></svg>
@@ -43,16 +43,23 @@
             if (this.logType == 'job') {
                 this.processJobLogs(this.logId);
             } else {
-                this.$panel.find('.js-log-panel-title').html(this.logId);
-                this.readDataInChunks(`${this.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/${this.logId}`, (data) => {
-                    const $content = this.$panel.find('.js-log-panel-content');
-                    $content.append(data);
-                    $content.scrollTop($content[0].scrollHeight);
-                });
-
+                this.loadLogFile(this.logId);
             }
         }
 
+        loadLogFile(logPath) {
+            const logUrl = `${this.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/${logPath}`;
+            this.$panel
+                .find('.js-log-panel-title')
+                .attr('href', logUrl)
+                .html(logPath);
+
+            this.readDataInChunks(logUrl, (data) => {
+                const $content = this.$panel.find('.js-log-panel-content');
+                $content.append(data);
+                $content.scrollTop($content[0].scrollHeight);
+            });
+        }
 
         async readDataInChunks(url, onChunk) {
             const response = await fetch(url);
@@ -96,11 +103,8 @@
                     .slice(0, 1);
 
                 recentLogs.forEach(log => {
-                    this.$panel.find('.js-log-panel-title').html(`${this.logId} - ${log.logFileName}`);
-                    this.readDataInChunks(`${this.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/jobs/${log.logFileName}`, (data) => {
-                        this.$panel.find('.js-log-panel-content').append(data);
-                    });
-                })
+                    this.loadLogFile(`jobs/${log.logFileName}`)
+                });
             } catch (e) {
                 console.error(e);
                 window.toast.error(`Failed to load the data for ${jobId}, ${e}`);
