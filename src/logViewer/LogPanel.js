@@ -85,7 +85,7 @@
             this.$panel
                 .find('.js-log-panel-title')
                 .attr('href', logUrl)
-                .html(logPath);
+                .html(logPath.split("/").pop());
 
             this.readDataInChunks(logUrl, this.appendContent);
         }

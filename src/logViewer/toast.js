@@ -3,27 +3,37 @@
 
     window.toast = {
         error(msg) {
-            Toastify({
+            const toast = Toastify({
                 text: `[${new Date().toLocaleTimeString()}] - ${msg}`,
                 close: true,
                 duration: -1,
                 oldestFirst: true,
                 style: {
                     background: "#a30f27",
+                },
+                onClick: function () {
+                    toast.hideToast();
                 }
-            }).showToast();
+            });
+
+            toast.showToast();
         },
 
         info(msg) {
-            Toastify({
+            const toast = Toastify({
                 text: `[${new Date().toLocaleTimeString()}] - ${msg}`,
                 close: true,
                 duration: -1,
                 oldestFirst: true,
                 style: {
                     background: "#00bcd4",
+                },
+                onClick: function () {
+                    toast.hideToast();
                 }
-            }).showToast();
+            });
+
+            toast.showToast();
         }
     }
 
