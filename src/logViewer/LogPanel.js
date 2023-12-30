@@ -155,8 +155,7 @@
 
         destroy() {
             if (this.fileWatcher) {
-                this.fileWatcher.stop();
-                this.fileWatcher.removeListenerNewContent(this.appendContent);
+                this.fileWatcher.destroy();
             }
 
 

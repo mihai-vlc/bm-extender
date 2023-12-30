@@ -85,7 +85,10 @@
             return 0;
         }
 
-
+        destroy() {
+            this.stop();
+            this.listeners = [];
+        }
     }
 
     window.RemoteFileWatcher = RemoteFileWatcher;
