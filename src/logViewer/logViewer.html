@@ -26,6 +26,7 @@
 
         .all-log-files {
             width: 100%;
+            max-height: 42.25px;
         }
 
         .text-center {
@@ -73,7 +74,7 @@
 
         .log-panel-content {
             padding: 0.5rem;
-            height: 600px;
+            height: 500px;
             overflow: auto;
             white-space: pre-wrap;
             font-size: 1rem;
@@ -90,31 +91,31 @@
             color: inherit;
         }
 
-        .log-panel-buttons {
+        .log-panel-actions {
             display: flex;
             align-items: center;
         }
 
-
-        .log-panel-watch,
-        .log-panel-buttons button {
+        .log-panel-actions .log-panel-cta {
             background-color: transparent;
             border: 1px solid currentColor;
             margin-left: 0.5rem;
             cursor: pointer;
+            height: 32px;
         }
 
         .log-panel-watch {
             padding: 0.2rem 0.5rem;
+            white-space: nowrap;
         }
 
-        .log-panel-buttons svg {
+        .log-panel-actions svg {
             width: 25px;
             height: 25px;
         }
 
         .credits {
-            margin-top: 7rem;
+            margin-top: 1rem;
             text-align: center;
             opacity: 0.05;
             display: inline-block;
@@ -170,7 +171,7 @@
 
         .theme {
             background: transparent;
-            padding: 1rem;
+            padding: 0.1rem;
             border: none;
             position: fixed;
             bottom: 0.5rem;

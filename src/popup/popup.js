@@ -55,6 +55,11 @@
             return;
         }
 
+        if ($(this).hasClass("js-open-logs-view-window")) {
+            openLogViewWindow(this.href);
+            return;
+        }
+
         if ($(this).hasClass("js-base-link")) {
             url = sfccTabData.url + this.pathname;
         } else {
@@ -104,7 +109,8 @@
 
                 html += `<li>
                      <a href="${link}">${name}</a> |
-                     <a href="${link}" class="js-open-tail-window text-bold">tail</a>
+                     <a href="${link}" class="js-open-tail-window text-bold">tail</a> |
+                     <a href="${link}" class="js-open-logs-view-window text-bold">log viewer</a>
                    </li>`;
             });
 
@@ -124,8 +130,6 @@
     function openTailLogWindow(logPath) {
         var w = 1200;
         var h = 800;
-        var left = screen.width / 2 - w / 2;
-        var top = screen.height / 2 - h / 2;
         var url = new URL(chrome.runtime.getURL("logTail/logTail.html"));
         url.searchParams.append("logPath", logPath);
 
@@ -134,8 +138,20 @@
             type: "popup",
             width: w,
             height: h,
-            left: left,
-            top: top,
+        });
+    }
+
+    function openLogViewWindow(logPath) {
+        var w = 1200;
+        var h = 800;
+        var url = new URL(chrome.runtime.getURL("logViewer/logViewer.html"));
+        url.searchParams.append("logPath", logPath.split("/").pop());
+
+        chrome.windows.create({
+            url: url.toString(),
+            type: "popup",
+            width: w,
+            height: h,
         });
     }
 

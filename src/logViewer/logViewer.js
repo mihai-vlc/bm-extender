@@ -1,6 +1,9 @@
 (async function () {
     /*global timeAgo */
 
+    var pageUrl = new URL(window.location.href);
+    var initialLogFile = pageUrl.searchParams.get("logPath");
+
     let appState = {
         baseUrl: '',
         logsSelector: null,
@@ -46,7 +49,7 @@
 
     function initLogsSelector(baseUrl) {
         /* global LogPanel, LogsSelector */
-        appState.logsSelector = new LogsSelector(baseUrl);
+        appState.logsSelector = new LogsSelector(baseUrl, initialLogFile);
 
         appState.logsSelector.loadSelectOptions();
 

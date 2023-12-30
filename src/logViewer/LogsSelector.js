@@ -2,8 +2,9 @@
     /* global Choices */
 
     class LogsSelector {
-        constructor(baseUrl) {
+        constructor(baseUrl, initialLogFile = "") {
             this.baseUrl = baseUrl;
+            this.initialLogFile = initialLogFile;
 
             this.select = new Choices('.js-all-log-files', {
                 removeItemButton: true,
@@ -27,8 +28,8 @@
             this.select.removeActiveItemsByValue(data.id);
         }
 
-        loadSelectOptions() {
-            this.select.setChoices(async () => {
+        async loadSelectOptions() {
+            await this.select.setChoices(async () => {
                 var groups = {};
 
                 const jobsListingResponse = await fetch(this.baseUrl + "/on/demandware.servlet/webdav/Sites/Logs/jobs");
@@ -54,6 +55,7 @@
 
                 $(logsListing).find('a[href$=".log"]').each(function () {
                     const logFileName = this.href.split('/').pop();
+                    const fileSize = $(this).closest('tr').find("td[align=right] tt").first().text();
                     const modifiedTime = $(this).closest('tr').find("td[align=right] tt").last().text();
                     const groupMatch = logFileName.match(/(\d{4})(\d{2})(\d{2})\.log$/);
                     let groupId = 'other';
@@ -64,7 +66,7 @@
                     groups[groupId] = groups[groupId] || [];
 
                     groups[groupId].push({
-                        label: `${logFileName} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
+                        label: `${logFileName} - ${fileSize} - <time class="js-time-ago" data-time="${modifiedTime}" data-step="second"></time>`,
                         value: logFileName,
                         customProperties: {
                             modifiedTime: new Date(modifiedTime),
@@ -83,6 +85,11 @@
                 'value',
                 'label',
                 true);
+
+
+            if (this.initialLogFile) {
+                this.select.setChoiceByValue(this.initialLogFile);
+            }
         }
 
         onAdd(callback) {

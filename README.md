@@ -52,6 +52,10 @@ Pull requests are welcomed.
 
 ## Release notes
 
+-   2.1.0
+
+    -   Implemented the initial version of the log viewer popup window
+
 -   2.0.0
 
     -   Upgrade to manifest V3
