@@ -13,7 +13,7 @@
                 },
                 onClick: function () {
                     toast.hideToast();
-                }
+                },
             });
 
             toast.showToast();
@@ -30,11 +30,10 @@
                 },
                 onClick: function () {
                     toast.hideToast();
-                }
+                },
             });
 
             toast.showToast();
-        }
-    }
-
+        },
+    };
 })();

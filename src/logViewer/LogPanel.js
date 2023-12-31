@@ -218,7 +218,7 @@
                 return `<button class="token timestamp" title="click to set as active">${prefix}${p1}</button>`;
             });
             text = text.replace(
-                /(WARN|warning|DEBUG|INFO)/g,
+                /(WARN|warning|DEBUG|INFO)\b/g,
                 '<b class="token important italic">$1</b>'
             );
             text = text.replace(/(ERROR)/g, '<b class="token danger italic">$1</b>');
@@ -243,14 +243,13 @@
             text = text.replace(/\/(\w+-\w+)\b/g, '/<b class="token function">$1</b>');
 
             text = text.replace(
-                /(#|lineNumber: |line |js:)(\d+)/gi,
+                /(lineNumber: |line |js:)(\d+)/gi,
                 '$1<b class="token number">$2</b>'
             );
 
             text = text.replace(/([a-z]\w+\s*)\(/gi, '<b class="token function">$1</b>(');
-            text = text.replace(/(\/\w+\.(js|ds|isml)\b)/gi, '<b class="token keyword">$1</b>');
 
-            text = text.replace(/(\/\w+\.(js|ds|isml)\b)/gi, '<b class="token keyword">$1</b>');
+            text = text.replace(/(\w+\.(js|ds|isml|json)\b)/gi, '<b class="token keyword">$1</b>');
 
             text = text.replace(/(^\tat.+$)/gim, '<small class="token small">$1</small>');
 
@@ -366,7 +365,7 @@
     };
 
     function escapeHtml(string) {
-        return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+        return String(string).replace(/[&<>"'`=/]/g, function (s) {
             return entityMap[s];
         });
     }
