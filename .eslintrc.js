@@ -17,7 +17,7 @@ module.exports = {
         "jquery": true
     },
     "rules": {
-
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
     },
-    "ignorePatterns": ["jquery.js", "fixDW-libs.js"],
+    "ignorePatterns": ["jquery.js", "fixDW-libs.js", "choices.min.js", "toastify-js.js"],
 }

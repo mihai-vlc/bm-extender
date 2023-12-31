@@ -23,15 +23,15 @@
 
 
         constructor(logId, logType, baseUrl) {
+            /*global LogLexer */
             this.logId = logId;
             this.logType = logType;
             this.baseUrl = baseUrl;
+            this.logLexer = new LogLexer();
 
 
             this.$panel = $(LogPanel.PANEL_TEMPLATE);
             $('.js-panels-wrapper').append(this.$panel);
-
-            this.appendContent = this.appendContent.bind(this);
 
             this.$panel.on('click', '.js-log-panel-refresh', this.loadContent.bind(this));
             this.$panel.on('click', '.js-log-panel-close', this.handleClose.bind(this));
@@ -61,8 +61,11 @@
 
             this.fileWatcher = new RemoteFileWatcher(this.lastLogUrl, this.lastKnownLogSize);
             this.fileWatcher.addListenerNewContent(data => {
-                this.appendContent("<hr/>");
-                this.appendContent(data);
+                // this.processContentChunk("<hr/>");
+                this.processContentChunk({
+                    done: true,
+                    value: data
+                });
             });
             this.fileWatcher.start();
             window.toast.info(`started watching ${this.logId}`);
@@ -87,13 +90,25 @@
                 .attr('href', logUrl)
                 .html(logPath.split("/").pop());
 
-            this.readDataInChunks(logUrl, this.appendContent);
+            console.log("start");
+
+            this.readDataInChunks(logUrl, this.processContentChunk.bind(this));
         }
 
-        appendContent(data) {
+        processContentChunk({ _done, value }) {
+
             const $content = this.$panel.find('.js-log-panel-content');
-            $content.append(data);
+            $content.append(value);
             $content.scrollTop($content[0].scrollHeight);
+
+            // if (value) {
+            //     this.logLexer.appendChunk(value);
+            // }
+
+            // if (done) {
+            //     this.logLexer.processCurrentMessage();
+            //     console.log("done");
+            // }
         }
 
         async readDataInChunks(url, onChunk) {
@@ -104,12 +119,14 @@
             });
             const reader = response.body.getReader();
             for (; ;) {
-                const { done, value } = await reader.read();
-                if (value) {
-                    onChunk(utf8decoder.decode(value));
-                }
+                const chunk = await reader.read();
 
-                if (done) {
+                onChunk({
+                    value: chunk.value && utf8decoder.decode(chunk.value),
+                    done: chunk.done
+                });
+
+                if (chunk.done) {
                     break;
                 }
             }
