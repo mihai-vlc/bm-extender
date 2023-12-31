@@ -81,6 +81,7 @@
             line-height: 1.5;
         }
 
+        .log-panel-title-info,
         .log-panel-title {
             display: flex;
             justify-content: space-between;
@@ -132,6 +133,41 @@
         .theme .dark-mode {
             display: none;
         }
+
+        .log-panel-content::after,
+        .loader::after {
+            content: " ";
+            display: none;
+            width: 1rem;
+            height: 1rem;
+            margin: 0 1rem;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            border-top-color: transparent;
+            animation: lds-dual-ring 2s linear infinite;
+        }
+
+        .log-panel-content::after {
+            margin: 1rem 0;
+        }
+
+        .log-panel.watching .log-panel-content::after,
+        .log-panel.watching .loader::after {
+            display: block;
+        }
+
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        /* Dark theme */
 
         html.dark {
             color-scheme: dark;

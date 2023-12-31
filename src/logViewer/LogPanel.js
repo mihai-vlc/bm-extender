@@ -4,7 +4,10 @@
     class LogPanel {
         static PANEL_TEMPLATE = /*html*/`<div class="log-panel">
             <div class="log-panel-title">
-                <a href="" target="_blank" class="js-log-panel-title"></a>
+                <div class="log-panel-title-info">
+                    <a href="" target="_blank" class="js-log-panel-title"></a>
+                    <span class="loader"></span>
+                </div>
                 <div class="log-panel-actions">
                     <label class="log-panel-watch log-panel-cta" title="update the content when the log file size changes">
                         <input type="checkbox" class="js-log-panel-watch" />
@@ -56,19 +59,20 @@
                 this.fileWatcher.stop();
                 this.fileWatcher = null;
                 window.toast.info(`stopped watching ${this.logId}`);
+                this.$panel.removeClass('watching');
                 return;
             }
 
             this.fileWatcher = new RemoteFileWatcher(this.lastLogUrl, this.lastKnownLogSize);
             this.fileWatcher.addListenerNewContent(data => {
-                // this.processContentChunk("<hr/>");
                 this.processContentChunk({
                     done: true,
-                    value: data
+                    value: "<hr/>" + data
                 });
             });
             this.fileWatcher.start();
             window.toast.info(`started watching ${this.logId}`);
+            this.$panel.addClass('watching');
         }
 
         loadContent() {
@@ -90,7 +94,6 @@
                 .attr('href', logUrl)
                 .html(logPath.split("/").pop());
 
-            console.log("start");
 
             this.readDataInChunks(logUrl, this.processContentChunk.bind(this));
         }
