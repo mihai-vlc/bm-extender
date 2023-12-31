@@ -76,6 +76,7 @@
         .log-panel-content {
             padding: 0.5rem;
             height: 500px;
+            min-height: 200px;
             overflow: auto;
             white-space: pre-wrap;
             font-size: 1rem;
@@ -201,6 +202,30 @@
             }
         }
 
+        .dragbar {
+            cursor: row-resize;
+            height: 1rem;
+            border-top: 1px solid currentColor;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dragbar::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            border-radius: 9999px;
+            background: currentColor;
+            transition: background-color 100ms linear;
+        }
+
+        .dragbar.active::after,
+        .dragbar:hover::after {
+            background: #00bcd4;
+        }
+
 
         /* Dark theme */
 
@@ -315,6 +340,7 @@
     <script src="./theme.js"></script>
     <script src="./timeAgo.js"></script>
 
+    <script src="./DragBar.js"></script>
     <script src="./LogLexer.js"></script>
     <script src="./LogPanel.js"></script>
     <script src="./LogsSelector.js"></script>

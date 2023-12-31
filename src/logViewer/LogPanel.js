@@ -22,6 +22,7 @@
                 </div>
             </div>
             <div class="js-log-panel-content log-panel-content"></div>
+            <div class="js-dragbar dragbar" title="resize panel"></div>
             <div class="log-panel-status-bar">
                 <button class="js-log-panel-scroll-to" data-location="top" title="Scroll to top">Top</button>
                 <button class="js-log-panel-scroll-to" data-location="previous" title="Scroll to previous log message">Previous</button>
@@ -32,7 +33,7 @@
         </div>`;
 
         constructor(logId, logType, baseUrl) {
-            /*global LogLexer */
+            /*global LogLexer, DragBar */
             this.logId = logId;
             this.logType = logType;
             this.baseUrl = baseUrl;
@@ -40,6 +41,8 @@
 
             this.$panel = $(LogPanel.PANEL_TEMPLATE);
             $(".js-panels-wrapper").append(this.$panel);
+
+            this.dragbar = new DragBar(this.$panel.find(".js-dragbar")[0]);
 
             this.$panel.on("click", ".js-log-panel-refresh", this.loadContent.bind(this));
             this.$panel.on("click", ".js-log-panel-close", this.handleClose.bind(this));
@@ -104,9 +107,9 @@
                     break;
                 }
                 case "previous": {
-                    const $logMarker = this.$activeLogMessage.prevAll(".timestamp").first();
-                    if ($logMarker.length > 0) {
-                        this.setActiveLogMessage($logMarker);
+                    const logMarker = findPreviousWithClass(this.$activeLogMessage[0], "timestamp");
+                    if (logMarker != null) {
+                        this.setActiveLogMessage($(logMarker));
                         this.$activeLogMessage[0].scrollIntoView({
                             behavior: "smooth",
                         });
@@ -116,9 +119,9 @@
                     break;
                 }
                 case "next": {
-                    const $logMarker = this.$activeLogMessage.nextAll(".timestamp").first();
-                    if ($logMarker.length > 0) {
-                        this.setActiveLogMessage($logMarker);
+                    const logMarker = findNextWithClass(this.$activeLogMessage[0], "timestamp");
+                    if (logMarker != null) {
+                        this.setActiveLogMessage($(logMarker));
                         this.$activeLogMessage[0].scrollIntoView({
                             behavior: "smooth",
                         });
@@ -143,6 +146,7 @@
         }
 
         handleTimestampClick(event) {
+            console.log(event.target);
             this.setActiveLogMessage($(event.target));
         }
 
@@ -206,11 +210,12 @@
             const recentDate = `${currentDate.getFullYear()}-${month}-${day} ${hour}:${minute}`;
 
             text = text.replace(/(\[(\d{4}-.*?)\])/gm, function (_match, p1, p2) {
+                let prefix = "";
                 if (p2.startsWith(recentDate)) {
-                    return `<button class="token timestamp">(<time class="js-time-ago" data-time="${p2}" data-step="second" title="${p2}">${p2}</time>) ${p1}</button>`;
+                    prefix = `(<time class="js-time-ago" data-time="${p2}" data-step="second">${p2}</time>) `;
                 }
 
-                return `<button class="token timestamp">${p1}</button>`;
+                return `<button class="token timestamp" title="click to set as active">${prefix}${p1}</button>`;
             });
             text = text.replace(
                 /(WARN|warning|DEBUG|INFO)/g,
@@ -321,8 +326,32 @@
                 this.fileWatcher.destroy();
             }
 
+            if (this.dragbar) {
+                this.dragbar.destroy();
+            }
+
             this.$panel.remove();
         }
+    }
+
+    function findPreviousWithClass(element, className) {
+        while (element) {
+            element = element.previousElementSibling;
+            if (element && element.classList.contains(className)) {
+                return element;
+            }
+        }
+        return null;
+    }
+
+    function findNextWithClass(element, className) {
+        while (element) {
+            element = element.nextElementSibling;
+            if (element && element.classList.contains(className)) {
+                return element;
+            }
+        }
+        return null;
     }
 
     var entityMap = {
