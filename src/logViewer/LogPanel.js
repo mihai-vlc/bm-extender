@@ -22,6 +22,12 @@
                 </div>
             </div>
             <div class="js-log-panel-content log-panel-content"></div>
+            <div class="log-panel-status-bar">
+                <button class="js-log-panel-scroll-to" data-location="top" title="Scroll to top">Top</button>
+                <button class="js-log-panel-scroll-to" data-location="previous" title="Scroll to previous log message">Previous</button>
+                <button class="js-log-panel-scroll-to" data-location="next" title="Scroll to next log message">Next</button>
+                <button class="js-log-panel-scroll-to" data-location="bottom" title="Scroll to bottom">Bottom</button>
+            </div>
         </div>`;
 
         constructor(logId, logType, baseUrl) {
@@ -37,6 +43,8 @@
             this.$panel.on("click", ".js-log-panel-refresh", this.loadContent.bind(this));
             this.$panel.on("click", ".js-log-panel-close", this.handleClose.bind(this));
             this.$panel.on("click", ".js-log-panel-watch", this.handleWatchChange.bind(this));
+            this.$panel.on("click", ".js-log-panel-scroll-to", this.handleScrollToPoint.bind(this));
+            this.$panel.on("click", ".timestamp", this.handleTimestampClick.bind(this));
         }
 
         handleClose() {
@@ -72,6 +80,70 @@
             this.$panel.addClass("watching");
         }
 
+        handleScrollToPoint(event) {
+            const location = $(event.target).attr("data-location");
+            const $panelContent = this.$panel.find(".js-log-panel-content");
+            const contentElement = $panelContent[0];
+            switch (location) {
+                case "top": {
+                    contentElement.scroll({
+                        top: 0,
+                        behavior: "smooth",
+                    });
+                    this.setActiveLogMessage($panelContent.find(".timestamp").first());
+                    break;
+                }
+
+                case "bottom": {
+                    contentElement.scroll({
+                        top: contentElement.scrollHeight,
+                        behavior: "smooth",
+                    });
+                    this.setActiveLogMessage($panelContent.find(".timestamp").last());
+                    break;
+                }
+                case "previous": {
+                    const $logMarker = this.$activeLogMessage.prevAll(".timestamp").first();
+                    if ($logMarker.length > 0) {
+                        this.setActiveLogMessage($logMarker);
+                        this.$activeLogMessage[0].scrollIntoView({
+                            behavior: "smooth",
+                        });
+                    } else {
+                        window.toast.info("First log message reached");
+                    }
+                    break;
+                }
+                case "next": {
+                    const $logMarker = this.$activeLogMessage.nextAll(".timestamp").first();
+                    if ($logMarker.length > 0) {
+                        this.setActiveLogMessage($logMarker);
+                        this.$activeLogMessage[0].scrollIntoView({
+                            behavior: "smooth",
+                        });
+                    } else {
+                        window.toast.info("Last log message reached");
+                    }
+                    break;
+                }
+
+                default: {
+                    window.toast.error("Invalid location");
+                    break;
+                }
+            }
+        }
+
+        handleTimestampClick(event) {
+            this.setActiveLogMessage($(event.target));
+        }
+
+        setActiveLogMessage($element) {
+            this.$panel.find(".timestamp").removeClass("active");
+            this.$activeLogMessage = $element;
+            this.$activeLogMessage.addClass("active");
+        }
+
         loadContent() {
             this.$panel.find(".js-log-panel-content").empty();
 
@@ -98,6 +170,7 @@
             const $content = this.$panel.find(".js-log-panel-content");
             $content.append(this.highlightKeywords(value));
             $content.scrollTop($content[0].scrollHeight);
+            this.setActiveLogMessage($content.find(".timestamp").last());
 
             // if (value) {
             //     this.logLexer.appendChunk(value);
@@ -113,6 +186,8 @@
             if (!text) {
                 return text;
             }
+            text = escapeHtml(text);
+
             const currentDate = new Date();
             currentDate.setMinutes(currentDate.getMinutes() + currentDate.getTimezoneOffset());
 
@@ -124,10 +199,10 @@
 
             text = text.replace(/(\[(\d{4}-.*?)\])/gm, function (_match, p1, p2) {
                 if (p2.startsWith(recentDate)) {
-                    return `<b class="token timestamp">(<time class="js-time-ago" data-time="${p2}" data-step="second" title="${p2}">${p2}</time>) ${p1}</b>`;
+                    return `<button class="token timestamp">(<time class="js-time-ago" data-time="${p2}" data-step="second" title="${p2}">${p2}</time>) ${p1}</button>`;
                 }
 
-                return `<b class="token timestamp">${p1}</b>`;
+                return `<button class="token timestamp">${p1}</button>`;
             });
             text = text.replace(
                 /(WARN|warning|DEBUG|INFO)/g,
@@ -240,6 +315,23 @@
 
             this.$panel.remove();
         }
+    }
+
+    var entityMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+        "/": "&#x2F;",
+        "`": "&#x60;",
+        "=": "&#x3D;",
+    };
+
+    function escapeHtml(string) {
+        return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+            return entityMap[s];
+        });
     }
 
     window.LogPanel = LogPanel;

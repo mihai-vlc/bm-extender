@@ -5,29 +5,27 @@
     var initialLogFile = pageUrl.searchParams.get("logPath");
 
     let appState = {
-        baseUrl: '',
+        baseUrl: "",
         logsSelector: null,
-        logPanels: []
+        logPanels: [],
     };
 
     try {
-
-        if (!await initAppState()) {
+        if (!(await initAppState())) {
             return;
         }
 
-        let logsFolderPath = $('.js-instance-name').attr('data-path');
+        let logsFolderPath = $(".js-instance-name").attr("data-path");
 
-        $('.js-instance-name')
-            .attr('href', appState.baseUrl + logsFolderPath)
+        $(".js-instance-name")
+            .attr("href", appState.baseUrl + logsFolderPath)
             .text(appState.baseUrl);
 
         initLogsSelector(appState.baseUrl);
 
-        $('.js-update-logs').on('click', updateAllLogs);
+        $(".js-update-logs").on("click", updateAllLogs);
 
         timeAgo.init();
-
     } catch (e) {
         console.error(e);
         window.toast.error(e);
@@ -68,8 +66,7 @@
         });
 
         appState.logsSelector.onRemove((event) => {
-
-            appState.logPanels = appState.logPanels.filter(panel => {
+            appState.logPanels = appState.logPanels.filter((panel) => {
                 if (panel.logId == event.detail.value) {
                     panel.destroy();
                     return false;
@@ -92,7 +89,4 @@
             panel.loadContent();
         });
     }
-
-
-
 })();
