@@ -92,7 +92,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-    color: #905;
+    color: rgb(44, 202, 5);
 }
 
 .token.selector,
@@ -101,7 +101,7 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-    color: #690;
+    color: rgb(44, 202, 5);
 }
 
 .token.operator,
@@ -116,11 +116,11 @@ pre[class*="language-"] {
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-    color: #07a;
+    color: rgb(57, 193, 251);
 }
 
 .token.function {
-    color: #dd4a68;
+    color: rgb(228, 148, 0);
 }
 
 .token.regex,
@@ -152,4 +152,14 @@ pre[class*="language-"] {
 
 .token.small {
     font-size: 10px;
+}
+
+.token.timestamp::before {
+    content: "";
+    display: block;
+    /* border-top: 1px solid currentColor; */
+    margin: 0.5rem 0;
+}
+.token.timestamp:first-child:before {
+    display: none;
 }

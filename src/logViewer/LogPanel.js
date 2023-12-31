@@ -2,7 +2,7 @@
     let utf8decoder = new TextDecoder();
 
     class LogPanel {
-        static PANEL_TEMPLATE = /*html*/`<div class="log-panel">
+        static PANEL_TEMPLATE = /*html*/ `<div class="log-panel">
             <div class="log-panel-title">
                 <div class="log-panel-title-info">
                     <a href="" target="_blank" class="js-log-panel-title"></a>
@@ -22,8 +22,7 @@
                 </div>
             </div>
             <div class="js-log-panel-content log-panel-content"></div>
-        </div>`
-
+        </div>`;
 
         constructor(logId, logType, baseUrl) {
             /*global LogLexer */
@@ -32,19 +31,17 @@
             this.baseUrl = baseUrl;
             this.logLexer = new LogLexer();
 
-
             this.$panel = $(LogPanel.PANEL_TEMPLATE);
-            $('.js-panels-wrapper').append(this.$panel);
+            $(".js-panels-wrapper").append(this.$panel);
 
-            this.$panel.on('click', '.js-log-panel-refresh', this.loadContent.bind(this));
-            this.$panel.on('click', '.js-log-panel-close', this.handleClose.bind(this));
-            this.$panel.on('click', '.js-log-panel-watch', this.handleWatchChange.bind(this));
-
+            this.$panel.on("click", ".js-log-panel-refresh", this.loadContent.bind(this));
+            this.$panel.on("click", ".js-log-panel-close", this.handleClose.bind(this));
+            this.$panel.on("click", ".js-log-panel-watch", this.handleWatchChange.bind(this));
         }
 
         handleClose() {
-            this.$panel.trigger('logPanelClosed', {
-                id: this.logId
+            this.$panel.trigger("logPanelClosed", {
+                id: this.logId,
             });
         }
 
@@ -59,26 +56,26 @@
                 this.fileWatcher.stop();
                 this.fileWatcher = null;
                 window.toast.info(`stopped watching ${this.logId}`);
-                this.$panel.removeClass('watching');
+                this.$panel.removeClass("watching");
                 return;
             }
 
             this.fileWatcher = new RemoteFileWatcher(this.lastLogUrl, this.lastKnownLogSize);
-            this.fileWatcher.addListenerNewContent(data => {
+            this.fileWatcher.addListenerNewContent((data) => {
                 this.processContentChunk({
                     done: true,
-                    value: "<hr/>" + data
+                    value: "<hr/>" + data,
                 });
             });
             this.fileWatcher.start();
             window.toast.info(`started watching ${this.logId}`);
-            this.$panel.addClass('watching');
+            this.$panel.addClass("watching");
         }
 
         loadContent() {
-            this.$panel.find('.js-log-panel-content').empty();
+            this.$panel.find(".js-log-panel-content").empty();
 
-            if (this.logType == 'job') {
+            if (this.logType == "job") {
                 this.processJobLogs(this.logId);
             } else {
                 this.loadLogFile(this.logId);
@@ -90,18 +87,16 @@
             this.lastLogUrl = logUrl;
 
             this.$panel
-                .find('.js-log-panel-title')
-                .attr('href', logUrl)
+                .find(".js-log-panel-title")
+                .attr("href", logUrl)
                 .html(logPath.split("/").pop());
-
 
             this.readDataInChunks(logUrl, this.processContentChunk.bind(this));
         }
 
         processContentChunk({ _done, value }) {
-
-            const $content = this.$panel.find('.js-log-panel-content');
-            $content.append(value);
+            const $content = this.$panel.find(".js-log-panel-content");
+            $content.append(this.highlightKeywords(value));
             $content.scrollTop($content[0].scrollHeight);
 
             // if (value) {
@@ -114,19 +109,79 @@
             // }
         }
 
+        highlightKeywords(text) {
+            if (!text) {
+                return text;
+            }
+            const currentDate = new Date();
+            currentDate.setMinutes(currentDate.getMinutes() + currentDate.getTimezoneOffset());
+
+            const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+            const day = currentDate.getDate().toString().padStart(2, "0");
+            const hour = currentDate.getHours().toString().padStart(2, "0");
+            const minute = currentDate.getMinutes().toString().padStart(2, "0")[0];
+            const recentDate = `${currentDate.getFullYear()}-${month}-${day} ${hour}:${minute}`;
+
+            text = text.replace(/(\[(\d{4}-.*?)\])/gm, function (_match, p1, p2) {
+                if (p2.startsWith(recentDate)) {
+                    return `<b class="token timestamp">(<time class="js-time-ago" data-time="${p2}" data-step="second" title="${p2}">${p2}</time>) ${p1}</b>`;
+                }
+
+                return `<b class="token timestamp">${p1}</b>`;
+            });
+            text = text.replace(
+                /(WARN|warning|DEBUG|INFO)/g,
+                '<b class="token important italic">$1</b>'
+            );
+            text = text.replace(/(ERROR)/g, '<b class="token danger italic">$1</b>');
+            text = text.replace(/(importPackage|require)/g, '<b class="token selector">$1</b>');
+            text = text.replace(/(Sites-([\w-]+)?Site)/g, '<b class="token keyword italic">$1</b>');
+            text = text.replace(
+                /(null|TypeError|ReferenceError|SystemError)/gi,
+                '<b class="token danger">$1</b>'
+            );
+
+            text = text.replace(
+                /(TEMPLATE:)([^ :]+)/gi,
+                '<b class="token">$1</b><b class="token keyword">$2</b>'
+            );
+
+            text = text.replace(
+                /(Job \[\w ]+\])/gi,
+                '<b class="token">$1</b><b class="token keyword">$2</b>'
+            );
+
+            text = text.replace(/\|(\w+-\w+)\|/g, '|<b class="token function">$1</b>|');
+            text = text.replace(/\/(\w+-\w+)\b/g, '/<b class="token function">$1</b>');
+
+            text = text.replace(
+                /(#|lineNumber: |line |js:)(\d+)/gi,
+                '$1<b class="token number">$2</b>'
+            );
+
+            text = text.replace(/([a-z]\w+\s*)\(/gi, '<b class="token function">$1</b>(');
+            text = text.replace(/(\/\w+\.(js|ds|isml)\b)/gi, '<b class="token keyword">$1</b>');
+
+            text = text.replace(/(\/\w+\.(js|ds|isml)\b)/gi, '<b class="token keyword">$1</b>');
+
+            text = text.replace(/(^\tat.+$)/gim, '<small class="token small">$1</small>');
+
+            return text;
+        }
+
         async readDataInChunks(url, onChunk) {
             const response = await fetch(url, {
                 headers: {
-                    Range: "bytes=0-"
-                }
+                    Range: "bytes=0-",
+                },
             });
             const reader = response.body.getReader();
-            for (; ;) {
+            for (;;) {
                 const chunk = await reader.read();
 
                 onChunk({
                     value: chunk.value && utf8decoder.decode(chunk.value),
-                    done: chunk.done
+                    done: chunk.done,
                 });
 
                 if (chunk.done) {
@@ -134,14 +189,15 @@
                 }
             }
 
-            const contentRange = response.headers.get('content-range') || "0-0/0";
+            const contentRange = response.headers.get("content-range") || "0-0/0";
             this.lastKnownLogSize = parseInt(contentRange.split("/")[1], 10) || 0;
         }
 
         async processJobLogs(jobId) {
-
             try {
-                const response = await fetch(`${this.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/jobs/${jobId}`);
+                const response = await fetch(
+                    `${this.baseUrl}/on/demandware.servlet/webdav/Sites/Logs/jobs/${jobId}`
+                );
                 const data = await response.text();
                 const $logLinks = $(data).find('a[href$=".log"]');
 
@@ -152,8 +208,12 @@
 
                 const recentLogs = $logLinks
                     .map((_, el) => {
-                        const logFileName = el.href.split('/').pop();
-                        const modifiedTime = $(el).closest('tr').find("td[align=right] tt").last().text();
+                        const logFileName = el.href.split("/").pop();
+                        const modifiedTime = $(el)
+                            .closest("tr")
+                            .find("td[align=right] tt")
+                            .last()
+                            .text();
 
                         return {
                             logFileName: `${jobId}/${logFileName}`,
@@ -164,8 +224,8 @@
                     .toSorted((a, b) => b.modifiedTime - a.modifiedTime)
                     .slice(0, 1);
 
-                recentLogs.forEach(log => {
-                    this.loadLogFile(`jobs/${log.logFileName}`)
+                recentLogs.forEach((log) => {
+                    this.loadLogFile(`jobs/${log.logFileName}`);
                 });
             } catch (e) {
                 console.error(e);
@@ -178,11 +238,9 @@
                 this.fileWatcher.destroy();
             }
 
-
             this.$panel.remove();
         }
     }
 
     window.LogPanel = LogPanel;
-
 })();
