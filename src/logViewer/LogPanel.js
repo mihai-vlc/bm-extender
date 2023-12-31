@@ -223,7 +223,10 @@
             );
             text = text.replace(/(ERROR)/g, '<b class="token danger italic">$1</b>');
             text = text.replace(/(importPackage|require)/g, '<b class="token selector">$1</b>');
-            text = text.replace(/(Sites-([\w-]+)?Site)/g, '<b class="token keyword italic">$1</b>');
+            text = text.replace(
+                /(Sites-([\w-]+)?Site)/gi,
+                '<b class="token keyword italic">$1</b>'
+            );
             text = text.replace(
                 /(null|TypeError|ReferenceError|SystemError)/gi,
                 '<b class="token danger">$1</b>'
@@ -239,8 +242,8 @@
                 '<b class="token">$1</b><b class="token keyword">$2</b>'
             );
 
-            text = text.replace(/\|(\w+-\w+)\|/g, '|<b class="token function">$1</b>|');
-            text = text.replace(/\/(\w+-\w+)\b/g, '/<b class="token function">$1</b>');
+            text = text.replace(/\|(\w+-\w+)\|/gi, '|<b class="token function">$1</b>|');
+            text = text.replace(/\/([A-Z_]\w+-[A-Z]\w+)/g, '/<b class="token function">$1</b>');
 
             text = text.replace(
                 /(lineNumber: |line |js:)(\d+)/gi,
