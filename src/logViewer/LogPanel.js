@@ -25,6 +25,7 @@
             <div class="log-panel-status-bar">
                 <button class="js-log-panel-scroll-to" data-location="top" title="Scroll to top">Top</button>
                 <button class="js-log-panel-scroll-to" data-location="previous" title="Scroll to previous log message">Previous</button>
+                <button class="js-log-panel-scroll-to" data-location="active" title="Scroll to active log message">Active</button>
                 <button class="js-log-panel-scroll-to" data-location="next" title="Scroll to next log message">Next</button>
                 <button class="js-log-panel-scroll-to" data-location="bottom" title="Scroll to bottom">Bottom</button>
             </div>
@@ -124,6 +125,13 @@
                     } else {
                         window.toast.info("Last log message reached");
                     }
+                    break;
+                }
+
+                case "active": {
+                    this.$activeLogMessage[0].scrollIntoView({
+                        behavior: "smooth",
+                    });
                     break;
                 }
 
