@@ -112,6 +112,7 @@
 
             if (this.initialLogFile) {
                 this.select.setChoiceByValue(this.initialLogFile);
+                this.initialLogFile = "";
             }
         }
 

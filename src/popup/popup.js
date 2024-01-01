@@ -102,7 +102,6 @@
                 return link.url.split("/").pop().toLowerCase().indexOf(query) > -1;
             })
             .forEach(function (link) {
-                console.log(link);
                 var name = link.url.split("/").pop();
 
                 if (query) {

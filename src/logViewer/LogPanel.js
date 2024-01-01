@@ -28,11 +28,11 @@
             <div class="js-log-panel-content log-panel-content"></div>
             <div class="js-dragbar dragbar" title="resize panel"></div>
             <div class="log-panel-status-bar">
-                <button class="js-log-panel-scroll-to" data-location="top" title="Scroll to top">Top</button>
+                <button class="js-log-panel-scroll-to" data-location="top" title="Scroll to top">First</button>
                 <button class="js-log-panel-scroll-to" data-location="previous" title="Scroll to previous log message">Previous</button>
                 <button class="js-log-panel-scroll-to" data-location="active" title="Scroll to active log message">Active</button>
                 <button class="js-log-panel-scroll-to" data-location="next" title="Scroll to next log message">Next</button>
-                <button class="js-log-panel-scroll-to" data-location="bottom" title="Scroll to bottom">Bottom</button>
+                <button class="js-log-panel-scroll-to" data-location="bottom" title="Scroll to bottom">Last</button>
             </div>
         </div>`;
 
@@ -46,10 +46,9 @@
             this.$panel = $(LogPanel.PANEL_TEMPLATE);
             $(".js-panels-wrapper").append(this.$panel);
 
-            this.dragbar = new DragBar(
-                this.$panel.find(".js-dragbar")[0],
-                this.$panel.find(".js-log-panel-content")[0]
-            );
+            this.$logContent = this.$panel.find(".js-log-panel-content");
+
+            this.dragbar = new DragBar(this.$panel.find(".js-dragbar")[0], this.$logContent[0]);
 
             this.$panel.on("click", ".js-log-panel-refresh", this.loadContent.bind(this));
             this.$panel.on("click", ".js-log-panel-expand", this.handleExpansion.bind(this));
@@ -79,7 +78,6 @@
             if (this.fileWatcher && !event.target.checked) {
                 this.fileWatcher.stop();
                 this.fileWatcher = null;
-                window.toast.info(`stopped watching ${this.logId}`);
                 this.$panel.removeClass("watching");
                 return;
             }
@@ -88,17 +86,17 @@
             this.fileWatcher.addListenerNewContent((data) => {
                 this.processContentChunk({
                     done: true,
-                    value: "<hr/>" + data,
+                    value: data,
+                    prefix: "<hr />",
                 });
             });
             this.fileWatcher.start();
-            window.toast.info(`started watching ${this.logId}`);
             this.$panel.addClass("watching");
         }
 
         handleScrollToPoint(event) {
             const location = $(event.target).attr("data-location");
-            const $panelContent = this.$panel.find(".js-log-panel-content");
+            const $panelContent = this.$logContent;
             const contentElement = $panelContent[0];
             switch (location) {
                 case "top": {
@@ -168,7 +166,7 @@
         }
 
         loadContent() {
-            this.$panel.find(".js-log-panel-content").empty();
+            this.$logContent.empty();
 
             if (this.logType == "job") {
                 this.processJobLogs(this.logId);
@@ -189,26 +187,25 @@
             this.readDataInChunks(logUrl, this.processContentChunk.bind(this));
         }
 
-        processContentChunk({ _done, value }) {
-            const $content = this.$panel.find(".js-log-panel-content");
+        processContentChunk({ done, value, prefix = "" }) {
+            const $content = this.$logContent;
+            if (prefix) {
+                $content.append(prefix);
+            }
+
             $content.append(this.highlightKeywords(value));
             $content.scrollTop($content[0].scrollHeight);
-            this.setActiveLogMessage($content.find(".timestamp").last());
 
-            // if (value) {
-            //     this.logLexer.appendChunk(value);
-            // }
-
-            // if (done) {
-            //     this.logLexer.processCurrentMessage();
-            //     console.log("done");
-            // }
+            if (done) {
+                this.setActiveLogMessage($content.find(".timestamp").last());
+            }
         }
 
         highlightKeywords(text) {
             if (!text) {
                 return text;
             }
+
             text = escapeHtml(text);
 
             const currentDate = new Date();
