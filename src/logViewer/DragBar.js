@@ -1,8 +1,8 @@
 (function () {
     class DragBar {
-        constructor(element) {
+        constructor(element, target) {
             this.element = element;
-            this.target = document.querySelector(".js-log-panel-content");
+            this.target = target;
 
             this.handleMousedown = this.handleMousedown.bind(this);
             this.handleMousemove = this.handleMousemove.bind(this);

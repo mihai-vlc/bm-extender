@@ -66,6 +66,42 @@
             border: 1px solid currentColor;
         }
 
+        .log-panel.fullscreen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        .log-panel.fullscreen .log-panel-content {
+            height: 100% !important;
+        }
+
+        .log-panel.fullscreen .dragbar {
+            display: none;
+        }
+
+        .log-panel-fullscreen-cta .maximize {
+            display: block;
+        }
+
+        .log-panel-fullscreen-cta .minimize {
+            display: none;
+        }
+
+        .log-panel.fullscreen .log-panel-fullscreen-cta .minimize {
+            display: block;
+        }
+
+        .log-panel.fullscreen .log-panel-fullscreen-cta .maximize {
+            display: none;
+        }
+
         .log-panel-title {
             padding: 0.5rem;
             font-weight: bold;
@@ -265,6 +301,11 @@
             display: block;
         }
 
+        html.dark .log-panel.fullscreen {
+            background: #000;
+        }
+
+
         .theme {
             background: transparent;
             padding: 0.1rem;
@@ -273,6 +314,7 @@
             bottom: 0.5rem;
             right: 0.5rem;
             cursor: pointer;
+            z-index: 1;
         }
 
         .theme svg {

@@ -16,6 +16,10 @@
                     <button class="js-log-panel-refresh log-panel-cta" title="refresh panel content">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path></g></svg>
                     </button>
+                    <button class="js-log-panel-expand log-panel-cta log-panel-fullscreen-cta" title="toggle panel expansion">
+                        <svg class="maximize" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16"><g fill="none"><path d="M4 3.5a.5.5 0 0 0-.5.5v1.614a.75.75 0 0 1-1.5 0V4a2 2 0 0 1 2-2h1.614a.75.75 0 0 1 0 1.5H4zm5.636-.75a.75.75 0 0 1 .75-.75H12a2 2 0 0 1 2 2v1.614a.75.75 0 0 1-1.5 0V4a.5.5 0 0 0-.5-.5h-1.614a.75.75 0 0 1-.75-.75zM2.75 9.636a.75.75 0 0 1 .75.75V12a.5.5 0 0 0 .5.5h1.614a.75.75 0 0 1 0 1.5H4a2 2 0 0 1-2-2v-1.614a.75.75 0 0 1 .75-.75zm10.5 0a.75.75 0 0 1 .75.75V12a2 2 0 0 1-2 2h-1.614a.75.75 0 1 1 0-1.5H12a.5.5 0 0 0 .5-.5v-1.614a.75.75 0 0 1 .75-.75z" fill="currentColor"></path></g></svg>
+                        <svg class="minimize" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none"><path d="M9 4a1 1 0 0 0-2 0v2.5a.5.5 0 0 1-.5.5H4a1 1 0 0 0 0 2h2.5A2.5 2.5 0 0 0 9 6.5V4zm0 16a1 1 0 1 1-2 0v-2.5a.5.5 0 0 0-.5-.5H4a1 1 0 1 1 0-2h2.5A2.5 2.5 0 0 1 9 17.5V20zm7-17a1 1 0 0 0-1 1v2.5A2.5 2.5 0 0 0 17.5 9H20a1 1 0 1 0 0-2h-2.5a.5.5 0 0 1-.5-.5V4a1 1 0 0 0-1-1zm-1 17a1 1 0 1 0 2 0v-2.5a.5.5 0 0 1 .5-.5H20a1 1 0 1 0 0-2h-2.5a2.5 2.5 0 0 0-2.5 2.5V20z" fill="currentColor"></path></g></svg>
+                    </button>
                     <button class="js-log-panel-close log-panel-cta" title="close panel">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M289.94 256l95-95A24 24 0 0 0 351 127l-95 95l-95-95a24 24 0 0 0-34 34l95 95l-95 95a24 24 0 1 0 34 34l95-95l95 95a24 24 0 0 0 34-34z" fill="currentColor"></path></svg>
                     </button>
@@ -42,9 +46,13 @@
             this.$panel = $(LogPanel.PANEL_TEMPLATE);
             $(".js-panels-wrapper").append(this.$panel);
 
-            this.dragbar = new DragBar(this.$panel.find(".js-dragbar")[0]);
+            this.dragbar = new DragBar(
+                this.$panel.find(".js-dragbar")[0],
+                this.$panel.find(".js-log-panel-content")[0]
+            );
 
             this.$panel.on("click", ".js-log-panel-refresh", this.loadContent.bind(this));
+            this.$panel.on("click", ".js-log-panel-expand", this.handleExpansion.bind(this));
             this.$panel.on("click", ".js-log-panel-close", this.handleClose.bind(this));
             this.$panel.on("click", ".js-log-panel-watch", this.handleWatchChange.bind(this));
             this.$panel.on("click", ".js-log-panel-scroll-to", this.handleScrollToPoint.bind(this));
@@ -55,6 +63,10 @@
             this.$panel.trigger("logPanelClosed", {
                 id: this.logId,
             });
+        }
+
+        handleExpansion() {
+            this.$panel.toggleClass("fullscreen");
         }
 
         handleWatchChange(event) {
@@ -146,7 +158,6 @@
         }
 
         handleTimestampClick(event) {
-            console.log(event.target);
             this.setActiveLogMessage($(event.target));
         }
 

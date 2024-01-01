@@ -15,11 +15,24 @@ var background = {
                 case "saveSFCCTabData": {
                     background.state.sfccTabData.id = sender.tab.id;
                     background.state.sfccTabData.url = message.tabUrl;
+                    chrome.storage.sync.set({
+                        sfccTabData: background.state.sfccTabData,
+                    });
                     break;
                 }
                 case "getSFCCTabData": {
-                    sendResponse(background.state.sfccTabData);
-                    break;
+                    chrome.storage.sync
+                        .get({
+                            sfccTabData: {
+                                id: "",
+                                url: "",
+                            },
+                        })
+                        .then((data) => {
+                            background.state.sfccTabData = data.sfccTabData;
+                            sendResponse(background.state.sfccTabData);
+                        });
+                    return true;
                 }
             }
         });
