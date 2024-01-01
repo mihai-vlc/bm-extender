@@ -55,7 +55,16 @@
                 $(data)
                     .find('a[href*="' + date + '"]')
                     .each(function () {
-                        links.push(this.href.replace(/http:/g, "https:"));
+                        const fileSize = $(this)
+                            .closest("tr")
+                            .find("td[align=right] tt")
+                            .first()
+                            .text();
+
+                        links.push({
+                            url: this.href.replace(/http:/g, "https:"),
+                            fileSize: fileSize,
+                        });
                     });
 
                 callback(links);

@@ -26,6 +26,7 @@
         renderLogsList(logsData.links);
         $(".js-base-url").html(logsData.instanceHost);
     } catch (e) {
+        console.error(e);
         $(".js-loglist").html(`
             <li>${e}</li>
             <li>Please make sure a SFCC instance is open is one of the tabs</li>
@@ -98,19 +99,20 @@
                 if (!query) {
                     return true;
                 }
-                return link.split("/").pop().toLowerCase().indexOf(query) > -1;
+                return link.url.split("/").pop().toLowerCase().indexOf(query) > -1;
             })
             .forEach(function (link) {
-                var name = link.split("/").pop();
+                console.log(link);
+                var name = link.url.split("/").pop();
 
                 if (query) {
                     name = name.replace(queryRegex, "<strong>$&</strong>");
                 }
 
                 html += `<li>
-                     <a href="${link}">${name}</a> |
-                     <a href="${link}" class="js-open-tail-window text-bold">tail</a> |
-                     <a href="${link}" class="js-open-logs-view-window text-bold">log viewer</a>
+                     <a href="${link.url}">${name}</a> <small>${link.fileSize}</small> |
+                     <a href="${link.url}" class="js-open-tail-window text-bold">tail</a> |
+                     <a href="${link.url}" class="js-open-logs-view-window text-bold">log viewer</a>
                    </li>`;
             });
 
