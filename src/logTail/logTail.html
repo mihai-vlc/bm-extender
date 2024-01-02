@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Logs tail</title>
-        <link rel="stylesheet" href="logTail.css" />
-    </head>
-    <body>
-        <div class="container">
-            <button class="js-load-more">Load previous...</button>
-        </div>
-        <pre class="js-log-data">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Logs tail</title>
+    <link rel="stylesheet" href="logTail.css" />
+</head>
+
+<body>
+    <div class="container">
+        <button class="js-load-more">Load previous...</button>
+        <span class="js-log-file-name"></span>
+    </div>
+    <pre class="js-log-data">
             Loading log data...
         </pre>
 
-        <script src="../jquery.js"></script>
-        <script src="logTail.js"></script>
-    </body>
+    <script src="../jquery.js"></script>
+    <script src="logTail.js"></script>
+</body>
+
 </html>

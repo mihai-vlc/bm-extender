@@ -28,6 +28,10 @@
             return;
         }
 
+        const logFileName = logPath.split("/").pop();
+        document.title = `${logFileName} - Log tail`;
+        $(".js-log-file-name").text(logFileName);
+
         handleLogLoaded(logContent);
     } catch (e) {
         $(".js-log-data").html(`<li>ERROR: ${e}</li>`);
