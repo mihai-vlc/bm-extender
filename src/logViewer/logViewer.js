@@ -63,6 +63,7 @@
 
             appState.logsSelector.hideDropdown();
             timeAgo.update();
+            updatePageTitle();
         });
 
         appState.logsSelector.onRemove((event) => {
@@ -75,6 +76,7 @@
             });
 
             timeAgo.update();
+            updatePageTitle();
         });
     }
 
@@ -88,5 +90,16 @@
         appState.logPanels.forEach((panel) => {
             panel.loadContent();
         });
+    }
+
+    function updatePageTitle() {
+        let titleParts = [];
+
+        appState.logPanels.forEach((panel) => {
+            const name = panel.logId.split("/").pop();
+            titleParts.push(name);
+        });
+
+        document.title = `${titleParts.join(", ")} - Log Viewer`;
     }
 })();
