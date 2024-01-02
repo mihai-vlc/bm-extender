@@ -55,6 +55,7 @@ Pull requests are welcomed.
 -   2.1.0
 
     -   Implemented the initial version of the log viewer popup window
+    -   Increased the size of the log tail step
 
 -   2.0.0
 

@@ -53,6 +53,8 @@
         if (includedDomains.indexOf(location.host) > -1) {
             return true;
         }
+
+        return false;
     }
 
     function initializeOptions(appOptions) {
