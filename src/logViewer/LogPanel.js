@@ -33,6 +33,7 @@
                 <button class="js-log-panel-scroll-to" data-location="active" title="Scroll to active log message">Active</button>
                 <button class="js-log-panel-scroll-to" data-location="next" title="Scroll to next log message">Next</button>
                 <button class="js-log-panel-scroll-to" data-location="bottom" title="Scroll to bottom">Last</button>
+                <span class="js-log-panel-status"></span>
             </div>
         </div>`;
 
@@ -167,6 +168,7 @@
 
         loadContent() {
             this.$logContent.empty();
+            this.$panel.find(".js-log-panel-status").text("Downloading...");
 
             if (this.logType == "job") {
                 this.processJobLogs(this.logId);
@@ -198,6 +200,7 @@
 
             if (done) {
                 this.setActiveLogMessage($content.find(".timestamp").last());
+                this.$panel.find(".js-log-panel-status").text("Done");
             }
         }
 

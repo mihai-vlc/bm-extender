@@ -1,9 +1,10 @@
 (async function ($) {
     var pageUrl = new URL(window.location.href);
-    var logSize = 20000;
+    var logSize = 50000;
     var logPath = pageUrl.searchParams.get("logPath");
 
     let sfccTabData = null;
+    let initialContentLoaded = false;
 
     try {
         // last accessed SFCC tab
@@ -37,7 +38,7 @@
 
     $(".js-load-more").on("click", async function (e) {
         e.preventDefault();
-        logSize = logSize + 20000;
+        logSize = logSize + 50000;
 
         const logContent = await chrome.tabs.sendMessage(sfccTabData.id, {
             type: "fetchLogTail",
@@ -56,7 +57,14 @@
     function handleLogLoaded(response) {
         $(".js-log-data").html(response);
 
-        appendScriptInDocument("scripts/formatLogs.js");
+        appendScriptInDocument("scripts/formatLogs.js", () => {
+            if (!initialContentLoaded) {
+                setTimeout(() => {
+                    window.scrollTo(0, document.body.scrollHeight);
+                }, 100);
+            }
+            initialContentLoaded = true;
+        });
     }
 
     function appendStyle(path) {

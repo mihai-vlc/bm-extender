@@ -78,7 +78,7 @@
         $.ajax({
             url: url,
             headers: {
-                Range: "bytes=-" + (size || 10000),
+                Range: "bytes=-" + (size || 50000),
             },
             success: function (response) {
                 callback(response);
