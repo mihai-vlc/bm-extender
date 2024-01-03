@@ -1,7 +1,7 @@
 /**
  * fixDW.js
  * This script will insert a sidebar for the navigation menu in the DWRE BM layout.
- * @author Mihai Ionut Vilcu <ionutvmi@gmail.com>
+ * @author Mihai Ionut Vilcu <mihai.vlc11@gmail.com>
  * Apr 2015
  */
 
