@@ -109,9 +109,8 @@
                 }
 
                 html += `<li>
-                     <a href="${link.url}">${name}</a> <small>${link.fileSize}</small> |
+                     <a href="${link.url}" class="js-open-logs-view-window">${name}</a> <small>${link.fileSize}</small> |
                      <a href="${link.url}" class="js-open-tail-window text-bold">tail</a> |
-                     <a href="${link.url}" class="js-open-logs-view-window text-bold">log viewer</a>
                    </li>`;
             });
 
