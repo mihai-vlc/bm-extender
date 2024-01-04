@@ -52,6 +52,11 @@ Pull requests are welcomed.
 
 ## Release notes
 
+-   2.2.0
+-   Makes the logs view the default for clicking on the log link
+-   Adds the log name in the page title for the log tail view
+-   Increases the size for the default log tail
+
 -   2.1.0
 
     -   Implemented the initial version of the log viewer popup window
