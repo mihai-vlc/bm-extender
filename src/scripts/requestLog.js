@@ -3,7 +3,7 @@
         "https://" + window.location.host + "/on/demandware.servlet/webdav/Sites/Logs";
 
     try {
-        await chrome.runtime.sendMessage({
+        chrome.runtime.sendMessage({
             type: "saveSFCCTabData",
             tabUrl: `https://${window.location.host}`,
         });
