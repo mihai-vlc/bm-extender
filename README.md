@@ -52,6 +52,9 @@ Pull requests are welcomed.
 
 ## Release notes
 
+-   2.3.0
+-   Added support for custom domains. Fixes #8
+
 -   2.2.0
 -   Makes the logs view the default for clicking on the log link
 -   Adds the log name in the page title for the log tail view
