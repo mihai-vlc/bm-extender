@@ -25,11 +25,19 @@
                 "*://*.demandware.com/*",
                 "*://*.demandware.net/*"
             ],
-            "js": ["jquery.js", "dotjs.js"]
+            "js": [
+                "jquery.js",
+                "dotjs.js"
+            ]
         }
     ],
     "options_page": "options/options.html",
-    "permissions": ["tabs", "activeTab", "storage", "scripting"],
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "storage",
+        "scripting"
+    ],
     "host_permissions": [
         "*://*/on/demandware.store/Sites-Site/*",
         "*://*.commercecloud.salesforce.com/*",
@@ -38,8 +46,11 @@
     ],
     "web_accessible_resources": [
         {
-            "resources": ["scripts/*.js"],
+            "resources": [
+                "scripts/*.js"
+            ],
             "matches": [
+                "*://*/on/demandware.store/Sites-Site/*",
                 "*://*.commercecloud.salesforce.com/*",
                 "*://*.demandware.com/*",
                 "*://*.demandware.net/*"
@@ -47,8 +58,11 @@
             "use_dynamic_url": true
         },
         {
-            "resources": ["styles/*.css"],
+            "resources": [
+                "styles/*.css"
+            ],
             "matches": [
+                "*://*/on/demandware.store/Sites-Site/*",
                 "*://*.commercecloud.salesforce.com/*",
                 "*://*.demandware.com/*",
                 "*://*.demandware.net/*"
