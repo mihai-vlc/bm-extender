@@ -2,7 +2,7 @@
     "name": "BM Extender",
     "manifest_version": 3,
     "minimum_chrome_version": "100",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "A chrome extension that adds custom functionality to the SFCC Business Manager.",
     "icons": {
         "48": "images/icon48.png",
@@ -20,6 +20,7 @@
         {
             "run_at": "document_end",
             "matches": [
+                "*://*/on/demandware.servlet/webdav/*",
                 "*://*/on/demandware.store/Sites-Site/*",
                 "*://*.commercecloud.salesforce.com/*",
                 "*://*.demandware.com/*",
@@ -31,6 +32,7 @@
     "options_page": "options/options.html",
     "permissions": ["tabs", "activeTab", "storage", "scripting"],
     "host_permissions": [
+        "*://*/on/demandware.servlet/webdav/*",
         "*://*/on/demandware.store/Sites-Site/*",
         "*://*.commercecloud.salesforce.com/*",
         "*://*.demandware.com/*",
