@@ -1,13 +1,5 @@
 (function () {
     function loadApplication(appOptions) {
-        var appendScriptInDocument = function (path, cb) {
-            initializeOptions(appOptions);
-            var script = document.createElement("script");
-            script.src = chrome.runtime.getURL(path);
-            script.onload = cb || $.noop;
-            document.body.appendChild(script);
-        };
-
         var appendStyle = function (path) {
             var defaultStyle = document.createElement("link");
             defaultStyle.rel = "stylesheet";
@@ -18,10 +10,12 @@
         var includedDomains = (appOptions.includedDomains || "").split(/,|\r\n|\n/g);
 
         if (location.pathname.indexOf("on/demandware.store/Sites-Site") > -1) {
+            initializeOptions(appOptions);
+
             // on the BM site
-            appendScriptInDocument("scripts/fixDW-libs.js", function () {
-                appendScriptInDocument("scripts/fixDW.js");
-            });
+            loadContentScript("scripts/fixDW-libs.js");
+            loadContentScript("scripts/fixDW.js");
+
             appendStyle("styles/fixDW.css");
             loadContentScript("scripts/requestLog.js");
         } else if (isStorefrontSite(includedDomains)) {
