@@ -2,7 +2,7 @@
     "name": "BM Extender",
     "manifest_version": 3,
     "minimum_chrome_version": "100",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "description": "A chrome extension that adds custom functionality to the SFCC Business Manager.",
     "icons": {
         "48": "images/icon48.png",
