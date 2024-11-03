@@ -9,7 +9,7 @@ var background = {
         chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
             switch (message.type) {
                 case "loadContentScript": {
-                    executeScript(message.scriptPath);
+                    executeScript(message.scriptPath, sender.tab.id);
                     break;
                 }
                 case "saveSFCCTabData": {
@@ -51,7 +51,15 @@ function getCurrentTab(callback) {
     });
 }
 
-function executeScript(scriptPath) {
+function executeScript(scriptPath, tabId) {
+    if (tabId) {
+        chrome.scripting.executeScript({
+            target: { tabId: tabId },
+            files: [scriptPath],
+        });
+        return;
+    }
+
     getCurrentTab((tab) => {
         if (!tab) {
             return;
